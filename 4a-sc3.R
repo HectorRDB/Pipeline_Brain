@@ -5,19 +5,21 @@ library(scater)
 library(clusterExperiment)
 
 dataset <- "SMARTer_cells_MOp/"
-source("3a-zinb.R")
+source("2-filtering.R")
 
-sce <- SingleCellExperiment(assays = list(counts = assays(sce)$counts,
-                                          logcounts = assays(ce)$logcounts),
-                            colData = colData(sce), rowData = rowData(sce))
-rowData(sce)$feature_symbol <- rownames(sce)
-
-sce <- sc3_estimate_k(sce)
-K <- metadata(sce)$sc3$k_estimation
-save(K, file = "inhibit/sc3_k.RData")
 NCORES <- 8
 
-sce <- sc3(sce, ks = K, svm_max = ncol(sce) + 1, biology = FALSE, n_cores = N)
+for (name in names(sce)) {
+  Sce <- sce[[name]]
+  rowData(Sce)$feature_symbol <- rownames(Sce)
+  Sce <- sc3_estimate_k(Sce)
+  K <- metadata(Sce)$sc3$k_estimation
+  save(K, file = paste0(loc, "RData/", str_replace(dataset, "/", ""),
+                        "sc3_k.RData"))
+  Sce <- sc3(Sce, ks = K, svm_max = ncol(Sce) + 1, biology = FALSE, n_cores = N)
+  sce[[name]] <- Sce
+}
 
-saveRDS(sce, file = "inhibit/sc3_out.rds")
+saveRDS(sce, file = paste0(loc, "rds/", str_replace(dataset, "/", ""), "sc3_out.rds"))
+
 

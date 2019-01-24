@@ -1,5 +1,8 @@
 # dataset <- "SMARTer_cells_MOp/"
+loc <- "/scratch/users/singlecell/MiniAtlas/data/"
 source("2-filtering.R")
+# sce <- readRDS(file = paste0(loc, "rds/", str_replace(dataset, "/", ""),
+#                              "_filt.rds"))
 
 library(clusterExperiment)
 library(dplyr)
@@ -21,14 +24,18 @@ library(zinbwave)
 NCORES <- 8
 BiocParallel::register(MulticoreParam(NCORES))
 
-zinbWs <- list()
-for (zinbDim in c(3, 5, 10, 20, 50, 100)) {
-  cat("Number of cores:", NCORES, "\n")
-  cat("Time to run zinbwave (seconds):\n")
-  print(system.time(zinb <- zinbwave(sce_small, K = zinbDim)))
-  zinbWs[[length(zinbWs) + 1]] <- reducedDim(zinb)
+zinbWs <- list(Inhibit = list(),
+               Excite = list())
+for (name in names(sce)) {
+  sce_small <- sce[[name]]
+  for (zinbDim in c(3, 5, 10, 20, 50, 100)) {
+    cat("Number of cores:", NCORES, "\n")
+    cat("Time to run zinbwave (seconds):\n")
+    print(system.time(zinb <- zinbwave(sce_small, K = zinbDim)))
+    zinbWs[[name]][[length(zinbWs[[name]]) + 1]] <- reducedDim(zinb)
+  } 
+  names(zinbWs[[name]]) <- paste0("zinb", c(3, 5, 10, 20, 50, 100))
 }
-names(zinbWs) <- paste0("zinb", c(3, 5, 10, 20, 50, 100))
 
 # saveRDS(zinbWs, file = "zinbWs.rds") 
 # in case fails in next steps...
