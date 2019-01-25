@@ -1,6 +1,5 @@
 library(Seurat)
 library(dplyr)
-library(clusterExperiment)
 
 dataset <- "SMARTer_cells_MOp/"
 source("3a-zinb.R")

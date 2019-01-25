@@ -4,9 +4,10 @@ library(scater)
 
 library(clusterExperiment)
 
-dataset <- "SMARTer_cells_MOp/"
-source("2-filtering.R")
-
+dataset <- "SMARTer_nuclei_MOp/"
+# source("2-filtering.R")
+sce <- readRDS(file = paste0(loc, "rds/", str_replace(dataset, "/", ""),
+                             "_filt.rds"))
 NCORES <- 8
 
 for (name in names(sce)) {
