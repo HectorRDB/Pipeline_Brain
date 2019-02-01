@@ -1,5 +1,6 @@
 dataset <- "SMARTer_nuclei_MOp/"
 loc <- "/scratch/users/singlecell/MiniAtlas/data/"
+library(stringr)
 # source("2-filtering.R")
 sce <- readRDS(file = paste0(loc, "rds/", str_replace(dataset, "/", ""),
                              "_filt.rds"))
@@ -10,7 +11,7 @@ library(BiocParallel)
 library(zinbwave)
 
 # Subset ---- 
-sce_small <- sce
+# sce_small <- sce
 # nvars <- 5000
 # vars <- rowVars(assays(sce)$logcounts)
 # names(vars) <- rownames(sce)

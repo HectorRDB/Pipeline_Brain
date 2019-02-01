@@ -1,6 +1,6 @@
-library(stringr, lib.loc = "/system/linux/lib/R-18.04/3.5/x86_64/site-library")
+library(stringr)
 loc <- "/scratch/users/singlecell/MiniAtlas/data/"
-# dataset <- "SMARTer_cells_MOp/"
+dataset <- "SMARTer_cells_MOp/"
 # Can be one of SMARTer_cells_MOp/, SMARTer_nuclei_MOp/,
 # 10x_cells_MOp/ and 10x_nuclei_MOp/
 # Usually decided by a previous script
@@ -16,7 +16,7 @@ meta$allenClusters <- allenClusters$clusters
 allenMeta <- read.csv(paste0(loc, dataset, "cluster.annotation.csv"),
                       header = T, row.names = 1)
 
-library(dplyr, lib.loc = "/system/linux/lib/R-18.04/3.5/x86_64/site-library")
+library(dplyr)
 
 allenMetaInhibit <- allenMeta %>% filter(class_label == "GABAergic") 
 inhibit <- allenClusters$clusters %in% allenMetaInhibit$cluster_id
@@ -24,17 +24,21 @@ allenMetaExcite <- allenMeta %>% filter(class_label == "Glutamatergic")
 excite <- allenClusters$clusters %in% allenMetaExcite$cluster_id
 
 library(SingleCellExperiment)
-sceInhibit <- SingleCellExperiment(assays = list(counts = counts[, inhibit],
-                                          logcounts = log1p(counts[, inhibit])),
+sceInhibit <- SingleCellExperiment(assays = list(counts = counts[, inhibit] %>%
+                                                 as.matrix(),
+                                          logcounts = as.matrix(log1p(
+                                                           counts[, inhibit]))),
                                    colData = meta[inhibit, ])
 
-sceEexcite <- SingleCellExperiment(assays = list(counts = counts[, excite],
-                                          logcounts = log1p(counts[, excite])),
+sceEexcite <- SingleCellExperiment(assays = list(counts = counts[, excite] %>%
+                                                   as.matrix(),
+                                                 logcounts = as.matrix(log1p(
+                                                   counts[, excite]))),
                                    colData = meta[excite, ])
 sce <- list(Inhibit = sceInhibit,
             Excite = sceEexcite)
 
-# saveRDS(sce, file = paste0(loc, "rds/", str_replace(dataset, "/", ""), ".rds"))
+saveRDS(sce, file = paste0(loc, "rds/", str_replace(dataset, "/", ""), ".rds"))
 # in case fails in next steps...
 
 rm(list = setdiff(ls(), c("sce", "loc", "dataset")))

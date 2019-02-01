@@ -1,11 +1,11 @@
 library(SingleCellExperiment)
-library(stringr, lib.loc = "/system/linux/lib/R-18.04/3.5/x86_64/site-library")
+library(stringr)
 
 loc <- "/scratch/users/singlecell/MiniAtlas/data/"
-# dataset <- "SMARTer_cells_MOp/"
-source("1-loadData.R")
+dataset <- "SMARTer_nuclei_MOp/"
+# source("1-loadData.R")
 
-# sce <- readRDS(file = paste0(loc, "rds/", str_replace(dataset, "/", ""), ".rds"))
+sce <- readRDS(file = paste0(loc, "rds/", str_replace(dataset, "/", ""), ".rds"))
 
 sce <- lapply(sce, function(Sce){
   counts <- assays(Sce)$counts
@@ -20,5 +20,5 @@ sce <- lapply(sce, function(Sce){
   Sce
 })
 
-# saveRDS(sce, file = paste0(loc, "rds/", str_replace(dataset, "/", ""), "_filt.rds"))
+saveRDS(sce, file = paste0(loc, "rds/", str_replace(dataset, "/", ""), "_filt.rds"))
 # in case fails in next steps...
