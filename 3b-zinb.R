@@ -1,16 +1,17 @@
 dataset <- "SMARTer_nuclei_MOp/"
 loc <- "/scratch/users/singlecell/MiniAtlas/data/"
 library(stringr)
-# source("2-filtering.R")
-sce <- readRDS(file = paste0(loc, "rds/", str_replace(dataset, "/", ""),
-                             "_filt.rds"))
-
 library(clusterExperiment)
 library(dplyr)
 library(BiocParallel)
 library(zinbwave)
 
+# source("2-filtering.R")
+sce <- readRDS(file = paste0(loc, "rds/", str_replace(dataset, "/", ""),
+                             "_filt.rds"))
+
 # Subset ---- 
+
 # sce_small <- sce
 # nvars <- 5000
 # vars <- rowVars(assays(sce)$logcounts)
@@ -20,8 +21,6 @@ library(zinbwave)
 # sce_small <- sce_small[, colSums(assays(sce)$counts) > 0]
 
 # Run ZinbWave ----
-library(BiocParallel)
-library(zinbwave)
 NCORES <- 8
 BiocParallel::register(MulticoreParam(NCORES))
 
