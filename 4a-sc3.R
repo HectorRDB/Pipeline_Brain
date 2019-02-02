@@ -1,8 +1,5 @@
-library(clusterExperiment)
 library(SC3)
 library(scater)
-
-library(clusterExperiment)
 
 dataset <- "SMARTer_cells_MOp/"
 # source("2-filtering.R")

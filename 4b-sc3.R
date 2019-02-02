@@ -1,8 +1,5 @@
-library(clusterExperiment)
 library(SC3)
 library(scater)
-
-library(clusterExperiment)
 
 dataset <- "SMARTer_nuclei_MOp/"
 # source("2-filtering.R")
@@ -21,6 +18,6 @@ for (name in names(sce)) {
   sce[[name]] <- Sce
 }
 
-saveRDS(sce, file = paste0(loc, "rds/", str_replace(dataset, "/", ""), "sc3_out.rds"))
+saveRDS(sce, file = paste0(loc, "rds/", str_replace(dataset, "/", ""), "_sc3_out.rds"))
 
 

@@ -1,8 +1,9 @@
 library(Seurat)
 library(dplyr)
 
-dataset <- "SMARTer_cells_MOp/"
-source("3a-zinb.R")
+dataset <- "SMARTer_nuclei_MOp/"
+sce <- readRDS(file = paste0(loc, "rds/", str_replace(dataset, "/", ""),
+                             "_filt.rds"))
 
 clusterMatrixs <- list()
 for (name in names(sce)) {
@@ -40,4 +41,4 @@ for (name in names(sce)) {
 }
 
 saveRDS(clusterMatrixs, file = paste0(loc, "rds/", str_replace(dataset, "/", ""),
-                                      "seurat_out.rds"))
+                                      "_seurat_out.rds"))
