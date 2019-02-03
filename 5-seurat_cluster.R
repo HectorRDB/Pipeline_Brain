@@ -2,6 +2,7 @@ library(optparse)
 library(Seurat)
 library(dplyr)
 library(stringr)
+library(SummarizedExperiment)
 
 option_list <- list(
   make_option(c("-d", "--dataset"),
