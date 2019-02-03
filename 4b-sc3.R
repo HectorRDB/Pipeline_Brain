@@ -1,5 +1,6 @@
 library(SC3)
 library(scater)
+library(stringr)
 
 dataset <- "SMARTer_nuclei_MOp/"
 loc <- "/scratch/users/singlecell/MiniAtlas/data/"

@@ -1,7 +1,9 @@
 library(Seurat)
 library(dplyr)
+library(stringr)
 
 dataset <- "SMARTer_cells_MOp/"
+loc <- "/scratch/users/singlecell/MiniAtlas/data/"
 sce <- readRDS(file = paste0(loc, "rds/", str_replace(dataset, "/", ""),
                              "_filt.rds"))
 
