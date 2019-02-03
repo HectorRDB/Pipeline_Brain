@@ -15,9 +15,11 @@ for (name in names(sce)) {
   Sce <- sc3_estimate_k(Sce)
   K <- metadata(Sce)$sc3$k_estimation
   save(K, file = paste0(loc, "RData/", str_replace(dataset, "/", ""),
-                        "sc3_k.RData"))
-  Sce <- sc3(Sce, ks = K, svm_max = ncol(Sce) + 1, biology = FALSE, n_cores = N)
+                        "_sc3_k.RData"))
+  Sce <- sc3(Sce, ks = K, svm_max = ncol(Sce) + 1, biology = FALSE,
+             n_cores = NCORES)
   sce[[name]] <- Sce
+  print(name)
 }
 
 saveRDS(sce, file = paste0(loc, "rds/", str_replace(dataset, "/", ""), "_sc3_out.rds"))
