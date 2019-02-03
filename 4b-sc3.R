@@ -2,6 +2,7 @@ library(SC3)
 library(scater)
 
 dataset <- "SMARTer_nuclei_MOp/"
+loc <- "/scratch/users/singlecell/MiniAtlas/data/"
 # source("2-filtering.R")
 sce <- readRDS(file = paste0(loc, "rds/", str_replace(dataset, "/", ""),
                              "_filt.rds"))
