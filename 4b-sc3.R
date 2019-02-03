@@ -14,7 +14,7 @@ for (name in names(sce)) {
   rowData(Sce)$feature_symbol <- rownames(Sce)
   Sce <- sc3_estimate_k(Sce)
   K <- metadata(Sce)$sc3$k_estimation
-  save(K, file = paste0(loc, "RData/", str_replace(dataset, "/", ""),
+  save(K, file = paste0(loc, "RData/", str_replace(dataset, "/", ""), "_", name,
                         "_sc3_k.RData"))
   Sce <- sc3(Sce, ks = K, svm_max = ncol(Sce) + 1, biology = FALSE,
              n_cores = NCORES)

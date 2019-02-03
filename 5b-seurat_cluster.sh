@@ -5,4 +5,4 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --nodes=1
 
-R CMD BATCH --no-save 5a-seurat_cluster.R 5a-seurat_cluster.out
+Rscript --vanilla --verbose  5-Seurat.R -d "SMARTer_nuclei_MOp/" > 5b.out 2>&1

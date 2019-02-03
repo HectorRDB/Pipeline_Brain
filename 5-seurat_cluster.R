@@ -1,8 +1,26 @@
+library(optparse)
 library(Seurat)
 library(dplyr)
 library(stringr)
 
-dataset <- "SMARTer_cells_MOp/"
+option_list <- list(
+  make_option(c("-d", "--dataset"),
+              action = "store", default = NA, type = "character",
+              help = "The dataset on which to run the script"
+  )
+)
+
+opt <- parse_args(OptionParser(option_list = option_list))
+
+if (!is.na(opt$d)) {
+  dataset <- opt$d
+  cat("The selected dataset is", dataset)
+} else {
+  stop("A dataset needs to be provided")
+}
+
+# dataset <- "SMARTer_cells_MOp/"
+
 loc <- "/scratch/users/singlecell/MiniAtlas/data/"
 sce <- readRDS(file = paste0(loc, "rds/", str_replace(dataset, "/", ""),
                              "_filt.rds"))
