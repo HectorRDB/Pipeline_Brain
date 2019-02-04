@@ -7,4 +7,4 @@
 
 loc="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_zinbWs.rds"
 out="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_RSEC.rds"
-Rscript --vanilla --verbose  6-RSEC.R -c 8 -l $loc -o $out> 6a.out 2>&1
+Rscript --vanilla --verbose  6-RSEC.R -n 8 -l $loc -o $out> 6a.out 2>&1

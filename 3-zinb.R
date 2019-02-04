@@ -1,8 +1,3 @@
-library(stringr)
-library(clusterExperiment)
-library(dplyr)
-library(BiocParallel)
-library(zinbwave)
 library(optparse)
 
 # Arguments for R Script ----
@@ -15,11 +10,16 @@ option_list <- list(
               action = "store", default = NA, type = "character",
               help = "The location of the data"
   ),
-  make_option(c("-c", "--n_cores"),
-              action = "store", default = 1, type = "integer",
-              help = "Number of cores to use"
+  make_option(c("-n", "--nCores"),
+              action = "store", default = 1,
+              help = "Number of cores to use [default %default]"
   )
 )
+library(stringr)
+library(clusterExperiment)
+library(dplyr)
+library(BiocParallel)
+library(zinbwave)
 
 opt <- parse_args(OptionParser(option_list = option_list))
 
@@ -40,7 +40,7 @@ if (!is.na(opt$o)) {
 sce <- readRDS(file = loc)
 
 # Run ZinbWave ----
-NCORES <- opt$c
+NCORES <- as.numeric(opt$c)
 BiocParallel::register(MulticoreParam(NCORES))
 
 zinbWs <- list()
@@ -53,7 +53,7 @@ for (zinbDim in 10 * 1:5) {
   cat("Time to run zinbwave (seconds):\n")
   print(system.time(zinb <- zinbwave(sce, K = zinbDim, which_genes = whichGenes)))
   zinbWs[[length(zinbWs[[name]]) + 1]] <- reducedDim(zinb)
-} 
+}
 
 for (i in 1:length(zinb)) {
   type <- (10 * 1:5)[i]

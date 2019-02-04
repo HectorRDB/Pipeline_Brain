@@ -14,7 +14,7 @@ option_list <- list(
               action = "store", default = NA, type = "character",
               help = "The location of the data"
   ),
-  make_option(c("-c", "--n_cores"),
+  make_option(c("-n", "--nCores"),
               action = "store", default = 1, type = "integer",
               help = "Number of cores to use"
   )
@@ -42,7 +42,7 @@ sce <- readRDS(file = loc)
 sequential <- FALSE
 subsample <- T
 clusterFunction <- "pam"
-NCORES <- opt$c
+NCORES <- as.numeric(opt$n)
 
 print(system.time(
   sce <- RSEC(sce, k0s = seq(5, 50, by = 5), alphas = c(0.1,0.3),

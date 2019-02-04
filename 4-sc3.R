@@ -14,7 +14,7 @@ option_list <- list(
               action = "store", default = NA, type = "character",
               help = "The location of the data"
   ),
-  make_option(c("-c", "--n_cores"),
+  make_option(c("-n", "--nCores"),
               action = "store", default = 1, type = "integer",
               help = "Number of cores to use"
   )
@@ -42,7 +42,8 @@ sce <- readRDS(file = loc)
 rowData(sce)$feature_symbol <- rownames(sce)
 sce <- sc3_estimate_k(sce)
 K <- metadata(sce)$sc3$k_estimation
-sce <- sc3(sce, ks = K, svm_max = ncol(sce) + 1, biology = FALSE, n_cores = opt$c)
+sce <- sc3(sce, ks = K, svm_max = ncol(sce) + 1, biology = FALSE,
+           n_cores = as.numeic(opt$n))
 
 print(cat("Saving output at ", output))
 saveRDS(sce, file = output)
