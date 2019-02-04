@@ -62,6 +62,7 @@ for (name in names(sce)) {
                 random.seed = 23578, consensusMinSize = 10, run = TRUE)
   ))
   sce[[name]] <- Sce
+  rm(Sce)
 }
 
 
