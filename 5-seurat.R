@@ -35,10 +35,8 @@ for (name in names(sce)) {
   
   sSeurat <- NormalizeData(object = sSeurat, normalization.method = "LogNormalize")
   
-  ssSeurat <- FindVariableGenes(object = sSeurat, mean.function = ExpMean,
-                                dispersion.function = LogVMR,
-                                x.low.cutoff = 0.0125, x.high.cutoff = 3,
-                                y.cutoff = 0.5)
+  sSeurat <- FindVariableGenes(object = sSeurat, mean.function = ExpMean,
+                                dispersion.function = LogVMR, do.plot = T)
   
   sSeurat <- ScaleData(object = sSeurat, vars.to.regress = "nUMI")
   
