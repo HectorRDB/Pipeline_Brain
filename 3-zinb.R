@@ -1,7 +1,8 @@
-library(clusterExperiment)
 library(stringr)
+library(clusterExperiment)
+library(dplyr)
+library(BiocParallel)
 library(zinbwave)
-library(SummarizedExperiment)
 library(optparse)
 
 # Arguments for R Script ----
@@ -38,22 +39,26 @@ if (!is.na(opt$o)) {
 # Load data ----
 sce <- readRDS(file = loc)
 
-##---- run RSEC
-sequential <- FALSE
-subsample <- T
-clusterFunction <- "pam"
+# Run ZinbWave ----
 NCORES <- opt$c
+BiocParallel::register(MulticoreParam(NCORES))
 
-print(system.time(
-  sce <- RSEC(sce, k0s = seq(5, 50, by = 5), alphas = c(0.1,0.3),
-              reduceMethod = paste0("zinb", 10 * 1:5), sequential = sequential,
-              subsample = subsample, minSizes = 1, betas = c(0.8), 
-              clusterFunction = clusterFunction, ncores = NCORES, run = TRUE,
-              isCount = FALSE, dendroReduce = "zinb50", dendroNDims = 50,
-              consensusProportion = 0.7, verbose = TRUE, random.seed = 23578,
-              subsampleArgs = list(resamp.num = 50, clusterFunction = "kmeans"),
-              mergeMethod = "adjP", mergeCutoff = 0.1, mergeLogFCcutoff = 1,
-              consensusMinSize = 10)
-))
+zinbWs <- list()
+vars <- apply(logcounts(sce), 1, var)
+ind <- vars > sort(vars,decreasing = TRUE)[1000]
+whichGenes <- rownames(sce)[ind]
 
+for (zinbDim in 10 * 1:5) {
+  cat("Number of cores:", NCORES, "\n")
+  cat("Time to run zinbwave (seconds):\n")
+  print(system.time(zinb <- zinbwave(sce, K = zinbDim, which_genes = whichGenes)))
+  zinbWs[[length(zinbWs[[name]]) + 1]] <- reducedDim(zinb)
+} 
+
+for (i in 1:length(zinb)) {
+  type <- (10 * 1:5)[i]
+  reducedDim(sce, type = paste0("zinb", type)) <- zinb[[i]]
+}
+
+print(cat("Saving output at ", output))
 saveRDS(sce, file = output)
