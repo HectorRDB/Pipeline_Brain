@@ -39,9 +39,7 @@ counts <- assays(sce)$counts
 counts[is.na(counts)] <- 0
 assays(sce) <- list(counts = counts, logcounts = logcounts(sce))
 
-filt <- apply(assays(sce)$counts, 1, function(x) {
-  sum(x >= 50) >= 50
-})
+filt <- rowSums(counts(sce) >= 50) >= 50
   
 sce <- sce[filt, ]
 

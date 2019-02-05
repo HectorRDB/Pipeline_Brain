@@ -15,11 +15,13 @@ option_list <- list(
               help = "Number of cores to use [default %default]"
   )
 )
+
 library(stringr)
 library(clusterExperiment)
 library(dplyr)
 library(BiocParallel)
 library(zinbwave)
+library(matrixStats)
 
 opt <- parse_args(OptionParser(option_list = option_list))
 
@@ -40,25 +42,29 @@ if (!is.na(opt$o)) {
 sce <- readRDS(file = loc)
 
 # Run ZinbWave ----
-NCORES <- as.numeric(opt$c)
+NCORES <- as.numeric(opt$n)
 BiocParallel::register(MulticoreParam(NCORES))
 
-zinbWs <- list()
-vars <- apply(logcounts(sce), 1, var)
+vars <- matrixStats::rowVars(logcounts(sce))
 ind <- vars > sort(vars,decreasing = TRUE)[1000]
 whichGenes <- rownames(sce)[ind]
 
-for (zinbDim in 10 * 1:5) {
+zinbDims <- 10 * 1:5
+zinb0 <- zinbwave(sce)
+sceVar <- sce[ind,]
+
+zinbWs <- lapply(zinbDims, function(zinbDim) {
   cat("Number of cores:", NCORES, "\n")
   cat("Time to run zinbwave (seconds):\n")
-  print(system.time(zinb <- zinbwave(sce, K = zinbDim, which_genes = whichGenes)))
-  zinbWs[[length(zinbWs[[name]]) + 1]] <- reducedDim(zinb)
-}
+  print(system.time(zinb <- zinbwave(sceVar, K = zinbDim)))
+  zinb
+})
 
-for (i in 1:length(zinb)) {
-  type <- (10 * 1:5)[i]
-  reducedDim(sce, type = paste0("zinb", type)) <- zinb[[i]]
+
+for (i in 1:length(zinbWs)) {
+  type <- zinbDims[i]
+  reducedDim(sceVar, type = paste0("zinb", type)) <- zinbWs[[i]]
 }
 
 print(cat("Saving output at ", output))
-saveRDS(sce, file = output)
+save(c(sceVar, zinb0), file = output)
