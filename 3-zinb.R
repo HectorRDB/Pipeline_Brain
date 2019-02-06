@@ -2,9 +2,13 @@ library(optparse)
 
 # Arguments for R Script ----
 option_list <- list(
-  make_option(c("-o", "--output"),
+  make_option(c("-o", "--output-normalized"),
               action = "store", default = NA, type = "character",
-              help = "Where to store the output"
+              help = "Where to store the normalized output"
+  ),
+  make_option(c("-r", "--reduced-dim-output"),
+              action = "store", default = NA, type = "character",
+              help = "Where to store the reduced dim object"
   ),
   make_option(c("-l", "--location"),
               action = "store", default = NA, type = "character",
@@ -50,21 +54,24 @@ ind <- vars > sort(vars,decreasing = TRUE)[1000]
 whichGenes <- rownames(sce)[ind]
 
 zinbDims <- 10 * 1:5
-zinb0 <- zinbwave(sce)
+cat("Running with K = 0 on the full data\n")
+cat("Number of cores:", NCORES, "\n")
+cat("Time to run zinbwave (seconds):\n")
+print(system.time(zinb0 <- zinbwave(sce)))
+
 sceVar <- sce[ind,]
 
-zinbWs <- lapply(zinbDims, function(zinbDim) {
+success <- lapply(zinbDims, function(zinbDim) {
+  cat("Running with K = ", zinbDim, " on the filtered data\n")
   cat("Number of cores:", NCORES, "\n")
   cat("Time to run zinbwave (seconds):\n")
   print(system.time(zinb <- zinbwave(sceVar, K = zinbDim)))
-  zinb
+  type <- zinbDim
+  reducedDim(sceVar, type = paste0("zinb", type)) <- zinb
+  cat("Saving output at ", output, "\n")
+  save(c(sceVar, zinb0), file = output)
+  return(zinbDim)
 })
 
-
-for (i in 1:length(zinbWs)) {
-  type <- zinbDims[i]
-  reducedDim(sceVar, type = paste0("zinb", type)) <- zinbWs[[i]]
-}
-
-print(cat("Saving output at ", output))
+cat("Saving output at ", output, "\n")
 save(c(sceVar, zinb0), file = output)
