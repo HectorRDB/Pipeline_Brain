@@ -6,7 +6,8 @@
 #SBATCH --nodes=1
 MEMORYFILE="6a_memoryLogger.txt"
 loc="/pylon5/ib5phhp/hectorrb/rds/10x_cells_MOp"
-plots="~/Pipeline_Brain/Figures/10x/10x_cells_MOp"
+
+module load hdf5
 
 while true; do free -h >> $MEMORYFILE; sleep 15; done & \
-Rscript --vanilla --verbose  6-ConsensusClustering.R -n 10 -l $loc -o $loc -p $plots > 6a.out 2>&1
+Rscript --vanilla --verbose  6-ConsensusClustering.R -n 10 -l $loc -o $loc > 6a.out 2>&1

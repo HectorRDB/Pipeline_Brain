@@ -10,13 +10,9 @@ option_list <- list(
               action = "store", default = NA, type = "character",
               help = "The location of the data"
   ),
-  make_option(c("-c", "--cell-cutoff"),
-              action = "store", default = 50, type = "integer",
-              help = "Which cutoff to use when filtering for cell"
-  ),
-  make_option(c("-r", "--read-cutoff"),
-              action = "store", default = 50, type = "integer",
-              help = "Which cutoff to use when filtering for read"
+  make_option(c("-c", "--cutoff"),
+              action = "store", default = 50, type = "character",
+              help = "The cutoff for filtering"
   )
 )
 
@@ -37,10 +33,12 @@ if (!is.na(opt$o)) {
 
 library(dplyr)
 library(stringr)
-library(SingleCellExperiment)
 library(Seurat)
+library(SingleCellExperiment)
 
 # Load data per se ----
+
+cat("Loading the data", "\n")
 counts <- Read10X_h5(paste0(loc, "umi_counts.h5"))
 
 colnames(counts) <- str_replace_all(colnames(counts), "\\.", "-")
@@ -50,13 +48,19 @@ allenClusters <- read.csv(paste0(loc, "cluster.membership.csv"),
                           header = T, col.names = c("sample", "clusters"))
 meta$allenClusters <- allenClusters$clusters
 
+cat("Preparing the data", "\n")
+
+
 counts[is.na(counts)] <- 0
-filt <- rowSums(counts(sce) >= opt$c) >= opt$c
+counts <- as.matrix(counts)
+filt <- rowSums(counts >= opt$c) >= opt$c
+cat(sum(counts[filt, ]) / sum (counts))
+counts <- counts[filt, ]
 
-mean(filt)
-sum(filt)
+cat(mean(filt), "\n")
+cat(sum(filt), "\n")
 
-cat("Saving output at ", output)
+cat("Saving output to ", output)
 
 sce <- SingleCellExperiment(assays = list(counts = as.matrix(counts),
                                           logcounts = as.matrix(log1p(counts))),

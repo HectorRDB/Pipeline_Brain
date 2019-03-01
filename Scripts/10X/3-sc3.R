@@ -1,4 +1,4 @@
-suppressWarnings(library(optparse))
+library(optparse)
 
 # Arguments for R Script ----
 option_list <- list(
