@@ -99,7 +99,7 @@ ggsave(paste0(output_p, "_Initial_ARI.pdf"), p)
 
 # No unclustered cells for RSEC
 InitialARI2 <- apply(clusMat, 2, function(x) {
-  apply(clusMat2, 2, function(y) {
+  apply(clusMat, 2, function(y) {
     inds <- x != -1 & y != -1
     xa <- x[inds]
     ya <- y[inds]
