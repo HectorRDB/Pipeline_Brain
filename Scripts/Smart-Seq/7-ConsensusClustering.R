@@ -81,7 +81,7 @@ seurat <- seurat[, seurat_p]
 colnames(seurat) <- c("seurat1", "seurat2")
 
 # Get the final clustering labels
-clusMat <- data.frame("sc3" = sc3, "Rsec" = Rsec, RsecT = "RsecT", "allen" = allen) %>%
+clusMat <- data.frame("sc3" = sc3, "Rsec" = Rsec, "RsecT" = RsecT, "allen" = allen) %>%
   cbind(seurat)
 
 # Inital plots ----
@@ -113,10 +113,10 @@ ggsave(paste0(output_p, "_Initial_ARI_no_unclus.pdf"), p)
 
 # Do the consensus clustering ----
 print(paste0("Number of cores: ", opt$n))
-mergers <- mergeManyPairwise(clusteringMatrix = clusMat[,-"RsecT"], nCores = opt$n)
+mergers <- mergeManyPairwise(clusteringMatrix = clusMat[,-3], nCores = opt$n)
 cat("Finished first consensus\n")
+mergersT <- mergeManyPairwise(clusteringMatrix = clusMat[,-2], nCores = opt$n)
 cat("Finished second consensus\n")
-mergersT <- mergeManyPairwise(clusteringMatrix = clusMat[,-"Rsec"], nCores = opt$n)
 # print(paste0("Consensus clustering finished\nSaving output at ", output,
 #              "_Consensus_Clustering.rds"))
 # saveRDS(mergers, file = paste0(output, "_Consensus_Clustering.rds"))
