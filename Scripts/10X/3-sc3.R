@@ -1,8 +1,4 @@
-library(SC3)
-library(scater)
-library(stringr)
-library(optparse)
-library(SingleCellExperiment)
+suppressWarnings(library(optparse))
 
 # Arguments for R Script ----
 option_list <- list(
@@ -36,6 +32,11 @@ if (!is.na(opt$o)) {
 }
 
 # Run sc3 per se ----
+library(SC3)
+library(scater)
+library(stringr)
+library(SingleCellExperiment)
+
 # Add a normalization step ? 
 sce <- readRDS(file = loc)
 
@@ -43,9 +44,7 @@ rowData(sce)$feature_symbol <- rownames(sce)
 sce <- sc3_estimate_k(sce)
 K <- metadata(sce)$sc3$k_estimation
 sce <- sc3(sce, ks = K, svm_max = ncol(sce) + 1, biology = FALSE,
-           n_cores = as.numeic(opt$n))
+           n_cores = as.numeric(opt$n))
 
 print(cat("Saving output at ", output))
 saveRDS(sce, file = output)
-
-

@@ -1,11 +1,7 @@
-library(optparse)
+suppressWarnings(library(optparse))
 
 # Arguments for R Script ----
 option_list <- list(
-  make_option(c("-o", "--output-normalized"),
-              action = "store", default = NA, type = "character",
-              help = "Where to store the normalized output"
-  ),
   make_option(c("-r", "--reduced-dim-output"),
               action = "store", default = NA, type = "character",
               help = "Where to store the reduced dim object"
@@ -17,8 +13,34 @@ option_list <- list(
   make_option(c("-n", "--nCores"),
               action = "store", default = 1,
               help = "Number of cores to use [default %default]"
+  ),
+  make_option(c("-i", "--initial"),
+              action = "store", default = 10,
+              help = "The smallest value of K [default %default]"
+  ),
+  make_option(c("-f", "--final"),
+              action = "store", default = 50,
+              help = "The largest value of K [default %default]"
+  ),
+  make_option(c("-d", "--dims"),
+              action = "store", default = 5,
+              help = "How many values of K between i and f [default %default]"
   )
 )
+
+opt <- parse_args(OptionParser(option_list = option_list))
+
+if (!is.na(opt$l)) {
+  loc <- opt$l
+  cat("The selected dataset is located at", loc, "\n")
+} else {
+  stop("Missing l argument\n")
+}
+if (!is.na(opt$r)) {
+  output_r <- opt$r
+} else {
+  stop("Missing r argument\n")
+}
 
 library(stringr)
 library(clusterExperiment)
@@ -26,21 +48,6 @@ library(dplyr)
 library(BiocParallel)
 library(zinbwave)
 library(matrixStats)
-
-opt <- parse_args(OptionParser(option_list = option_list))
-
-if (!is.na(opt$l)) {
-  loc <- opt$l
-  cat("The selected dataset is located at", loc)
-} else {
-  stop("Missing l argument")
-}
-
-if (!is.na(opt$o)) {
-  output <- opt$o
-} else {
-  stop("Missing o argument")
-}
 
 # Load data ----
 sce <- readRDS(file = loc)
@@ -50,28 +57,27 @@ NCORES <- as.numeric(opt$n)
 BiocParallel::register(MulticoreParam(NCORES))
 
 vars <- matrixStats::rowVars(logcounts(sce))
-ind <- vars > sort(vars,decreasing = TRUE)[1000]
-whichGenes <- rownames(sce)[ind]
-
-zinbDims <- 10 * 1:5
 cat("Running with K = 0 on the full data\n")
 cat("Number of cores:", NCORES, "\n")
 cat("Time to run zinbwave (seconds):\n")
 print(system.time(zinb0 <- zinbwave(sce)))
 
+ind <- vars > sort(vars,decreasing = TRUE)[1000]
+whichGenes <- rownames(sce)[ind]
+zinbDims <- floor(seq(from = opt$i, to = opt$f, length.out = opt$d))
+cat("Using the following values for K :", zinbDims)
 sceVar <- sce[ind,]
 
-success <- lapply(zinbDims, function(zinbDim) {
+zinbWs <- lapply(zinbDims, function(zinbDim) {
   cat("Running with K = ", zinbDim, " on the filtered data\n")
   cat("Number of cores:", NCORES, "\n")
   cat("Time to run zinbwave (seconds):\n")
   print(system.time(zinb <- zinbwave(sceVar, K = zinbDim)))
-  type <- zinbDim
-  reducedDim(sceVar, type = paste0("zinb", type)) <- zinb
-  cat("Saving output at ", output, "\n")
-  save(c(sceVar, zinb0), file = output)
-  return(zinbDim)
+  return(zinb)
 })
 
-cat("Saving output at ", output, "\n")
-save(c(sceVar, zinb0), file = output)
+for (i in 1:length(zinbWs)) {
+  type <- paste0("zinb-K", zinbDims[i])
+  reducedDim(sce, type = type) <- reducedDim(zinbWs[[i]])
+}
+saveRDS(sce, file = output_r)

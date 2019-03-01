@@ -1,0 +1,153 @@
+running
+  '/usr/lib/R/bin/R --slave --no-restore --vanilla --file=3-zinb.R --args -n 4 -l /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_filt.rds -o /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_norm.rds -r /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_zinbWs.rds'
+
+Loading required package: SingleCellExperiment
+Loading required package: SummarizedExperiment
+Loading required package: GenomicRanges
+Loading required package: stats4
+Loading required package: BiocGenerics
+Loading required package: parallel
+
+Attaching package: ‘BiocGenerics’
+
+The following objects are masked from ‘package:parallel’:
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB
+
+The following objects are masked from ‘package:stats’:
+
+    IQR, mad, sd, var, xtabs
+
+The following objects are masked from ‘package:base’:
+
+    anyDuplicated, append, as.data.frame, basename, cbind, colMeans,
+    colnames, colSums, dirname, do.call, duplicated, eval, evalq,
+    Filter, Find, get, grep, grepl, intersect, is.unsorted, lapply,
+    lengths, Map, mapply, match, mget, order, paste, pmax, pmax.int,
+    pmin, pmin.int, Position, rank, rbind, Reduce, rowMeans, rownames,
+    rowSums, sapply, setdiff, sort, table, tapply, union, unique,
+    unsplit, which, which.max, which.min
+
+Loading required package: S4Vectors
+
+Attaching package: ‘S4Vectors’
+
+The following object is masked from ‘package:base’:
+
+    expand.grid
+
+Loading required package: IRanges
+Loading required package: GenomeInfoDb
+Loading required package: Biobase
+Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    'browseVignettes()'. To cite Bioconductor, see
+    'citation("Biobase")', and for packages 'citation("pkgname")'.
+
+Loading required package: DelayedArray
+Loading required package: matrixStats
+
+Attaching package: ‘matrixStats’
+
+The following objects are masked from ‘package:Biobase’:
+
+    anyMissing, rowMedians
+
+Loading required package: BiocParallel
+
+Attaching package: ‘DelayedArray’
+
+The following objects are masked from ‘package:matrixStats’:
+
+    colMaxs, colMins, colRanges, rowMaxs, rowMins, rowRanges
+
+The following objects are masked from ‘package:base’:
+
+    aperm, apply
+
+Warning messages:
+1: replacing previous import ‘RNeXML::slot<-’ by ‘methods::slot<-’ when loading ‘phylobase’ 
+2: replacing previous import ‘RNeXML::slot’ by ‘methods::slot’ when loading ‘phylobase’ 
+
+Attaching package: ‘dplyr’
+
+The following object is masked from ‘package:matrixStats’:
+
+    count
+
+The following object is masked from ‘package:Biobase’:
+
+    combine
+
+The following objects are masked from ‘package:GenomicRanges’:
+
+    intersect, setdiff, union
+
+The following object is masked from ‘package:GenomeInfoDb’:
+
+    intersect
+
+The following objects are masked from ‘package:IRanges’:
+
+    collapse, desc, intersect, setdiff, slice, union
+
+The following objects are masked from ‘package:S4Vectors’:
+
+    first, intersect, rename, setdiff, setequal, union
+
+The following objects are masked from ‘package:BiocGenerics’:
+
+    combine, intersect, setdiff, union
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+
+Attaching package: ‘zinbwave’
+
+The following objects are masked from ‘package:clusterExperiment’:
+
+    nFeatures, nSamples
+
+The selected dataset is located at /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_filt.rds 
+Running with K =  10  on the filtered data
+Number of cores: 4 
+Time to run zinbwave (seconds):
+    user   system  elapsed 
+8406.942  482.966 3285.381 
+Saving output at  /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_zinbWs.rds 
+Running with K =  20  on the filtered data
+Number of cores: 4 
+Time to run zinbwave (seconds):
+     user    system   elapsed 
+13053.943   524.465  4090.568 
+Saving output at  /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_zinbWs.rds 
+Running with K =  30  on the filtered data
+Number of cores: 4 
+Time to run zinbwave (seconds):
+     user    system   elapsed 
+25358.678   961.214  7586.651 
+Saving output at  /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_zinbWs.rds 
+Running with K =  40  on the filtered data
+Number of cores: 4 
+Time to run zinbwave (seconds):
+     user    system   elapsed 
+44244.324  1399.434 12923.643 
+Saving output at  /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_zinbWs.rds 
+Running with K =  50  on the filtered data
+Number of cores: 4 
+Time to run zinbwave (seconds):
+    user   system  elapsed 
+46691.67  1523.02 13470.85 
+Saving output at  /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_zinbWs.rds 
+Warning message:
+In simpute.als(x, J, thresh, lambda, maxit, trace.it, warm.start,  :
+  Convergence not achieved by 100 iterations

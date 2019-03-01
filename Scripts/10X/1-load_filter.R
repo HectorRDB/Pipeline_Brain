@@ -1,6 +1,3 @@
-library(dplyr)
-library(stringr)
-library(SingleCellExperiment)
 library(optparse)
 
 # Arguments for R Script ----
@@ -12,6 +9,14 @@ option_list <- list(
   make_option(c("-l", "--location"),
               action = "store", default = NA, type = "character",
               help = "The location of the data"
+  ),
+  make_option(c("-c", "--cell-cutoff"),
+              action = "store", default = 50, type = "integer",
+              help = "Which cutoff to use when filtering for cell"
+  ),
+  make_option(c("-r", "--read-cutoff"),
+              action = "store", default = 50, type = "integer",
+              help = "Which cutoff to use when filtering for read"
   )
 )
 
@@ -30,23 +35,32 @@ if (!is.na(opt$o)) {
   stop("Missing o argument")
 }
 
-
+library(dplyr)
+library(stringr)
+library(SingleCellExperiment)
+library(Seurat)
 
 # Load data per se ----
+counts <- Read10X_h5(paste0(loc, "umi_counts.h5"))
 
-counts <- read.csv(paste0(loc, "exon.counts.csv.gz"),
-                    header = T, row.names = 1)
 colnames(counts) <- str_replace_all(colnames(counts), "\\.", "-")
-meta <- read.csv(paste0(loc, "sample_metadata.csv.gz"),
+meta <- read.csv(paste0(loc, "sample_metadata.csv"),
                  header = T, row.names = 1)
 allenClusters <- read.csv(paste0(loc, "cluster.membership.csv"),
                           header = T, col.names = c("sample", "clusters"))
 meta$allenClusters <- allenClusters$clusters
 
+counts[is.na(counts)] <- 0
+filt <- rowSums(counts(sce) >= opt$c) >= opt$c
+
+mean(filt)
+sum(filt)
+
+cat("Saving output at ", output)
+
 sce <- SingleCellExperiment(assays = list(counts = as.matrix(counts),
                                           logcounts = as.matrix(log1p(counts))),
                             colData = meta)
 
-cat("Saving output at ", output)
 saveRDS(sce, file = output)
-# in case fails in next steps...
+# # in case fails in next steps...

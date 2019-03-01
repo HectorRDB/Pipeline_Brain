@@ -1,7 +1,4 @@
-library(dplyr)
-library(stringr)
-library(SingleCellExperiment)
-library(optparse)
+suppressWarnings(library(optparse))
 
 # Arguments for R Script ----
 option_list <- list(
@@ -12,6 +9,14 @@ option_list <- list(
   make_option(c("-l", "--location"),
               action = "store", default = NA, type = "character",
               help = "The location of the data"
+  ),
+  make_option(c("-c", "--cell-cutoff"),
+              action = "store", default = 50, type = "integer",
+              help = "Which cutoff to use when filtering for cell"
+  ),
+  make_option(c("-r", "--read-cutoff"),
+              action = "store", default = 50, type = "integer",
+              help = "Which cutoff to use when filtering for read"
   )
 )
 
@@ -31,17 +36,23 @@ if (!is.na(opt$o)) {
 }
 
 # Filter data per se ----
- 
-# source("1-loadData.R")
+library(dplyr)
+library(stringr)
+library(SingleCellExperiment)
+
 sce <- readRDS(file = loc)
 
 counts <- assays(sce)$counts
 counts[is.na(counts)] <- 0
 assays(sce) <- list(counts = counts, logcounts = logcounts(sce))
 
-filt <- rowSums(counts(sce) >= 50) >= 50
+print(opt$c)
+print(opt$r)
+filt <- rowSums(counts(sce) >= opt$r) >= opt$c
   
 sce <- sce[filt, ]
+dim(sce)
+mean(counts(sce) == 0)
 
 print(cat("Saving output at ", output))
 saveRDS(sce, file = output)

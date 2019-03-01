@@ -1,8 +1,4 @@
-library(clusterExperiment)
-library(stringr)
-library(zinbwave)
-library(SummarizedExperiment)
-library(optparse)
+suppressWarnings(library(optparse))
 
 # Arguments for R Script ----
 option_list <- list(
@@ -35,6 +31,11 @@ if (!is.na(opt$o)) {
   stop("Missing o argument")
 }
 
+library(clusterExperiment)
+library(stringr)
+library(zinbwave)
+library(SingleCellExperiment)
+
 # Load data ----
 sce <- readRDS(file = loc)
 
@@ -43,17 +44,22 @@ sequential <- FALSE
 subsample <- T
 clusterFunction <- "pam"
 NCORES <- as.numeric(opt$n)
+reduceMeth <- reducedDimNames(sce)
 
 print(system.time(
-  sce <- RSEC(sce, k0s = seq(5, 50, by = 5), alphas = c(0.1,0.3),
-              reduceMethod = paste0("zinb", 10 * 1:5), sequential = sequential,
+  sce <- RSEC(sce, k0s = seq(10, 50, by = 5), alphas = c(0.1, 0.3),
+              reduceMethod = reduceMeth, sequential = sequential,
               subsample = subsample, minSizes = 1, betas = c(0.8), 
               clusterFunction = clusterFunction, ncores = NCORES, run = TRUE,
-              isCount = FALSE, dendroReduce = "zinb50", dendroNDims = 50,
-              consensusProportion = 0.7, verbose = TRUE, random.seed = 23578,
+              isCount = FALSE, dendroReduce = reduceMeth[length(reduceMeth)],
+              dendroNDims = 50, consensusProportion = 0.7, verbose = TRUE,
+              random.seed = 23578, mergeMethod = "adjP", mergeCutoff = 0.05,
               subsampleArgs = list(resamp.num = 50, clusterFunction = "kmeans"),
-              mergeMethod = "adjP", mergeCutoff = 0.1, mergeLogFCcutoff = 1,
-              consensusMinSize = 10)
+              mergeLogFCcutoff = 1, consensusMinSize = 10)
 ))
 
-saveRDS(sce, file = output)
+png(file = paste0(output, "_clusterMany.png"))
+plotClusters(sce)
+dev.off()
+
+saveRDS(sce, file = paste0(output, "_RSEC.rds"))

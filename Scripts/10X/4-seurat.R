@@ -1,8 +1,4 @@
-library(Seurat)
-library(dplyr)
-library(stringr)
-library(SummarizedExperiment)
-library(optparse)
+suppressWarnings(library(optparse))
 
 # Arguments for R Script ----
 option_list <- list(
@@ -32,6 +28,11 @@ if (!is.na(opt$o)) {
 }
 
 # Load data ----
+library(Seurat)
+library(dplyr)
+library(stringr)
+library(SummarizedExperiment)
+
 sce <- readRDS(file = loc)
 
 clusterMatrixs <- list()
@@ -48,7 +49,7 @@ sSeurat <- RunPCA(object = sSeurat, pc.genes = sSeurat@var.genes,
 # Run clustering ----
 clusterMatrix <- NULL
 for (RESOLUTION in c(0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6)) {
-  for (K.PARAM in c(10, 30, 50, 100)) {
+  for (K.PARAM in c(30, 50, 100)) {
     sSeurat_star <- FindClusters(object = sSeurat, reduction.type = "pca",
                                  dims.use = 1:50, resolution = RESOLUTION,
                                  print.output = 0, k.param = K.PARAM,
