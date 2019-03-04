@@ -127,7 +127,7 @@ pre <- apply(clusMat, 2, function(x) length(unique(x)))
 post <- apply(mergers$currentMat, 2, function(x) length(unique(x)))
 post <- c(post, "RsecT" = 0)
 postT <- apply(mergersT$currentMat, 2, function(x) length(unique(x)))
-post <- c(post, "Rsec" = 0)
+postT <- c(post, "Rsec" = 0)
 df <- data.frame(methods = names(pre),
                  before = pre,
                  after = post,
