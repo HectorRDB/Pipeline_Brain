@@ -147,7 +147,7 @@ ggsave(paste0(output_p, "_clusters_reduction.pdf"), p)
 ### Merger with Rsec
 currentMat <- mergers$currentMat
 unclus <- currentMat[, "Rsec"]
-Rsec_merges <- merges$merges
+Rsec_merges <- mergers$merges
 Rsec_merges <- Rsec_merges[Rsec_merges[,1] == 2, ]
 Rsec_merges <- Rsec_merges[, -1]
 currentMat[, "Rsec"] <- lapply(1:nrow(unclus), function(cell) {
