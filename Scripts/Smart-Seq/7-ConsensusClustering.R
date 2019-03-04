@@ -115,8 +115,10 @@ ggsave(paste0(output_p, "_Initial_ARI_no_unclus.pdf"), p)
 print(paste0("Number of cores: ", opt$n))
 mergers <- mergeManyPairwise(clusteringMatrix = clusMat[,-3], nCores = opt$n)
 cat("Finished first consensus\n")
+saveRDS(object = mergers, file = paste0(output, "_mergers.rds"))
 mergersT <- mergeManyPairwise(clusteringMatrix = clusMat[,-2], nCores = opt$n)
 cat("Finished second consensus\n")
+saveRDS(object = mergersT, file = paste0(output, "_mergersT.rds"))
 # print(paste0("Consensus clustering finished\nSaving output at ", output,
 #              "_Consensus_Clustering.rds"))
 # saveRDS(mergers, file = paste0(output, "_Consensus_Clustering.rds"))
@@ -161,6 +163,7 @@ currentMat[, "Rsec"] <- lapply(1:nrow(unclus), function(cell) {
     return(cellT)
   }) %>%
   unlist()
+
 FinalARI <- apply(currentMat, 2, function(x) {
   apply(currentMat, 2, function(y) {
     mclust::adjustedRandIndex(x, y)
