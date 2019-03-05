@@ -5,8 +5,8 @@
 #SBATCH --cpus-per-task=10
 #SBATCH --nodes=1
 MEMORYFILE="5a_memoryLogger.txt"
-loc="/pylon5/ib5phhp/hectorrb/rds/10x_cells_MOp_zinbWs.rds"
-out="/pylon5/ib5phhp/hectorrb/rds/10x_cells_MOp_RSEC.rds"
+loc="/pylon5/ib5phhp/hectorrb/out/10x_cells_MOp_zinbWs.rds"
+out="/pylon5/ib5phhp/hectorrb/out/10x_cells_MOp_RSEC.rds"
 
 module load hdf5
 
