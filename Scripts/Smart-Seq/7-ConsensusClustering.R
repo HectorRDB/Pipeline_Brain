@@ -152,7 +152,7 @@ unclus <- currentMat[, "Rsec"]
 Rsec_merges <- mergers$merges
 Rsec_merges <- Rsec_merges[Rsec_merges[,1] == 2, ]
 Rsec_merges <- Rsec_merges[, -1]
-currentMat[, "Rsec"] <- lapply(1:nrow(unclus), function(cell) {
+currentMat[, "Rsec"] <- lapply(1:length(unclus), function(cell) {
     cell <- clusMat[ ,"Rsec"]
     cellT <- clusMat[ ,"RsecT"]
     if (cell == -1) {
