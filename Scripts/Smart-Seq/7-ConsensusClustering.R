@@ -75,30 +75,19 @@ p <- plotARIs(ARIs, small = F) +
           (resolution and k.param)")
 ggsave(paste0(output_p, "_seurat_ARI.pdf"), p)
 
-seurat_p <- c("0.6,50", "1.6,50")
+seurat_p <- "1.6,50"
 
 seurat <- seurat[, seurat_p]
-colnames(seurat) <- c("seurat1", "seurat2")
 
 # Get the final clustering labels
-clusMat <- data.frame("sc3" = sc3, "Rsec" = Rsec, "RsecT" = RsecT, "allen" = allen) %>%
-  cbind(seurat)
+clusMat <- data.frame("sc3" = sc3, "Rsec" = Rsec, "allen" = allen,
+                      "seurat" = seurat)
 
+clusMatT <- data.frame("sc3" = sc3, "RsecT" = RsecT, "allen" = allen,
+                      "seurat" = seurat)
 # Inital plots ----
-
-# All cells
-InitialARI <- apply(clusMat, 2, function(x) {
-  apply(clusMat, 2, function(y) {
-    mclust::adjustedRandIndex(x, y)
-  })
-})
-
-p <- plotARIs(InitialARI) +
-  ggtitle("ARI before any merging")
-ggsave(paste0(output_p, "_Initial_ARI.pdf"), p)
-
 # No unclustered cells for RSEC
-InitialARI2 <- apply(clusMat, 2, function(x) {
+InitialARI <- apply(clusMat, 2, function(x) {
   apply(clusMat, 2, function(y) {
     inds <- x != -1 & y != -1
     xa <- x[inds]
@@ -107,33 +96,35 @@ InitialARI2 <- apply(clusMat, 2, function(x) {
   })
 })
 
-p <- plotARIs(InitialARI2) +
+p <- plotARIs(InitialARI) +
   ggtitle("ARI before any merging, no unclustered cells for RSEC")
-ggsave(paste0(output_p, "_Initial_ARI_no_unclus.pdf"), p)
+ggsave(paste0(output_p, "_Initial_ARI.pdf"), p)
+
+# All cells assigned
+InitialARI <- apply(clusMatT, 2, function(x) {
+  apply(clusMatT, 2, function(y) {
+    mclust::adjustedRandIndex(x, y)
+  })
+})
+
+p <- plotARIs(InitialARI) +
+  ggtitle("ARI before any merging, all cells assigned")
+ggsave(paste0(output_p, "_Initial_ARI_all_cells_Assigned.pdf"), p)
+
 
 # Do the consensus clustering ----
 print(paste0("Number of cores: ", opt$n))
-mergers <- mergeManyPairwise(clusteringMatrix = clusMat[,-3], nCores = opt$n)
-cat("Finished first consensus\n")
+mergers <- mergeManyPairwise(clusteringMatrix = clusMat, nCores = opt$n)
+cat("Finished Consensus Merge\n")
 saveRDS(object = mergers, file = paste0(output, "_mergers.rds"))
-mergersT <- mergeManyPairwise(clusteringMatrix = clusMat[,-2], nCores = opt$n)
-cat("Finished second consensus\n")
-saveRDS(object = mergersT, file = paste0(output, "_mergersT.rds"))
-# print(paste0("Consensus clustering finished\nSaving output at ", output,
-#              "_Consensus_Clustering.rds"))
-# saveRDS(mergers, file = paste0(output, "_Consensus_Clustering.rds"))
 
 # Final plots ----
 # How is the number of cells reduced
 pre <- apply(clusMat, 2, function(x) length(unique(x)))
 post <- apply(mergers$currentMat, 2, function(x) length(unique(x)))
-post <- c(post, "RsecT" = 0)
-postT <- apply(mergersT$currentMat, 2, function(x) length(unique(x)))
-postT <- c(postT, "Rsec" = 0)
 df <- data.frame(methods = names(pre),
                  before = pre,
-                 after = post,
-                 after_T = postT) %>%
+                 after = post) %>%
   gather(key = "time", value = "Nb", -methods) %>%
   mutate(time = factor(time, levels = c("before", "after")))
 p <- ggplot(df, aes(x = methods, y = Nb, fill = time)) +
@@ -146,15 +137,13 @@ ggsave(paste0(output_p, "_clusters_reduction.pdf"), p)
 
 # How is ARI improved
 ## Rsec with all cells
-### Merger with Rsec
 currentMat <- mergers$currentMat
-unclus <- currentMat[, "Rsec"]
 Rsec_merges <- mergers$merges
 Rsec_merges <- Rsec_merges[Rsec_merges[,1] == 2, ]
 Rsec_merges <- Rsec_merges[, -1]
-currentMat[, "Rsec"] <- lapply(1:length(unclus), function(i) {
+currentMat[, "Rsec"] <- lapply(1:nrow(currentMat), function(i) {
     cell <- clusMat[i ,"Rsec"]
-    cellT <- clusMat[i ,"RsecT"]
+    cellT <- clusMatT[i ,"RsecT"]
     if (cell == -1) {
       for (j in 1:nrow(Rsec_merges)) {
         if (cellT %in% Rsec_merges[j, ]) cellT <- min(Rsec_merges[j, ])
@@ -171,22 +160,10 @@ FinalARI <- apply(currentMat, 2, function(x) {
 })
 
 p <- plotARIs(FinalARI) +
-  ggtitle("ARI after merging")
-ggsave(paste0(output_p, "_Final_ARI.pdf"), p)
-
-### Merger with Rsec Total
-FinalARIT <- apply(mergersT$currentMat, 2, function(x) {
-  apply(mergersT$currentMat, 2, function(y) {
-    mclust::adjustedRandIndex(x, y)
-  })
-})
-
-p <- plotARIs(FinalARIT) +
-  ggtitle("ARI after merging")
-ggsave(paste0(output_p, "_Final_ARIT.pdf"), p)
+  ggtitle("ARI after merging, all cells assigned")
+ggsave(paste0(output_p, "_Final_ARI_all_cells_assigned.pdf"), p)
 
 ## No unclustered cells for Rsec
-### Merger with Rsec
 FinalARI <- apply(mergers$currentMat, 2, function(x) {
   apply(mergers$currentMat, 2, function(y) {
     inds <- x != -1 & y != -1
@@ -197,21 +174,5 @@ FinalARI <- apply(mergers$currentMat, 2, function(x) {
 })
 
 p <- plotARIs(FinalARI) +
-  ggtitle("ARI after merging, no unclustered cells for Rsec")
-ggsave(paste0(output_p, "_Final_ARI_no_unclus.pdf"), p)
-
-### Merger with RsecT
-df <- mergersT$currentMat
-df[clusMat[,"Rsec"] == -1, "RsecT"] <- -1
-FinalARIT <- apply(df, 2, function(x) {
-  apply(df, 2, function(y) {
-    inds <- x != -1 & y != -1
-    xa <- x[inds]
-    ya <- y[inds]
-    mclust::adjustedRandIndex(xa, ya)
-  })
-})
-
-p <- plotARIs(FinalARIT) +
-  ggtitle("ARI after merging, no unclustered cells for Rsec")
-ggsave(paste0(output_p, "_Final_ARIT_no_unclus.pdf"), p)
+  ggtitle("ARI after merging, no unclustered cells for RSEC")
+ggsave(paste0(output_p, "_Final_ARI.pdf"), p)

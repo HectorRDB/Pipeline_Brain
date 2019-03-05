@@ -100,6 +100,7 @@ mergeManyPairwise <- function(clusteringMatrix, nCores = 3) {
   }
   
   colnames(merges) <- c("clustering", "cluster1", "cluster2")
-  return(list("currentMat" = currentMat,
+  return(list("initalMat" = clusteringMatrix,
+              "currentMat" = currentMat,
               "merges" = merges))
 }
