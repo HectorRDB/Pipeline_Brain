@@ -156,7 +156,7 @@ currentMat[, "Rsec"] <- lapply(1:length(unclus), function(i) {
     cell <- clusMat[i ,"Rsec"]
     cellT <- clusMat[i ,"RsecT"]
     if (cell == -1) {
-      for (j in 1:nrow("RsecT")) {
+      for (j in 1:nrow(Rsec_merges)) {
         if (cellT %in% Rsec_merges[i, ]) cellT <- min(Rsec_merges[j, ])
       }
     }
