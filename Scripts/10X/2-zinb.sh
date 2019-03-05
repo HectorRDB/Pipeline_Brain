@@ -8,9 +8,9 @@
 #SBATCH -t 24:00:00
 #SBATCH --nodes=1
 
-loc="/pylon5/ib5phhp/hectorrb/rds/10x_cells_MOp_filt.rds"
-out_norm="/pylon5/ib5phhp/hectorrb/rds/10x_cells_MOp_norm.rds"
-out_rd="/pylon5/ib5phhp/hectorrb/rds/10x_cells_MOp_zinbWs"
+loc="/pylon5/ib5phhp/hectorrb/out/10x_cells_MOp_filt.rds"
+out_norm="/pylon5/ib5phhp/hectorrb/out/10x_cells_MOp_norm.rds"
+out_rd="/pylon5/ib5phhp/hectorrb/out/10x_cells_MOp_zinbWs"
 MEMORYFILE="2a_memoryLogger.txt"
 MEMORYSUMMARY="2a_memorySummary.txt"
 
