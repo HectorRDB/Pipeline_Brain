@@ -202,7 +202,7 @@ ggsave(paste0(output_p, "_Final_ARI_no_unclus.pdf"), p)
 
 ### Merger with RsecT
 df <- mergersT$currentMat
-df[clusMat[,"Rsec" == -1], "RsecT"] <- -1
+df[clusMat[,"Rsec"] == -1, "RsecT"] <- -1
 FinalARIT <- apply(df, 2, function(x) {
   apply(df, 2, function(y) {
     inds <- x != -1 & y != -1
