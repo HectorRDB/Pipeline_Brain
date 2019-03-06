@@ -19,7 +19,7 @@ option_list <- list(
               help = "Number of cores to use"
   ),
   make_option(c("-a", "--allen"),
-              action = "store", default = T, type = "boolean",
+              action = "store", default = T, type = "logical",
               help = "Wether to use allen or not"
   )
 )
