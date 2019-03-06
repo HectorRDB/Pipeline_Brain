@@ -68,16 +68,16 @@ Rsec <- primaryCluster(Rsec)
 # Load all seurat results and keep the two extrems
 seurat <- readRDS(paste0(loc, "_seurat.rds"))
 source("/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/Scripts/Smart-Seq/7-helper.R")
-ARIs <- apply(seurat, 2, function(x) {
-  apply(seurat, 2, function(y) {
-    mclust::adjustedRandIndex(x, y)
-  })
-})
+# ARIs <- apply(seurat, 2, function(x) {
+#  apply(seurat, 2, function(y) {
+#     mclust::adjustedRandIndex(x, y)
+#   })
+# })
 
-p <- plotARIs(ARIs, small = F) +
-  ggtitle("Seurat concordance: ARIs for every pair of pais of parameters
-          (resolution and k.param)")
-ggsave(paste0(output_p, "_seurat_ARI.pdf"), p)
+# p <- plotARIs(ARIs, small = F) +
+#   ggtitle("Seurat concordance: ARIs for every pair of pais of parameters
+#           (resolution and k.param)")
+# ggsave(paste0(output_p, "_seurat_ARI.pdf"), p)
 
 seurat_p <- "1.6,50"
 
@@ -92,11 +92,7 @@ if (opt$a) {
   } else {
   clusMat <- data.frame("sc3" = sc3, "Rsec" = Rsec, "seurat" = seurat)
   clusMatT <- data.frame("sc3" = sc3, "RsecT" = RsecT, "seurat" = seurat)
-    
 }
-print(dim(ClusMat))
-print(dim(ClusMatT))
-
 
 # Inital plots ----
 # No unclustered cells for RSEC
