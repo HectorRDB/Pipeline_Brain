@@ -1,5 +1,5 @@
 ---
-title: "Here goes the Title"
+title: "Smart-Seq MOp data analysis"
 author: "Hector Roux de Bézieux"
 date: '`r format(Sys.time(), "%d %B , %Y")`'
 output:
@@ -38,7 +38,9 @@ mergers_nuclei_no_allen <- readRDS(here("data", "Smart-Seq",
 
 We have the following workflow
 
-![workflow](Figures/SMART-Seq_workflow.png)
+```{r}
+ggdraw() + draw_image(here("Figures", "SMART-Seq_workflow.png"))
+```
 
 In the Seurat clustering, there are two parameters to choose from: the resolution and the k.param (use in a knn step). From the seurat help file, for the resolution parameter: use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities.
 
@@ -76,7 +78,7 @@ Final1 <- here("Figures", "Smart-Seq", "SMARTer_cells_MOp_Final_ARI.pdf")
 Final2 <- here("Figures", "Smart-Seq", "SMARTer_cells_MOp_Final_ARI_all_cells_Assigned.pdf")
 plot_grid(ggdraw() + draw_image(Init1, scale = 1),
           ggdraw() + draw_image(Init2, scale = 1),
-          ggdraw() + draw_image(Final2, scale = 1),
+          ggdraw() + draw_image(Final1, scale = 1),
           ggdraw() + draw_image(Final2, scale = 1),
           ncol = 2)
 rm(Init1, Init2, Final1, Final2)
@@ -167,12 +169,13 @@ clusters_cells <- read.csv(here("data", "Smart-Seq",
                            header = T)
 allen_clusters_cells <- full_join(allen_clusters_cells, clusters_cells)
 
-
-InitialARI <- apply(clusMatT, 2, function(x) {
-  apply(clusMatT, 2, function(y) {
-    mclust::adjustedRandIndex(x, y)
-  })
+apply(mergers_cells_no_allen$currentMat, 2, function(x) {
+    inds <- x != -1
+    xa <- x[inds]
+    y <- allen_clusters_cells$subclass_label[inds]
+    mclust::adjustedRandIndex(xa, y)
 })
+rm(clusters_cells, allen_clusters_cells)
 ```
 
 ## Smart-Seq MOp nuclei
@@ -213,7 +216,25 @@ plot_grid(ggdraw() + draw_image(Init1, scale = 1),
           ncol = 2)
 ```
 
+### Comparison with Allen subclass
 
+```{r}
+allen_clusters_nuclei <- read.csv(here("data", "Smart-Seq",
+                                       "SMARTer_nuclei_MOp_cluster.membership.csv"),
+                                 col.names = c("cells", "cluster_id"))
+clusters_nuclei <- read.csv(here("data", "Smart-Seq",
+                                 "SMARTer_nuclei_MOp_cluster.annotation.csv"),
+                            header = T)
+allen_clusters_nuclei <- full_join(allen_clusters_nuclei, clusters_nuclei)
+
+apply(mergers_nuclei_no_allen$currentMat, 2, function(x) {
+    inds <- x != -1
+    xa <- x[inds]
+    y <- allen_clusters_nuclei$subclass_label[inds]
+    mclust::adjustedRandIndex(xa, y)
+})
+rm(clusters_nuclei, allen_clusters_nuclei)
+```
 # Seurat ARI Param
 ## Smart-Seq MOp cells
 
