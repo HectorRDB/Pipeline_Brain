@@ -14,7 +14,7 @@ out_rd="/pylon5/ib5phhp/hectorrb/out/10x_cells_MOp_zinbWs"
 MEMORYFILE="2a_memoryLogger.txt"
 MEMORYSUMMARY="2a_memorySummary.txt"
 
-module load gcc/8.2.0
+module load cuda/8.0 pytorch/0.1.5 python3/intel_3.6.3
 
 while true; do free -h >> $MEMORYFILE; sleep 30; done & \
-Rscript --no-save --verbose  2-zinb.R -n 5 -l $loc -o $out_norm -r $out_rd> 2a.out 2>&1
+./2-scVI.py -n 5 -l $loc -o $out_norm -r $out_rd> 2a.out 2>&1

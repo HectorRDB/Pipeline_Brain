@@ -17,6 +17,10 @@ option_list <- list(
   make_option(c("-n", "--nCores"),
               action = "store", default = 1, type = "integer",
               help = "Number of cores to use"
+  ),
+  make_option(c("-a", "--allen"),
+              action = "store", default = T, type = "boolean",
+              help = "Wether to use allen or not"
   )
 )
 
@@ -80,11 +84,16 @@ seurat_p <- "1.6,50"
 seurat <- seurat[, seurat_p]
 
 # Get the final clustering labels
-clusMat <- data.frame("sc3" = sc3, "Rsec" = Rsec, "allen" = allen,
-                      "seurat" = seurat)
-
-clusMatT <- data.frame("sc3" = sc3, "RsecT" = RsecT, "allen" = allen,
-                      "seurat" = seurat)
+if (opt$a) {
+  clusMat <- data.frame("sc3" = sc3, "Rsec" = Rsec, "allen" = allen,
+                        "seurat" = seurat)
+  clusMatT <- data.frame("sc3" = sc3, "RsecT" = RsecT, "allen" = allen,
+                         "seurat" = seurat)
+  } else {
+  clusMat <- data.frame("sc3" = sc3, "Rsec" = Rsec, "seurat" = seurat)
+  clusMatT <- data.frame("sc3" = sc3, "RsecT" = RsecT, "seurat" = seurat)
+    
+}
 # Inital plots ----
 # No unclustered cells for RSEC
 InitialARI <- apply(clusMat, 2, function(x) {
