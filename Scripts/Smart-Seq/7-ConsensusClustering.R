@@ -94,6 +94,10 @@ if (opt$a) {
   clusMatT <- data.frame("sc3" = sc3, "RsecT" = RsecT, "seurat" = seurat)
     
 }
+print(dim(ClusMat))
+print(dim(ClusMatT))
+
+
 # Inital plots ----
 # No unclustered cells for RSEC
 InitialARI <- apply(clusMat, 2, function(x) {
