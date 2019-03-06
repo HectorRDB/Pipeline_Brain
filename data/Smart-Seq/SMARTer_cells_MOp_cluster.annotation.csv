@@ -1,0 +1,63 @@
+"cluster_label","subclass_label","class_label","cluster_color","size","gene.counts","cluster_id"
+"Lamp5 Egln3_1","Lamp5","GABAergic","#FF88AD",31,8170,1
+"Lamp5 Egln3_2","Lamp5","GABAergic","#FF88AD",56,8605,2
+"Lamp5 Pdlim5","Lamp5","GABAergic","#FF7290",82,8502,3
+"Lamp5 Slc35d3","Lamp5","GABAergic","#FFA388",194,9509,4
+"Lamp5 Lhx6","Lamp5","GABAergic","#C77963",14,8859,5
+"Vip Serpinf1","Vip","GABAergic","#A720FF",50,9046,6
+"Sncg","Sncg","GABAergic","#9900B3",77,9032,7
+"Sncg Slc17a8","Sncg","GABAergic","#9900B3",7,10891,8
+"Vip Igfbp6","Vip","GABAergic","#7779BF",102,7040,9
+"Vip Chat_1","Vip","GABAergic","#FF00FF",33,8343,10
+"Vip Chat_2","Vip","GABAergic","#FF00FF",113,7085,11
+"Vip Chat_3","Vip","GABAergic","#FF00FF",87,7021,12
+"Vip Lmo1","Vip","GABAergic","#FF00FF",26,7516,13
+"Vip Htr1f","Vip","GABAergic","#FF4DC1",53,7792,14
+"Vip C1ql1","Vip","GABAergic","#BD3D9A",67,8285,15
+"Vip Gpc3","Vip","GABAergic","#BD3D9A",43,7821,16
+"Vip Crispld2","Vip","GABAergic","#992E81",85,7711,17
+"Sst Chodl","Sst","GABAergic","#FFFF00",17,9501,18
+"Sst Myh8_1","Sst","GABAergic","#FF7F2C",136,8360,19
+"Sst Myh8_2","Sst","GABAergic","#FF7F2C",55,8802,20
+"Sst Etv1","Sst","GABAergic","#BF880D",79,9674,21
+"Sst C1ql3","Sst","GABAergic","#804600",58,9654,22
+"Sst Crhr2_1","Sst","GABAergic","#B0993C",37,9665,23
+"Sst Crhr2_2","Sst","GABAergic","#B0993C",47,9473,24
+"Pvalb Reln","Pvalb","GABAergic","#BC2D71",292,8697,25
+"Pvalb Th","Pvalb","GABAergic","#BC2D71",34,9435,26
+"Pvalb Calb1","Pvalb","GABAergic","#BC2D71",159,9128,27
+"Pvalb Gpr149","Pvalb","GABAergic","#BC2D71",45,9695,28
+"Pvalb Vipr2","Pvalb","GABAergic","#FF197F",13,9289,29
+"L2/3 IT Cdh13 Sla","L2/3 IT","Glutamatergic","#B8FFCA",124,11502,30
+"L2/3 IT S100a6","L2/3 IT","Glutamatergic","#81B389",231,11575,31
+"L2/3 IT Macc1","L2/3 IT","Glutamatergic","#ADB6A6",128,11965,32
+"L5 IT Rspo1","L5 IT","Glutamatergic","#3CBC78",624,10438,33
+"L5 IT Rspo2","L5 IT","Glutamatergic","#3CBC45",256,10696,34
+"L5 IT Tcap_1","L5 IT","Glutamatergic","#5DDB65",226,12115,35
+"L5 IT Tcap_2","L5 IT","Glutamatergic","#3CBC45",120,11457,36
+"L5 IT S100b_1","L5 IT","Glutamatergic","#00CF1F",251,12103,37
+"L5 IT S100b_2","L5 IT","Glutamatergic","#2F8C4D",83,12685,38
+"L5 IT Pld5","L5 IT","Glutamatergic","#40bc3c",12,11675,39
+"L6 IT Sulf_1","L6 IT","Glutamatergic","#40bc3c",68,12115,40
+"L6 IT Sulf_2","L6 IT","Glutamatergic","#3cbcac",56,11355,41
+"L6 IT Sulf_3","L6 IT","Glutamatergic","#3cbc92",271,11099,42
+"L6 IT Car3","L6 IT Car3","Glutamatergic","#5100FF",5,12271,43
+"L5 PT","L5 PT","Glutamatergic","#53A367",12,12621,44
+"L5 NP Slc17a8","L5/6 NP","Glutamatergic","#3c78bc",138,10217,45
+"L6 NP Trh","L5/6 NP","Glutamatergic","#47867A",72,10118,46
+"L6 CT Gpr139","L6 CT","Glutamatergic","#168577",21,11247,47
+"L6 CT Grp_1","L6 CT","Glutamatergic","#197a6e",781,10561,48
+"L6 CT Grp_2","L6 CT","Glutamatergic","#197a6e",24,10930,49
+"L6 CT Nxph2_1","L6 CT","Glutamatergic","#1aab99",68,10602,50
+"L6 CT Nxph2_2","L6 CT","Glutamatergic","#1aab99",10,9746,51
+"L6b Rprm","L6b","Glutamatergic","#3cbc99",144,10493,52
+"L6b Ror1_1","L6b","Glutamatergic","#09564c",115,10308,53
+"L6b Ror1_2","L6b","Glutamatergic","#1f7c70",130,10640,54
+"L6b Shisa6","L6b","Glutamatergic","#1f7c70",142,11090,55
+"L6b Kcnip1_1","L6b","Glutamatergic","#271f7c",32,10662,56
+"L6b Kcnip1_2","L6b","Glutamatergic","#335280",8,11219,57
+"Astro Aqp4","Astro","Non-Neuronal","#7c2d1f",10,4783,58
+"VLMC","VLMC","Non-Neuronal","#74996B",6,4834,59
+"Endo Slc38a5","Endo","Non-Neuronal","#810e3c",7,4861,60
+"SMC Aoc3","SMC","Non-Neuronal","#807059",21,3873,61
+"L5 IT Tcap_low","L5 IT","Noise","#3CBC78",12,9008,62
