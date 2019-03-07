@@ -27,13 +27,12 @@ out5="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp_seurat.rds
 echo "Step 5"
 
 # Zinbwave
-out_norm="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp_norm.rds"
-out_rd="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp_zinbWs.rds"
+out3="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp_norm.rds"
 MEMORYFILE="3b_memoryLogger.txt"
 MEMORYSUMMARY="3b_memorySummary.txt"
 
 # while true; do free -h >> $MEMORYFILE; sleep 15; done & \
-# Rscript --vanilla --verbose  3-zinb.R -n 10 -l $out2 -o $out_norm -r $out_rd > 3b.out 2>&1
+# Rscript --vanilla --verbose  3-zinb.R -n 10 -l $out2 -o $out3> 3b.out 2>&1
 echo "Step 3"
 
 # RSEC
@@ -41,7 +40,7 @@ MEMORYFILE="6b_memoryLogger.txt"
 out6="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp"
 
 # while true; do free -h >> $MEMORYFILE; sleep 15; done & \
-# Rscript --vanilla --verbose  6-RSEC.R -n 20 -l $out_rd -o $out6 -k 3 > 6b.out 2>&1
+# Rscript --vanilla --verbose  6-RSEC.R -n 20 -l $out -o $out6 -k 3 > 6b.out 2>&1
 echo "Step 6"
 
 # ConsensusClustering
