@@ -16,10 +16,10 @@ echo "Step 1 done"
 # zinbWave
 out_norm="/pylon5/ib5phhp/hectorrb/out/10x_nuclei_MOp_norm.rds"
 out_rd="/pylon5/ib5phhp/hectorrb/out/10x_nuclei_MOp_zinbWs"
-MEMORYFILE="2b_memoryLogger.txt"
+MEMORYFILE="2b_zinb_memoryLogger.txt"
 
 while true; do free -h >> $MEMORYFILE; sleep 15; done & \
-Rscript --no-save --verbose  2-zinb.R -n 20 -l $out1 -o $out_norm -r $out_rd > 2b.out 2>&1
+Rscript --no-save --verbose  2b-reducDim.R -n 5 -l $out1 -o $out_norm -r $out_rd > 2b.out 2>&1
 echo "Step 2 done"
 
 # sc3
