@@ -46,8 +46,8 @@ if (!is.na(opt$o)) {
   stop("Missing o argument\n")
 }
 
-library(stringr)
 library(clusterExperiment)
+library(stringr)
 library(dplyr)
 library(BiocParallel)
 library(Rtsne)
@@ -66,7 +66,7 @@ BiocParallel::register(MulticoreParam(NCORES))
 cat("Running with K = 0 on the full data\n")
 cat("Number of cores:", NCORES, "\n")
 cat("Time to run zinbwave (seconds):\n")
-print(system.time(zinb0 <- zinbsurf(sce, prop_fit = Prop)))
+print(system.time(zinb0 <- zinbsurf(sce, prop_fit = Prop, K = 0)))
 
 vars <- matrixStats::rowVars(logcounts(sce))
 ind <- vars > sort(vars,decreasing = TRUE)[1000]
