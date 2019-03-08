@@ -40,10 +40,10 @@ if (!is.na(opt$l)) {
 } else {
   stop("Missing l argument\n")
 }
-if (!is.na(opt$r)) {
-  output_r <- opt$r
+if (!is.na(opt$o)) {
+  output_r <- opt$o
 } else {
-  stop("Missing r argument\n")
+  stop("Missing o argument\n")
 }
 
 library(stringr)
