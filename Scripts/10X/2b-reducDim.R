@@ -63,10 +63,10 @@ Prop <- .01
 NCORES <- as.numeric(opt$n)
 BiocParallel::register(MulticoreParam(NCORES))
 
-cat("Running with K = 0 on the full data\n")
-cat("Number of cores:", NCORES, "\n")
-cat("Time to run zinbwave (seconds):\n")
-print(system.time(zinb0 <- zinbsurf(sce, prop_fit = Prop, K = 0)))
+# cat("Running with K = 0 on the full data\n")
+# cat("Number of cores:", NCORES, "\n")
+# cat("Time to run zinbwave (seconds):\n")
+# print(system.time(zinb0 <- zinbsurf(sce, prop_fit = Prop, K = 0)))
 
 vars <- matrixStats::rowVars(logcounts(sce))
 ind <- vars > sort(vars,decreasing = TRUE)[1000]
