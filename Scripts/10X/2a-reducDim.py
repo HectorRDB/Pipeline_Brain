@@ -10,23 +10,19 @@ from scvi.inference import UnsupervisedTrainer
 from scvi.dataset import LoomDataset, CsvDataset
 
 # Set the parameters
-loc="/pylon5/ib5phhp/hectorrb/10x_cells_MOp/"
-out="/pylon5/ib5phhp/hectorrb/output/
+loc = "/pylon5/ib5phhp/hectorrb/ProcessedData/"
+out = "/pylon5/ib5phhp/hectorrb/ProcessedData/
 show_plot = True
 n_epochs=400
 lr=1e-3
 use_batches=True
 
 # Load the data
-data = CsvDataset(loc + "umi.csv.gz",
+data = CsvDataset(filename = "10x_cells_MOp_filt.csv.gz",
                   save_path = loc,
-                  compression='gzip')
-meta = pd.read_csv(loc + "sample_metadata.csv")
-batches= meta["sequencing_tube_barcode"].as_matrix
-
-meta = pd.read_csv(loc + "cluster.membership.csv")
-allenClusters= meta["clusters"].as_matrix
-
+                  compression = 'gzip',
+                  batch_ids_file = "10x_cells_MOp_batches.csv",
+                  label_file = "10x_cells_MOp_labels.csv")
 
 # Train the model on the data
 vae = VAE(data.nb_genes, n_batch=batches)

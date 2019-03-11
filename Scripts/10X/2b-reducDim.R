@@ -45,6 +45,7 @@ if (!is.na(opt$o)) {
 } else {
   stop("Missing o argument\n")
 }
+if (!is.na(opt$p)) print("Saving plots at ", opt$o)
 
 library(clusterExperiment)
 library(stringr)
@@ -54,6 +55,7 @@ library(Rtsne)
 library(zinbwave)
 library(irlba)
 library(matrixStats)
+library(ggplot2)
 
 # Load data ----
 sce <- readRDS(file = loc)
@@ -99,6 +101,7 @@ for (i in 1:length(zinbWs)) {
       scale_color_manual(values = cols2, breaks = names(cols2)) +
       labs(x = "dim1", y = "dim2")
     ggsave(paste0(opt$p, "_K_", dims[i], ".pdf"), p)
-    print("....Saving plot")}
+    print("....Saving plot")
+  }
 }
 saveRDS(sce, file = output_r)
