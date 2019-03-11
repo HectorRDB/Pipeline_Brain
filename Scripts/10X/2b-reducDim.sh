@@ -11,8 +11,8 @@
 module load gcc/8.2.0 
 loc="/pylon5/ib5phhp/hectorrb/out/10x_cells_MOp_filt.rds"
 out="/pylon5/ib5phhp/hectorrb/out/10x_cells_MOp_norm.rds"
-diag="/home/hectorrb/Pipeline_Brain/Figures/Exploration/10x_cells_Mop_tsne"
+plot="/home/hectorrb/Pipeline_Brain/Figures/Exploration/10x_cells_Mop_tsne"
 MEMORYFILE="2_zinb_memoryLogger.txt"
 
 while true; do free -h >> $MEMORYFILE; sleep 30; done & Rscript --no-save --verbose\
-  2b-reducDim.R -l $loc -o $out -g diag -n 20 > 2a.out 2>&1
+  2b-reducDim.R -l $loc -o $out -p $plot -n 20 > 2a.out 2>&1

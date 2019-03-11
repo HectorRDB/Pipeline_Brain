@@ -26,7 +26,7 @@ option_list <- list(
               action = "store", default = 5,
               help = "How many values of K between i and f [default %default]"
   ),
-  make_option(c("-g", "--diagnosis"),
+  make_option(c("-p", "--plots"),
               action = "store", default = NA,
           help = "Location of the visual output. Default to [default %default], no output"
   )
@@ -72,7 +72,7 @@ vars <- matrixStats::rowVars(logcounts(sce))
 ind <- vars > sort(vars,decreasing = TRUE)[1000]
 whichGenes <- rownames(sce)[ind]
 zinbDims <- floor(seq(from = opt$i, to = opt$f, length.out = opt$d))
-cat("Using the following values for K :", zinbDims)
+cat("Using the following values for K :", zinbDims, "\n")
 sceVar <- sce[ind,]
 
 zinbWs <- lapply(zinbDims, function(zinbDim) {
@@ -88,7 +88,7 @@ for (i in 1:length(zinbWs)) {
   print(type)
   print("....Saving data")
   reducedDim(sce, type = type) <- zinbW <- reducedDim(zinbWs[[i]])
-  if (!is.na(opt$g)) {
+  if (!is.na(opt$p)) {
     TNSE <- Rtsne(zinbW, partial_pca = TRUE)
     print("....t-SNE")
     df <- data.frame(x = TNSE$Y[, 1], y = TNSE$Y[, 2],
@@ -98,7 +98,7 @@ for (i in 1:length(zinbWs)) {
       theme_classic() +
       scale_color_manual(values = cols2, breaks = names(cols2)) +
       labs(x = "dim1", y = "dim2")
-    ggsave(paste0(opt$g, "_K_", dims[i], ".pdf"), p)
+    ggsave(paste0(opt$p, "_K_", dims[i], ".pdf"), p)
     print("....Saving plot")}
 }
 saveRDS(sce, file = output_r)
