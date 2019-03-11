@@ -125,7 +125,7 @@ ggsave(paste0(output_p, "_Initial_ARI_all_cells_Assigned.pdf"), p)
 print(paste0("Number of cores: ", opt$n))
 mergers <- mergeManyPairwise(clusteringMatrix = clusMat, nCores = opt$n)
 cat("Finished Consensus Merge\n")
-mergers$initalMat <- cbind(mergers$initalMat, clusMat[,"RsecT"])
+mergers$initalMat <- cbind(mergers$initalMat, clusMatT[,"RsecT"])
 colnames(mergers$initalMat)[4 + opt$a] <- "RsecT"
 saveRDS(object = mergers, file = paste0(output, "_mergers.rds"))
 
