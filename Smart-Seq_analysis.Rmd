@@ -1,0 +1,183 @@
+---
+title: "Smart-Seq MOp data analysis"
+author: "Hector Roux de Bézieux"
+date: '`r format(Sys.time(), "%d %B , %Y")`'
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: true
+---
+
+```{r packages, include=F}
+library(knitr)
+opts_chunk$set(
+  fig.pos = "!h", out.extra = "", warning = F, message = F,
+  fig.width = 5, fig.align = "center", echo = F
+)
+libs <- c("here", "tidyverse", "cowplot", "clusterExperiment")
+suppressMessages(
+  suppressWarnings(sapply(libs, require, character.only = TRUE))
+)
+rm(libs)
+
+source(here("Smart-Seq_analysis.R"))
+
+mergers_cells <- readRDS(here("data", "Smart-Seq",
+                              "SMARTer_cells_MOp_mergers.rds"))
+mergers_nuclei <- readRDS(here("data", "Smart-Seq",
+                               "SMARTer_nuclei_MOp_mergers.rds"))
+
+mergers_cells_no_allen <- readRDS(here("data", "Smart-Seq",
+                                       "SMARTer_cells_MOp_no_allen_mergers.rds"))
+mergers_nuclei_no_allen <- readRDS(here("data", "Smart-Seq",
+                                        "SMARTer_nuclei_MOp_no_allen_mergers.rds"))
+```
+
+# General comments
+
+We have the following workflow
+
+```{r workflow}
+ggdraw() + draw_image(here("Figures", "SMART-Seq_workflow.png"))
+```
+
+In the Seurat clustering, there are two parameters to choose from: the resolution and the k.param (use in a knn step). From the seurat help file, for the resolution parameter: use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities.
+
+We picked a value of 1.6 as we want many clusters to start with. We also pick k = 50. Those values seem intermediate in term of ARI with other pairs of paramters (see section Seurat ARI param)
+
+We also consider two ways of computing the ARI between RSEC and other methods. Either, we force RSEC to assign all cells to a given cluster, or we only compute the ARI between RSEC and the other methods on those cells that RSEC do cluster. Note that in the second case, other pairs of methods are compared using all cells. We denote as RsecT the cluster assignement where all cells are assigned (i.e Rsec Total). 
+
+# ARI clustering with the Allen dataset
+## Smart-Seq MOp cells
+### Reduction in the number of clusters
+```{r cells-allen}
+plotPrePost(mergers_cells)
+```
+
+### Improvement in ARI
+
+```{r ARI_imp_allen_cell}
+plotARIReduce(mergers_cells)
+```
+
+## Smart-Seq MOp nuclei
+### Reduction in the number of clusters
+```{r nuclei-allen}
+plotPrePost(mergers_nuclei)
+```
+
+### Improvement in ARI
+
+```{r ARI_imp_allen_nuclei}
+plotARIReduce(mergers_nuclei)
+```
+
+# ARI clustering without the Allen dataset
+## Smart-Seq MOp cells
+### Reduction in the number of clusters
+```{r Imp no allen}
+plotPrePost(mergers_cells_no_allen)
+```
+
+### Improvement in ARI
+
+```{r ARI imp no allen cell}
+plotARIReduce(mergers_cells_no_allen)
+```
+
+### Comparison with Allen subclass
+
+```{r comp cell}
+allen_clusters_cells <- read.csv(here("data", "Smart-Seq",
+                                      "SMARTer_cells_MOp_cluster.membership.csv"),
+                                 col.names = c("cells", "cluster_id"))
+clusters_cells <- read.csv(here("data", "Smart-Seq",
+                                      "SMARTer_cells_MOp_cluster.annotation.csv"),
+                           header = T)
+allen_clusters_cells <- full_join(allen_clusters_cells, clusters_cells)
+
+apply(mergers_cells_no_allen$currentMat, 2, function(x) {
+    inds <- x != -1
+    xa <- x[inds]
+    y <- allen_clusters_cells$subclass_label[inds]
+    mclust::adjustedRandIndex(xa, y)
+})
+rm(clusters_cells, allen_clusters_cells)
+```
+
+### Last consensus step
+
+```{r}
+# Get the real labels of the cells according to Rsec
+currentMat <- mergers_cells_no_allen$currentMat
+Rsec_merges <- mergers_cells_no_allen$merges
+Rsec_merges <- Rsec_merges[Rsec_merges[,1] == 2, ]
+Rsec_merges <- Rsec_merges[, -1]
+currentMat[, "Rsec"] <- lapply(1:nrow(currentMat), function(i) {
+    cell <- mergers_cells_no_allen$initalMat[i ,"Rsec"]
+    cellT <- mergers_cells_no_allen$initalMat[i ,"RsecT"]
+    if (cell == -1) {
+      for (j in 1:nrow(Rsec_merges)) {
+        if (cellT %in% Rsec_merges[j, ]) cellT <- min(Rsec_merges[j, ])
+      }
+    }
+    return(cellT)
+  }) %>%
+  unlist()
+
+##
+clusters <- currentMat
+cellsConsensus <- makeConsensus(x = clusters, clusterLabel = "makeConsensus",
+                                proportion = 1, minSize = 20)
+clusters <- cbind(cellsConsensus$clustering, clusters)
+colnames(clusters)[1] <- "Consensus"
+plotClusters(object = clusters)
+
+```
+
+## Smart-Seq MOp nuclei
+### Reduction in the number of clusters
+```{r Imp no allen nuclei}
+plotPrePost(mergers_nuclei_no_allen)
+```
+
+### Improvement in ARI
+
+```{r}
+plotARIReduce(mergers_nuclei_no_allen)
+```
+
+### Comparison with Allen subclass
+
+```{r}
+allen_clusters_nuclei <- read.csv(here("data", "Smart-Seq",
+                                       "SMARTer_nuclei_MOp_cluster.membership.csv"),
+                                 col.names = c("cells", "cluster_id"))
+clusters_nuclei <- read.csv(here("data", "Smart-Seq",
+                                 "SMARTer_nuclei_MOp_cluster.annotation.csv"),
+                            header = T)
+allen_clusters_nuclei <- full_join(allen_clusters_nuclei, clusters_nuclei)
+
+apply(mergers_nuclei_no_allen$currentMat, 2, function(x) {
+    inds <- x != -1
+    xa <- x[inds]
+    y <- allen_clusters_nuclei$subclass_label[inds]
+    mclust::adjustedRandIndex(xa, y)
+})
+rm(clusters_nuclei, allen_clusters_nuclei)
+```
+# Seurat ARI Param
+## Smart-Seq MOp cells
+
+```{r}
+ggdraw() + draw_image(here("Figures", "Smart-Seq",
+                           "SMARTer_cells_MOp_seurat_ARI.pdf"))
+```
+
+## Smart-Seq MOp nuclei
+
+```{r}
+ggdraw() + draw_image(here("Figures", "Smart-Seq",
+                           "SMARTer_nuclei_MOp_seurat_ARI.pdf"))
+```

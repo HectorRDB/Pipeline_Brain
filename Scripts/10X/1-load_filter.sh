@@ -9,7 +9,7 @@
 #SBATCH --nodes=1
 
 loc="/pylon5/ib5phhp/hectorrb/10x_cells_MOp/"
-out="/pylon5/ib5phhp/hectorrb/out/10x_cells_MOp_filt.rds"
+out="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_cells_MOp_filt.rds"
 
 module load intel/18.4
 module load hdf5

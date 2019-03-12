@@ -8,11 +8,12 @@
 #SBATCH -t 2-00:00:00
 #SBATCH --nodes=1
 
-module load gcc/8.2.0 
-loc="/pylon5/ib5phhp/hectorrb/out/10x_cells_MOp_filt.rds"
-out="/pylon5/ib5phhp/hectorrb/out/10x_cells_MOp_norm.rds"
+module load gcc/8.2.0
+loc="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_cells_MOp_filt.rds"
+out="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_cells_MOp_norm.rds"
 plot="/home/hectorrb/Pipeline_Brain/Figures/Exploration/10x_cells_Mop_tsne"
+cluster="/pylon5/ib5phhp/hectorrb/10x_cells_MOp/cluster.annotation.csv"
 MEMORYFILE="2_zinb_memoryLogger.txt"
 
 while true; do free -h >> $MEMORYFILE; sleep 30; done & Rscript --no-save --verbose\
-  2b-reducDim.R -l $loc -o $out -p $plot -n 20 -d 1 > 2a.out 2>&1
+  2b-reducDim.R -l $loc -o $out -p $plot -n 10 -d 5 -c $cluster > 2a.out 2>&1

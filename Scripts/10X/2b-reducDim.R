@@ -29,6 +29,10 @@ option_list <- list(
   make_option(c("-p", "--plots"),
               action = "store", default = NA, type = "character",
           help = "Location of the visual output. Default to [default %default], no output"
+  ),
+  make_option(c("-c", "--cluster"),
+              action = "store", default = NA, type = "character",
+              help = "Location of the cluster file. Default to [default %default]"
   )
 )
 
@@ -67,25 +71,18 @@ library(ggplot2)
 sce <- readRDS(file = loc)
 
 # Run ZinbWave ----
-Prop <- .01
+Prop <- .1
 NCORES <- as.numeric(opt$n)
 BiocParallel::register(MulticoreParam(NCORES))
-
-# cat("Running with K = 0 on the full data\n")
-# cat("Number of cores:", NCORES, "\n")
-# cat("Time to run zinbwave (seconds):\n")
-# print(system.time(zinb0 <- zinbsurf(sce, prop_fit = Prop, K = 0)))
 
 vars <- matrixStats::rowVars(logcounts(sce))
 ind <- vars > sort(vars,decreasing = TRUE)[1000]
 whichGenes <- rownames(sce)[ind]
 sceVar <- sce[ind,]
 
-clusters <- read.csv(
-  "/pylon5/ib5phhp/hectorrb/10x_cells_MOp/cluster.annotation.csv",
-  header = T)
-cols2 <- clusters$cluster_color %>% as.character()
-names(cols2) <- clusters$cluster_id %>% as.character()
+clusters <- read.csv(opt$c, header = T)
+cols <- clusters$cluster_color %>% as.character()
+names(cols) <- clusters$cluster_id %>% as.character()
 
 zinbWs <- lapply(zinbDims, function(zinbDim) {
   cat("Running with K = ", zinbDim, " on the filtered data\n")
@@ -106,11 +103,12 @@ for (i in 1:length(zinbWs)) {
     df <- data.frame(x = TNSE$Y[, 1], y = TNSE$Y[, 2],
                      cols = as.factor(colData(sce)$allenClusters))
     p <- ggplot(df, aes(x = x, y = y, col = cols)) +
-      geom_point() +
+      geom_point(size = .1, alpha = .1) +
       theme_classic() +
-      scale_color_manual(values = cols2, breaks = names(cols2)) +
-      labs(x = "dim1", y = "dim2")
-    ggsave(paste0(opt$p, "_K_", zinbDims[i], ".pdf"), p)
+      scale_color_manual(values = cols, breaks = names(cols)) +
+      labs(x = "dim1", y = "dim2") +
+      guides(color = FALSE)
+    ggsave(paste0(opt$p, "_K_", zinbDims[i], ".png"), p)
     print("....Saving plot")
   }
 }
