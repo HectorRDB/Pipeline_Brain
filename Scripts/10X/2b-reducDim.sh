@@ -4,7 +4,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=20
 #SBATCH -p LM
-#SBATCH --mem=1500GB
+#SBATCH --mem=1000GB
 #SBATCH -t 2-00:00:00
 #SBATCH --nodes=1
 
@@ -15,4 +15,4 @@ plot="/home/hectorrb/Pipeline_Brain/Figures/Exploration/10x_cells_Mop_tsne"
 MEMORYFILE="2_zinb_memoryLogger.txt"
 
 while true; do free -h >> $MEMORYFILE; sleep 30; done & Rscript --no-save --verbose\
-  2b-reducDim.R -l $loc -o $out -p $plot -n 20 > 2a.out 2>&1
+  2b-reducDim.R -l $loc -o $out -p $plot -n 20 -d 1 > 2a.out 2>&1

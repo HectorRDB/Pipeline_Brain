@@ -27,7 +27,7 @@ option_list <- list(
               help = "How many values of K between i and f [default %default]"
   ),
   make_option(c("-p", "--plots"),
-              action = "store", default = NA,
+              action = "store", default = NA, type = "character",
           help = "Location of the visual output. Default to [default %default], no output"
   )
 )
@@ -45,7 +45,13 @@ if (!is.na(opt$o)) {
 } else {
   stop("Missing o argument\n")
 }
-if (!is.na(opt$p)) print("Saving plots at ", opt$o)
+if (!is.na(opt$plots)) {
+    print(paste0("Saving plots at ", opt$p))
+  } else {
+    print("No plots")
+}
+zinbDims <- floor(seq(from = opt$i, to = opt$f, length.out = opt$d))
+cat("Using the following values for K :", zinbDims, "\n")
 
 library(clusterExperiment)
 library(stringr)
@@ -53,7 +59,7 @@ library(dplyr)
 library(BiocParallel)
 library(Rtsne)
 library(zinbwave)
-library(irlba)
+# library(irlba)
 library(matrixStats)
 library(ggplot2)
 
@@ -73,9 +79,13 @@ BiocParallel::register(MulticoreParam(NCORES))
 vars <- matrixStats::rowVars(logcounts(sce))
 ind <- vars > sort(vars,decreasing = TRUE)[1000]
 whichGenes <- rownames(sce)[ind]
-zinbDims <- floor(seq(from = opt$i, to = opt$f, length.out = opt$d))
-cat("Using the following values for K :", zinbDims, "\n")
 sceVar <- sce[ind,]
+
+clusters <- read.csv(
+  "/pylon5/ib5phhp/hectorrb/10x_cells_MOp/cluster.annotation.csv",
+  header = T)
+cols2 <- clusters$cluster_color %>% as.character()
+names(cols2) <- clusters$cluster_id %>% as.character()
 
 zinbWs <- lapply(zinbDims, function(zinbDim) {
   cat("Running with K = ", zinbDim, " on the filtered data\n")
@@ -91,8 +101,8 @@ for (i in 1:length(zinbWs)) {
   print("....Saving data")
   reducedDim(sce, type = type) <- zinbW <- reducedDim(zinbWs[[i]])
   if (!is.na(opt$p)) {
-    TNSE <- Rtsne(zinbW, partial_pca = TRUE)
     print("....t-SNE")
+    TNSE <- Rtsne(zinbW, initial_dims = min(50, zinbDims[i]))
     df <- data.frame(x = TNSE$Y[, 1], y = TNSE$Y[, 2],
                      cols = as.factor(colData(sce)$allenClusters))
     p <- ggplot(df, aes(x = x, y = y, col = cols)) +
@@ -100,7 +110,7 @@ for (i in 1:length(zinbWs)) {
       theme_classic() +
       scale_color_manual(values = cols2, breaks = names(cols2)) +
       labs(x = "dim1", y = "dim2")
-    ggsave(paste0(opt$p, "_K_", dims[i], ".pdf"), p)
+    ggsave(paste0(opt$p, "_K_", zinbDims[i], ".pdf"), p)
     print("....Saving plot")
   }
 }
