@@ -1,6 +1,3 @@
-library(mclust)
-library(cowplot)
-
 plotARIs <- function(ARI, small = T) {
   p <- ARI %>% as.data.frame() %>%
     mutate(label = rownames(ARI)) %>%
@@ -41,7 +38,7 @@ plotARIReduce <- function(merger) {
   r1 <- which(colnames(merger$initalMat) == "RsecT")
   InitialARI <- apply(merger$initalMat[, -r1], 2, function(x) {
     apply(merger$initalMat[, -r1], 2, function(y) {
-      mclust::adjustedRandIndex(x, y)
+      adjustedRandIndex(x, y)
     })
   })
   
@@ -53,7 +50,7 @@ plotARIReduce <- function(merger) {
   r2 <- which(colnames(merger$initalMat) == "Rsec")
   InitialARI <- apply(merger$initalMat[,-r2], 2, function(x) {
     apply(merger$initalMat[,-r2], 2, function(y) {
-      mclust::adjustedRandIndex(x, y)
+      adjustedRandIndex(x, y)
     })
   })
   
@@ -67,7 +64,7 @@ plotARIReduce <- function(merger) {
       inds <- x != -1 & y != -1
       xa <- x[inds]
       ya <- y[inds]
-      mclust::adjustedRandIndex(xa, ya)
+      adjustedRandIndex(xa, ya)
     })
   })
   
@@ -77,24 +74,10 @@ plotARIReduce <- function(merger) {
   
   ## After, Rsec with all cells
   currentMat <- merger$currentMat
-  Rsec_merges <- merger$merges
-  Rsec_merges <- Rsec_merges[Rsec_merges[,1] == 2, ]
-  Rsec_merges <- Rsec_merges[, -1]
-  currentMat[, "Rsec"] <- lapply(1:nrow(currentMat), function(i) {
-    cell <- merger$initalMat[i, r1]
-    cellT <- merger$initalMat[i, r2]
-    if (cell == -1) {
-      for (j in 1:nrow(Rsec_merges)) {
-        if (cellT %in% Rsec_merges[j, ]) cellT <- min(Rsec_merges[j, ])
-      }
-    }
-    return(cellT)
-  }) %>%
-    unlist()
-  
+  currentMat[, "Rsec"] <- assignRsec(merger) 
   FinalARI <- apply(currentMat, 2, function(x) {
     apply(currentMat, 2, function(y) {
-      mclust::adjustedRandIndex(x, y)
+      adjustedRandIndex(x, y)
     })
   })
   
@@ -107,4 +90,30 @@ plotARIReduce <- function(merger) {
             ggdraw() + draw_plot(p3),
             ggdraw() + draw_plot(p4),
             ncol = 2, rel_heights = rep(.25, 4), rel_widths = rep(.25, 4))
+}
+
+assignRsec <- function(merger) {
+  r1 <- which(colnames(merger$initalMat) == "RsecT")
+  r2 <- which(colnames(merger$initalMat) == "Rsec")
+  
+  currentMat <- merger$currentMat
+  Rsec_merges <- merger$merges
+  Rsec_merges <- Rsec_merges[Rsec_merges[,1] == 2, ]
+  Rsec_merges <- Rsec_merges[, -1]
+  assign <- lapply(1:nrow(currentMat), function(i) {
+    cell <- merger$initalMat[i, r2]
+    cellT <- merger$initalMat[i, r1]
+    for (j in 1:nrow(Rsec_merges)) {
+      if (cellT %in% Rsec_merges[j, ]) cellT <- min(Rsec_merges[j, ])
+    }
+    return(cellT)
+  }) %>%
+    unlist()
+  return(assign)
+}
+
+type <- function(dataset) {
+  if (str_detect(dataset, "SMART")) return("Smart-Seq")
+  if (str_detect(dataset, "10x")) return("10X")
+  stop("Type unknown")
 }
