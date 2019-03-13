@@ -2,10 +2,6 @@ suppressWarnings(library(optparse))
 
 # Arguments for R Script ----
 option_list <- list(
-  make_option(c("-o", "--output"),
-              action = "store", default = NA, type = "character",
-              help = "Where to store the object after running"
-  ),
   make_option(c("-l", "--location"),
               action = "store", default = NA, type = "character",
               help = "The location of the data"
@@ -19,15 +15,10 @@ if (!is.na(opt$l)) {
 } else {
   stop("Missing l argument\n")
 }
-if (!is.na(opt$o)) {
-  output <- opt$o
-} else {
-  stop("Missing o argument\n")
-}
 
-read_table(loc) %>%
+usage <- read_table(loc) %>%
   filter(X1 == "Mem:") %>%
-  mutate(used = str_remove_all(used, "G") %>% as.numeric()) %>%
-  summarise(Max = max(used),
-            mean = mean(used)) %>%
-  write.table(output)
+  mutate(used = str_remove_all(used, "G") %>% as.numeric())
+usage %>% summarise(Max = max(used), mean = mean(used))
+
+plot(1:nrow(usage), usage$used, type = "l")

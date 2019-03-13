@@ -1,0 +1,41 @@
+---
+author: "Hector Roux de Bézieux"
+date: '`r format(Sys.time(), "%d %B , %Y")`'
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: true
+title: ARI issues
+---
+
+```{r packages, include=F}
+library(knitr)
+opts_chunk$set(
+  fig.pos = "!h", out.extra = "", warning = F, message = F,
+  fig.width = 5, fig.align = "center"
+)
+libs <- c("here", "tidyverse", "cowplot", "clusterExperiment", "mclust")
+suppressMessages(
+  suppressWarnings(sapply(libs, require, character.only = TRUE))
+)
+rm(libs)
+```
+
+As mentionned by Elizabeth at the Brainstat Meeting on 03/11, ARI might not be the best metric.
+
+One issue I see, especially when using it as a final metric, is that ARI is symmetric. Hence, we have the following situation.
+
+```{r}
+x <- rep(1:3, each = 10)
+y <- c(rep(1, 20), rep(3, 10))
+
+plotClusters(data.frame(x = x, y = y) %>% as.matrix())
+```
+
+The two cluster labels agree perfectly, but x gives a better resolution (i.e split a cluster in two).
+
+In that case, the ARI is  `r round(adjustedRandIndex(x, y), 2)`.
+
+
+This is what we have here.

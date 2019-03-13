@@ -90,38 +90,42 @@ apply(mergers_no_allen$currentMat, 2, function(x) {
     xa <- x[inds]
     y <- allen_clusters$subclass_label[inds]
     mclust::adjustedRandIndex(xa, y)
-}) %>% kable()
+}) %>% data.frame(method = names(.), ARI = round(., 2)) %>%
+  kable(row.names = F)
 ```
 
 ## Last consensus step
 
 ```{r}
-prop <- c(1/3, 2/3, 1)
-ARIs <- rep(0, 3)
-names(ARIs) <- round(prop, 2)
+props <- c(1/3, 2/3, 1)
+names(props) <- round(props, 2)
 clusters <- mergers_no_allen$currentMat
 clusters[, "Rsec"] <- assignRsec(mergers_no_allen)
 
-for (i in 1:3) {
+lapply(props, function(p){
   cellsConsensus <- suppressWarnings(
-    makeConsensus(x = clusters, clusterLabel = "makeConsensus", 
-                  proportion = prop[i], minSize = 20)
+    makeConsensus(x = clusters, clusterLabel = "makeConsensus",
+                  proportion = p, minSize = 20)
                   )
-  consensus <- cellsConsensus$clustering
-  inds <- consensus != -1
-  ARIs[i] <- adjustedRandIndex(consensus[inds],
-                               allen_clusters$subclass_label[inds])
-  consensus <- cbind(cellsConsensus$clustering, 
-                     allen_clusters$subclass_label, 
+  consensus <- cbind(cellsConsensus$clustering,
+                     allen_clusters$subclass_label,
                      clusters)
-  
+
   colnames(consensus)[c(1, 2)] <- c("Consensus", "Allen")
   plotClusters(object = consensus)
-  title(paste("Consensus Merging with proportion ", round(prop[i], 2)))
-}
+  title(paste("Consensus Merging with proportion ", round(p, 2)))
 
-ARIs %>% kable()
-rm(ARIs, prop, clusters, cellsConsensus, consensus, i, inds)
+  consensus <- cellsConsensus$clustering
+  inds <- consensus != -1
+  ARI <- adjustedRandIndex(consensus[inds],
+                           allen_clusters$subclass_label[inds])
+  return(ARI)
+}) %>% unlist() %>%
+  data.frame(prop = names(.), ARI = round(., 2)) %>%
+  select(prop, ARI) %>%
+  kable(row.names = F)
+
+rm(props, clusters)
 ```
 
 # Seurat ARI Param
