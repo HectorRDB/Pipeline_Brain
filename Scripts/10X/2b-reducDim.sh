@@ -4,8 +4,8 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=20
 #SBATCH -p LM
-#SBATCH --mem=1000GB
-#SBATCH -t 2-00:00:00
+#SBATCH --mem=1500GB
+#SBATCH -t 4-00:00:00
 #SBATCH --nodes=1
 
 module load gcc/8.2.0
@@ -16,4 +16,4 @@ cluster="/pylon5/ib5phhp/hectorrb/10x_cells_MOp/cluster.annotation.csv"
 MEMORYFILE="2_zinb_memoryLogger.txt"
 
 while true; do free -h >> $MEMORYFILE; sleep 30; done & Rscript --no-save --verbose\
-  2b-reducDim.R -l $loc -o $out -p $plot -n 10 -d 5 -c $cluster > 2a.out 2>&1
+  2b-reducDim.R -l $loc -o $out -p $plot -n 8 -d 5 -c $cluster > 2a.out 2>&1
