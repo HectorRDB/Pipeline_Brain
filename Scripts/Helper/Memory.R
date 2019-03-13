@@ -8,7 +8,8 @@ option_list <- list(
   )
 )
 opt <- parse_args(OptionParser(option_list = option_list))
-library(tidyverse)
+library(dplyr)
+library(tidyr)
 if (!is.na(opt$l)) {
   loc <- opt$l
   cat("The selected dataset is located at", loc, "\n")
