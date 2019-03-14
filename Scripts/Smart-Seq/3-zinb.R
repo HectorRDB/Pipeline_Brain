@@ -25,6 +25,14 @@ option_list <- list(
   make_option(c("-d", "--dims"),
               action = "store", default = 5,
               help = "How many values of K between i and f [default %default]"
+  ),
+  make_option(c("-p", "--plots"),
+              action = "store", default = NA, type = "character",
+              help = "Location of the visual output. Default to [default %default], no output"
+  ),
+  make_option(c("-c", "--cluster"),
+              action = "store", default = NA, type = "character",
+              help = "Location of the cluster file. Default to [default %default]"
   )
 )
 
@@ -76,8 +84,31 @@ zinbWs <- lapply(zinbDims, function(zinbDim) {
   return(zinb)
 })
 
+
+
+clusters <- read.csv(opt$c, header = T)
+cols <- clusters$cluster_color %>% as.character()
+names(cols) <- clusters$cluster_id %>% as.character()
+
 for (i in 1:length(zinbWs)) {
   type <- paste0("zinb-K", zinbDims[i])
-  reducedDim(sce, type = type) <- reducedDim(zinbWs[[i]])
+  print(type)
+  print("....Saving data")
+  reducedDim(sce, type = type) <- zinbW <- reducedDim(zinbWs[[i]])
+  if (!is.na(opt$p)) {
+    print("....t-SNE")
+    TNSE <- Rtsne(zinbW, initial_dims = min(50, zinbDims[i]))
+    df <- data.frame(x = TNSE$Y[, 1], y = TNSE$Y[, 2],
+                     cols = as.factor(colData(sce)$allenClusters))
+    p <- ggplot(df, aes(x = x, y = y, col = cols)) +
+      geom_point(size = .1, alpha = .1) +
+      theme_classic() +
+      scale_color_manual(values = cols, breaks = names(cols)) +
+      labs(x = "dim1", y = "dim2") +
+      guides(color = FALSE)
+    ggsave(paste0(opt$p, "_K_", zinbDims[i], ".png"), p)
+    print("....Saving plot")
+  }
 }
+
 saveRDS(sce, file = output_r)
