@@ -1,6 +1,7 @@
 running
-  '/usr/lib/R/bin/R --slave --no-restore --vanilla --file=3-zinb.R --args -n 4 -l /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_filt.rds -o /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_norm.rds -r /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_zinbWs.rds'
+  '/usr/lib/R/bin/R --slave --no-restore --vanilla --file=3-zinb.R --args -n 10 -l /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_filt.rds -o /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_norm.rds -p /accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/Figures/Smart-Seq/SMARTer_cells_MOp -c /scratch/users/singlecell/MiniAtlas/data/SMARTer_cells_MOp/cluster.annotation.csv'
 
+The selected dataset is located at /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_filt.rds 
 Loading required package: SingleCellExperiment
 Loading required package: SummarizedExperiment
 Loading required package: GenomicRanges
@@ -117,37 +118,6 @@ The following objects are masked from ‘package:clusterExperiment’:
 
     nFeatures, nSamples
 
-The selected dataset is located at /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_filt.rds 
-Running with K =  10  on the filtered data
-Number of cores: 4 
+Running with K = 0 on the full data
+Number of cores: 10 
 Time to run zinbwave (seconds):
-    user   system  elapsed 
-8406.942  482.966 3285.381 
-Saving output at  /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_zinbWs.rds 
-Running with K =  20  on the filtered data
-Number of cores: 4 
-Time to run zinbwave (seconds):
-     user    system   elapsed 
-13053.943   524.465  4090.568 
-Saving output at  /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_zinbWs.rds 
-Running with K =  30  on the filtered data
-Number of cores: 4 
-Time to run zinbwave (seconds):
-     user    system   elapsed 
-25358.678   961.214  7586.651 
-Saving output at  /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_zinbWs.rds 
-Running with K =  40  on the filtered data
-Number of cores: 4 
-Time to run zinbwave (seconds):
-     user    system   elapsed 
-44244.324  1399.434 12923.643 
-Saving output at  /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_zinbWs.rds 
-Running with K =  50  on the filtered data
-Number of cores: 4 
-Time to run zinbwave (seconds):
-    user   system  elapsed 
-46691.67  1523.02 13470.85 
-Saving output at  /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_zinbWs.rds 
-Warning message:
-In simpute.als(x, J, thresh, lambda, maxit, trace.it, warm.start,  :
-  Convergence not achieved by 100 iterations
