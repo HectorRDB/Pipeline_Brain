@@ -14,4 +14,4 @@ module load intel/18.4
 module load hdf5
 
 
-Rscript --vanilla --verbose  4-seurat.R -l $loc -o $out> 4a.out 2>&1
+Rscript --no-save --verbose  4-seurat.R -l $loc -o $out> 4a.out 2>&1

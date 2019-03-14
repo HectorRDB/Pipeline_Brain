@@ -11,4 +11,4 @@
 module load gcc/8.2.0
 loc="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_filt.rds"
 out="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_sc3.rds"
-Rscript --vanilla --verbose  3-sc3.R -n 8 -l $loc -o $out> 3a.out 2>&1
+Rscript --no-save --verbose  3-sc3.R -n 8 -l $loc -o $out> 3a.out 2>&1
