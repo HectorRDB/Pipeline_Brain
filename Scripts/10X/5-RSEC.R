@@ -6,6 +6,10 @@ option_list <- list(
               action = "store", default = NA, type = "character",
               help = "Where to store the output"
   ),
+  make_option(c("-p", "--plot"),
+              action = "store", default = NA, type = "character",
+              help = "Where to store the graphical output"
+  ),
   make_option(c("-l", "--location"),
               action = "store", default = NA, type = "character",
               help = "The location of the data"
@@ -57,7 +61,9 @@ print(system.time(
               subsampleArgs = list(resamp.num = 50, clusterFunction = "kmeans"),
               mergeLogFCcutoff = 1, consensusMinSize = 10)
 ))
-pdf(file = paste0(output, "_clusterMany.pdf"))
+
+pdf(file = opt$p)
 plotClusters(sce)
 dev.off()
-saveRDS(sce, file = paste0(output, "_RSEC.rds"))
+
+saveRDS(sce, file = output)
