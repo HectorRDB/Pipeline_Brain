@@ -50,12 +50,14 @@ if (!is.na(opt$o)) {
   stop("Missing o argument\n")
 }
 
+library(Rtsne)
 library(stringr)
 library(clusterExperiment)
 library(dplyr)
 library(BiocParallel)
 library(zinbwave)
 library(matrixStats)
+library(ggplot2)
 
 # Load data ----
 sce <- readRDS(file = loc)
