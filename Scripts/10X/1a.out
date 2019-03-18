@@ -1,7 +1,7 @@
 running
-  '/opt/packages/R/3.5.1-mkl/lib64/R/bin/R --slave --no-restore --no-save --file=1-load_filter.R --args -l /pylon5/ib5phhp/hectorrb/10x_cells_MOp/ -o /pylon5/ib5phhp/hectorrb/out/10x_cells_MOp_filt.rds -c 30'
+  '/opt/packages/R/3.5.1-mkl/lib64/R/bin/R --slave --no-restore --no-save --file=1-load_filter.R --args -l /pylon5/ib5phhp/hectorrb/10x_nuclei_MOp/ -o /pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_filt.rds -c 30'
 
-The selected dataset is located at /pylon5/ib5phhp/hectorrb/10x_cells_MOp/
+The selected dataset is located at /pylon5/ib5phhp/hectorrb/10x_nuclei_MOp/
 Attaching package: ‘dplyr’
 
 The following objects are masked from ‘package:stats’:
@@ -116,7 +116,9 @@ The following objects are masked from ‘package:base’:
     aperm, apply
 
 Loading the data 
-Preparing the data 
-0.73833430.2527323 
-7076 
-Saving output to  /pylon5/ib5phhp/hectorrb/out/10x_cells_MOp_filt.rds
+Error in file(file, "rt") : cannot open the connection
+Calls: read.csv -> read.table -> file
+In addition: Warning message:
+In file(file, "rt") :
+  cannot open file '/pylon5/ib5phhp/hectorrb/10x_nuclei_MOp/sample_metadata.csv': No such file or directory
+Execution halted

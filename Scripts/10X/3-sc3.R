@@ -41,8 +41,9 @@ library(SingleCellExperiment)
 sce <- readRDS(file = loc)
 
 rowData(sce)$feature_symbol <- rownames(sce)
-sce <- sc3_estimate_k(sce)
-K <- metadata(sce)$sc3$k_estimation
+# sce <- sc3_estimate_k(sce)
+# K <- metadata(sce)$sc3$k_estimation
+K <- 30
 sce <- sc3(sce, ks = K, svm_max = ncol(sce) + 1, biology = FALSE,
            n_cores = as.numeric(opt$n))
 
