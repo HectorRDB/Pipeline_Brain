@@ -34,6 +34,19 @@ mergers_no_allen <- readRDS(here("data", type,
                                  paste0(params$dataset, "_no_allen_mergers.rds")))
 ```
 
+# EDA
+
+We can first visualize the data after dimension reduction with zinbWave. We then use t-SNE and color the cells with the allen labels. Since we use various values for the k parameter, we plot two representations with the most extreme values of k.
+
+```{r}
+plot <- list.files(here("Figures", "EDA"))
+plot <- plot[str_detect(plot, params$dataset)]
+plot_grid(ggdraw() + draw_image(here("Figures", "EDA", plot[1])),
+          ggdraw() + draw_image(here("Figures", "EDA", plot[length(plot)])),
+          ncol = 2)
+```
+
+
 # General comments
 
 We have the following workflow

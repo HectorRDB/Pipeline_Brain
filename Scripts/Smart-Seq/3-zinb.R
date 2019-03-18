@@ -103,7 +103,7 @@ for (i in 1:length(zinbWs)) {
     df <- data.frame(x = TNSE$Y[, 1], y = TNSE$Y[, 2],
                      cols = as.factor(colData(sce)$allenClusters))
     p <- ggplot(df, aes(x = x, y = y, col = cols)) +
-      geom_point(size = .1, alpha = .1) +
+      geom_point(size = .1, alpha = .3) +
       theme_classic() +
       scale_color_manual(values = cols, breaks = names(cols)) +
       labs(x = "dim1", y = "dim2") +

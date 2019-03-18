@@ -11,7 +11,7 @@
 module load gcc/8.2.0
 loc="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_cells_MOp_filt.rds"
 out="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_cells_MOp_norm.rds"
-plot="/home/hectorrb/Pipeline_Brain/Figures/Exploration/10x_cells_Mop_tsne"
+plot="/home/hectorrb/Pipeline_Brain/Figures/EDA/10x_cells_Mop_tsne"
 cluster="/pylon5/ib5phhp/hectorrb/10x_cells_MOp/cluster.annotation.csv"
 MEMORYFILE="2_zinb_memoryLogger.txt"
 
