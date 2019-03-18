@@ -20,5 +20,6 @@ Sys.setenv(RSTUDIO_PANDOC = "/Applications/RStudio.app/Contents/MacOS/pandoc")
 
 rmarkdown::render('dataset_analysis.Rmd',
                   params = list(dataset = opt$d,
-                                title = paste0('Analysis of the ', opt$d, 'dataset')),
+                                title = paste0('Analysis of the ', opt$d,
+                                               ' dataset')),
                   output_file = paste0(opt$d, '_Analysis.html'))
