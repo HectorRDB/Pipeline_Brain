@@ -33,7 +33,7 @@ cluster="/scratch/users/singlecell/MiniAtlas/data/SMARTer_cells_MOp/cluster.anno
 MEMORYFILE="3a_memoryLogger.txt"
 
 while true; do free -h >> $MEMORYFILE; sleep 15; done & \
-Rscript --vanilla --verbose  3-zinb.R -n 10 -l $out2 -o $out3 -p $plot3 -c $cluster > 3a.out 2>&1
+Rscript --vanilla --verbose  3-zinb.R -n 6 -l $out2 -o $out3 -p $plot3 -c $cluster > 3a.out 2>&1
 echo "Step 3"
 
 # RSEC

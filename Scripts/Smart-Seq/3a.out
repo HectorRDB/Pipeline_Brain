@@ -1,5 +1,5 @@
 running
-  '/usr/lib/R/bin/R --slave --no-restore --vanilla --file=3-zinb.R --args -n 10 -l /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_filt.rds -o /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_norm.rds -p /accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/Figures/Smart-Seq/SMARTer_cells_MOp -c /scratch/users/singlecell/MiniAtlas/data/SMARTer_cells_MOp/cluster.annotation.csv'
+  '/usr/lib/R/bin/R --slave --no-restore --vanilla --file=3-zinb.R --args -n 6 -l /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_filt.rds -o /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_norm.rds -p /accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/Figures/Smart-Seq/SMARTer_cells_MOp -c /scratch/users/singlecell/MiniAtlas/data/SMARTer_cells_MOp/cluster.annotation.csv'
 
 The selected dataset is located at /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_filt.rds 
 Loading required package: SingleCellExperiment
@@ -119,5 +119,60 @@ The following objects are masked from ‘package:clusterExperiment’:
     nFeatures, nSamples
 
 Running with K = 0 on the full data
-Number of cores: 10 
+Number of cores: 6 
 Time to run zinbwave (seconds):
+     user    system   elapsed 
+16915.269  2908.381  7820.053 
+Using the following values for K : 10 20 30 40 50Running with K =  10  on the filtered data
+Number of cores: 6 
+Time to run zinbwave (seconds):
+    user   system  elapsed 
+6420.316 1037.519 1730.068 
+Running with K =  20  on the filtered data
+Number of cores: 6 
+Time to run zinbwave (seconds):
+     user    system   elapsed 
+10035.583  1304.899  2422.829 
+Running with K =  30  on the filtered data
+Number of cores: 6 
+Time to run zinbwave (seconds):
+     user    system   elapsed 
+18951.089  1976.586  4260.933 
+Running with K =  40  on the filtered data
+Number of cores: 6 
+Time to run zinbwave (seconds):
+     user    system   elapsed 
+31650.838  2813.643  6851.925 
+Running with K =  50  on the filtered data
+Number of cores: 6 
+Time to run zinbwave (seconds):
+     user    system   elapsed 
+52632.844  4446.937 11354.115 
+Warning message:
+In simpute.als(x, J, thresh, lambda, maxit, trace.it, warm.start,  :
+  Convergence not achieved by 100 iterations
+[1] "zinb-K10"
+[1] "....Saving data"
+[1] "....t-SNE"
+Saving 7 x 7 in image
+[1] "....Saving plot"
+[1] "zinb-K20"
+[1] "....Saving data"
+[1] "....t-SNE"
+Saving 7 x 7 in image
+[1] "....Saving plot"
+[1] "zinb-K30"
+[1] "....Saving data"
+[1] "....t-SNE"
+Saving 7 x 7 in image
+[1] "....Saving plot"
+[1] "zinb-K40"
+[1] "....Saving data"
+[1] "....t-SNE"
+Saving 7 x 7 in image
+[1] "....Saving plot"
+[1] "zinb-K50"
+[1] "....Saving data"
+[1] "....t-SNE"
+Saving 7 x 7 in image
+[1] "....Saving plot"
