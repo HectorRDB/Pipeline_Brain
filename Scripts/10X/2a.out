@@ -1,8 +1,8 @@
 running
-  '/opt/packages/R/3.5.1-mkl/lib64/R/bin/R --slave --no-restore --no-save --file=2b-reducDim.R --args -l /pylon5/ib5phhp/hectorrb/ProcessedData/10x_cells_MOp_filt.rds -o /pylon5/ib5phhp/hectorrb/ProcessedData/10x_cells_MOp_norm.rds -p /home/hectorrb/Pipeline_Brain/Figures/Exploration/10x_cells_Mop_tsne -n 8 -d 5 -c /pylon5/ib5phhp/hectorrb/10x_cells_MOp/cluster.annotation.csv'
+  '/opt/packages/R/3.5.1-mkl/lib64/R/bin/R --slave --no-restore --no-save --file=2-reducDim.R --args -l /pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_filt.rds -o /pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_norm.rds -p /home/hectorrb/Pipeline_Brain/Figures/EDA/10x_nuclei_Mop_tsne -n 20 -d 5 -c /pylon5/ib5phhp/hectorrb/10x_nuclei_MOp/cluster.annotation.csv'
 
-The selected dataset is located at /pylon5/ib5phhp/hectorrb/ProcessedData/10x_cells_MOp_filt.rds 
-[1] "Saving plots at /home/hectorrb/Pipeline_Brain/Figures/Exploration/10x_cells_Mop_tsne"
+The selected dataset is located at /pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_filt.rds 
+[1] "Saving plots at /home/hectorrb/Pipeline_Brain/Figures/EDA/10x_nuclei_Mop_tsne"
 Using the following values for K : 10 20 30 40 50 
 Loading required package: SingleCellExperiment
 Loading required package: SummarizedExperiment
@@ -121,30 +121,30 @@ The following objects are masked from ‘package:clusterExperiment’:
     nFeatures, nSamples
 
 Running with K =  10  on the filtered data
-Number of cores: 8 
+Number of cores: 20 
 Time to run zinbwave (seconds):
      user    system   elapsed 
-158412.94  27837.40  11417.01 
+89057.767 16255.943  5795.186 
 Running with K =  20  on the filtered data
-Number of cores: 8 
+Number of cores: 20 
 Time to run zinbwave (seconds):
      user    system   elapsed 
-397819.45  70861.26  24397.14 
+326644.79  57538.88  19999.07 
 Running with K =  30  on the filtered data
-Number of cores: 8 
+Number of cores: 20 
 Time to run zinbwave (seconds):
      user    system   elapsed 
-620302.77 107308.13  37234.49 
+729557.74 127722.02  43944.26 
 Running with K =  40  on the filtered data
-Number of cores: 8 
-Time to run zinbwave (seconds):
-     user    system   elapsed 
-970782.45 170136.79  57873.71 
-Running with K =  50  on the filtered data
-Number of cores: 8 
+Number of cores: 20 
 Time to run zinbwave (seconds):
       user     system    elapsed 
-1486993.09  262583.99   88426.25 
+1066052.96  186376.02   63738.28 
+Running with K =  50  on the filtered data
+Number of cores: 20 
+Time to run zinbwave (seconds):
+      user     system    elapsed 
+1317217.04  227431.50   78297.78 
 [1] "zinb-K10"
 [1] "....Saving data"
 [1] "....t-SNE"
