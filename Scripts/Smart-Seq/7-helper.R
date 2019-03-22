@@ -47,7 +47,7 @@ mergeManyPairwise <- function(clusteringMatrix, nCores = 3) {
   bestARI <- baseARI
   working <- TRUE
   merges <- NULL
-  ImpARIs <- NULL
+  ImpARI <- NULL
   
   # Try to see if any merge would increse 
   while (working) {
@@ -92,7 +92,7 @@ mergeManyPairwise <- function(clusteringMatrix, nCores = 3) {
       
       # tracking
       merges <- rbind(merges, c(whClus, pair))
-      ImpARIs <- c(ImpARI, mean(upper.tri(bestARI)))
+      ImpARI <- c(ImpARI, mean(upper.tri(bestARI)))
       print(c(whClus, pair))
     } else {
       working <- FALSE
@@ -106,5 +106,5 @@ mergeManyPairwise <- function(clusteringMatrix, nCores = 3) {
   return(list("initalMat" = clusteringMatrix,
               "currentMat" = currentMat,
               "merges" = merges,
-              "ImpARIs" = ImpARIs))
+              "ImpARI" = ImpARI))
 }
