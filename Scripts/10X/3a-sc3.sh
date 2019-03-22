@@ -2,9 +2,9 @@
 #SBATCH --mail-user=hector.rouxdebezieux@berkeley.edu
 #SBATCH --mail-type=ALL
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=1
+#SBATCH --cpus-per-task=10
 #SBATCH -p LM
-#SBATCH --mem=3000GB
+#SBATCH --mem=1500GB
 #SBATCH -t 4-00:00:00
 #SBATCH --nodes=1
 
