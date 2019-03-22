@@ -8,8 +8,8 @@
 #SBATCH -t 4-00:00:00
 #SBATCH --nodes=1
 
-loc="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_cells_MOp_filt.rds"
-out="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_cells_MOp_seurat.rds"
+loc="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_filt.rds"
+out="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_seurat.rds"
 module load intel/18.4
 module load hdf5
 

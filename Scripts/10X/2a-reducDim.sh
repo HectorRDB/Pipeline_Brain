@@ -13,7 +13,7 @@ loc="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_cells_MOp_filt.rds"
 out="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_cells_MOp_norm.rds"
 plot="/home/hectorrb/Pipeline_Brain/Figures/EDA/10x_cells_Mop_tsne"
 cluster="/pylon5/ib5phhp/hectorrb/10x_cells_MOp/cluster.annotation.csv"
-MEMORYFILE="2_zinb_memoryLogger.txt"
+MEMORYFILE="2a-memoryLogger.txt"
 
 while true; do free -h >> $MEMORYFILE; sleep 30; done & Rscript --no-save --verbose\
   2-reducDim.R -l $loc -o $out -p $plot -n 8 -d 5 -c $cluster > 2a.out 2>&1

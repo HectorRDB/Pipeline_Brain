@@ -117,3 +117,25 @@ type <- function(dataset) {
   if (str_detect(dataset, "10x")) return("10X")
   stop("Type unknown")
 }
+
+ARItrend <- function(merger) {
+  clusters <- merger$initalMat
+  i <- which(colnames(clusters) == "RsecT")
+  clusters <- clusters[, -i]
+  combo <- combn(seq_len(ncol(clusters)), 2) %>% as.data.frame()
+  aris <- sapply(combo, function(x) {
+    mclust::adjustedRandIndex(clusters[, x[1]], clusters[, x[2]])
+  })
+  merges <- merger$merges
+  for (i in seq_len(nrow(merges))) {
+    j <- merges[i, 1]
+    clus <- clusters[, j]
+    clus[clus %in% merges[i, 2:3]] <- min(merges[i, 2:3])
+    clusters[, j] <- clus
+    aris <- rbind(aris,
+                  sapply(combo, function(x) {
+      mclust::adjustedRandIndex(clusters[, x[1]], clusters[, x[2]])
+      })
+    )
+  }
+}
