@@ -138,4 +138,6 @@ ARItrend <- function(merger) {
       })
     )
   }
+  aris <- cbind(aris, rowMeans(aris))
+  return(aris)
 }
