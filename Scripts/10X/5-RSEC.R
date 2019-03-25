@@ -50,6 +50,8 @@ clusterFunction <- "pam"
 NCORES <- as.numeric(opt$n)
 reduceMeth <- reducedDimNames(sce)
 
+cat("Starting RSEC\n")
+
 print(system.time(
   sce <- RSEC(sce, k0s = seq(10, 50, by = 5), alphas = c(0.1, 0.3),
               reduceMethod = reduceMeth, sequential = sequential,
