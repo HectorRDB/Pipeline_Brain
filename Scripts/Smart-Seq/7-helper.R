@@ -92,7 +92,7 @@ mergeManyPairwise <- function(clusteringMatrix, nCores = 3) {
       
       # tracking
       merges <- rbind(merges, c(whClus, pair))
-      ImpARI <- c(ImpARI, mean(bestARI[upper.tri(bestARI)]))
+      ImpARI <- c(ImpARI, max(maxs))
       print(c(whClus, pair))
     } else {
       working <- FALSE
