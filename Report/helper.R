@@ -118,26 +118,104 @@ type <- function(dataset) {
   stop("Type unknown")
 }
 
-ARItrend <- function(merger) {
-  clusters <- merger$initalMat
-  i <- which(colnames(clusters) == "RsecT")
-  clusters <- clusters[, -i]
-  combo <- combn(seq_len(ncol(clusters)), 2) %>% as.data.frame()
-  aris <- sapply(combo, function(x) {
-    mclust::adjustedRandIndex(clusters[, x[1]], clusters[, x[2]])
+#' ARI improvement
+#' 
+#' Compute the ARI improvement over the ARI merging procedure
+#' @param merger the result from having run mergeManyPairwise on the dataset
+#' @return a vector with the mean ARI between methods at each step
+ARIImp <- function(merger) {
+  baseMat <- merger$initalMat
+  j <- which(colnames(baseMat) == "RsecT")
+  baseMat <- baseMat[, -j]
+  baseARI <- apply(baseMat, 2, function(x) {
+    apply(baseMat, 2, function(y) {
+      adjustedRandIndex(x, y)
+    })
   })
-  merges <- merger$merges
-  for (i in seq_len(nrow(merges))) {
-    j <- merges[i, 1]
-    clus <- clusters[, j]
-    clus[clus %in% merges[i, 2:3]] <- min(merges[i, 2:3])
-    clusters[, j] <- clus
-    aris <- rbind(aris,
-                  sapply(combo, function(x) {
-      mclust::adjustedRandIndex(clusters[, x[1]], clusters[, x[2]])
-      })
-    )
-  }
-  aris <- cbind(aris, rowMeans(aris))
-  return(aris)
+  baseARI <- baseARI[upper.tri(baseARI)] %>% mean()
+  ARI <- c(baseARI, merger$ImpARI)
+  ARI <- cumsum(ARI)
+  return(ARI)
+}
+
+#' ARI improvement plot
+#' 
+#' A plot to see how ARI improves over merging
+#' @param merger the result from having run mergeManyPairwise on the dataset
+#' @return a ggplot object
+ARItrend <- function(merger) {
+ baseMat <- merger$initalMat
+ j <- which(colnames(baseMat) == "RsecT")
+ baseMat <- baseMat[, -j]
+ # baseARI <- apply(baseMat, 2, function(x) {
+ #   apply(baseMat, 2, function(y) {
+ #     adjustedRandIndex(x, y)
+ #   })
+ # })
+ # baseARI <- baseARI[upper.tri(baseARI)] %>% mean()
+ # ARI <- c(baseARI, merger$ImpARI)
+ ARI <- ARIImp(merger)
+ n_clus <- lapply(1:nrow(merger$merges), function(m){
+              diff <- rep(0, 3)
+              diff[merger$merges[m, 1]] <- -1
+              matrix(diff, nrow = 1)
+             }) %>%
+   do.call('rbind', args = .)
+ n_clus <- rbind(sapply(baseMat, n_distinct) %>% matrix(data = ., nrow = 1),
+                 n_clus)
+ n_clus <- apply(n_clus, 2, cumsum)
+ colnames(n_clus) <- colnames(baseMat)
+ df <- data.frame(step = 0:length(merger$ImpARI),
+                  ARI_Imp = ARI,
+                  n_clus) %>%
+   gather(key = "change", value = "value", -step) %>%
+   mutate(type = ifelse(change == "ARI_Imp", "ARI Improvement", "Cluster size"))
+ p <- ggplot(df, aes(x = step, y = value)) +
+   geom_path(size = 2, aes(group = change, col = change)) +
+   facet_wrap(~type, scales = "free") +
+   theme_classic() +
+   scale_x_continuous(breaks = c(0, length(merger$ImpARI)),
+                      labels = c("Initial", "Final")) +
+   geom_hline(yintercept = min(ARI) + .9 * (max(ARI) - min(ARI)),
+              col = "grey", linetype = "dashed", size = 2) +
+   geom_vline(xintercept = min(which(ARI >= min(ARI) +
+                                       .9 * (max(ARI) - min(ARI)))),
+              col = "grey", linetype = "dashed", size = 2) +
+   labs(y = "Change over merging",
+        col = "type")
+  p
+}
+
+#' Find the clustering matrix that we would get if we stopped the ARI merging 
+#' early
+#' @param  merger the result from having run mergeManyPairwise on the dataset
+#' @param p A value between 0 and 1. We stop when the mean ARI has improved by p
+#' of the final total improvement
+#' @return A matrix with the same dimensions as the currentmMat of the merger
+#' argument
+intermediateMat <- function(merger, p = .9) {
+  # Compute ARI imp and find where to stop the merge
+  ARI <- ARIImp(merger)
+  int_merges <- merger$merges
+  j <- min(which(ARI >= min(ARI) + p * (max(ARI) - min(ARI))))
+  int_merges <- int_merges[1:j, ]
+  assign <- sapply(1:ncol(merger$currentMat), function(clus) {
+    if (sum(int_merges[, 1] == clus) == 0) {
+      return(merger$initalMat[,clus])
+    } else {
+      clus_merges <- int_merges[int_merges[, 1] == clus, ] %>%
+        as.matrix(matrix(ncol = 3))
+      lapply(1:nrow(merger$currentMat), function(i){
+        cell <- merger$initalMat[i, clus]
+        for (j in 1:nrow(clus_merges)) {
+          if (cell %in% clus_merges[j, ]) cell <- min(clus_merges[j, ])
+        }
+        return(cell)
+      }) %>% unlist() %>% return()
+    }
+  }) 
+  
+  j <- which(colnames(merger$initalMat) == "RsecT")
+  colnames(assign) <- colnames(merger$initalMat)[-j]
+  return(assign)
 }

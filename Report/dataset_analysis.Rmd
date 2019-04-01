@@ -8,7 +8,7 @@ output:
     toc_float: true
     
 params:
-  dataset: SMARTer_cells_MOp 
+  dataset: SMARTer_nuclei_MOp 
   title: "Analysis of the SMARTer_cells_MOp dataset"
 ---
 ---
@@ -21,7 +21,8 @@ opts_chunk$set(
   fig.pos = "!h", out.extra = "", warning = F, message = F,
   fig.width = 5, fig.align = "center", echo = F
 )
-libs <- c("here", "tidyverse", "cowplot", "clusterExperiment", "mclust")
+libs <- c("here", "tidyverse", "cowplot", "clusterExperiment", "mclust",
+          "RColorBrewer")
 suppressMessages(
   suppressWarnings(sapply(libs, require, character.only = TRUE))
 )
@@ -86,8 +87,13 @@ plotPrePost(mergers_no_allen)
 plotARIReduce(mergers_no_allen)
 ```
 
+
+```{r ARI trend, fig.width=9}
+ARItrend(merger = mergers_no_allen)
+```
 ## Comparison with Allen subclass
 
+### Final Merge
 ```{r comp cell}
 allen_clusters <- read.csv(here("data", type,
                                 paste0(params$dataset, "_cluster.membership.csv")),
