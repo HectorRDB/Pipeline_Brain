@@ -32,8 +32,8 @@ plot3="/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/Figur
 cluster="/scratch/users/singlecell/MiniAtlas/data/SMARTer_cells_MOp/cluster.annotation.csv"
 MEMORYFILE="3a_memoryLogger.txt"
 
-while true; do free -h >> $MEMORYFILE; sleep 15; done & \
-Rscript --vanilla --verbose  3-zinb.R -n 6 -l $out2 -o $out3 -p $plot3 -c $cluster > 3a.out 2>&1
+# while true; do free -h >> $MEMORYFILE; sleep 15; done & \
+# Rscript --vanilla --verbose  3-zinb.R -n 6 -l $out2 -o $out3 -p $plot3 -c $cluster > 3a.out 2>&1
 echo "Step 3"
 
 # RSEC
@@ -50,6 +50,6 @@ loc7="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp"
 out="/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/data/Smart-Seq/SMARTer_cells_MOp"
 plot="/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/Figures/Smart-Seq/SMARTer_cells_MOp"
 
-# while true; do free -h >> $MEMORYFILE; sleep 15; done & \
-# Rscript --vanilla --verbose  7-ConsensusClustering.R -n 20 -l $loc7 -o $out -p $plot> 7a.out 2>&1
+while true; do free -h >> $MEMORYFILE; sleep 15; done & \
+Rscript --vanilla --verbose  7-ConsensusClustering.R -n 20 -l $loc7 -o $out -p $plot> 7a.out 2>&1
 echo "Step 7"
