@@ -5,7 +5,9 @@ output:
   html_document:
     toc: true
     toc_depth: 2
-    toc_float: true
+    number_sections: true
+    code_download: TRUE
+    
     
 params:
   dataset: SMARTer_nuclei_MOp 
@@ -22,7 +24,7 @@ opts_chunk$set(
   fig.width = 5, fig.align = "center", echo = F
 )
 libs <- c("here", "tidyverse", "cowplot", "clusterExperiment", "mclust",
-          "RColorBrewer")
+          "RColorBrewer", "progress")
 suppressMessages(
   suppressWarnings(sapply(libs, require, character.only = TRUE))
 )
@@ -62,26 +64,17 @@ We picked a value of 1.6 as we want many clusters to start with. We also pick k 
 
 We also consider two ways of computing the ARI between RSEC and other methods. Either, we force RSEC to assign all cells to a given cluster, or we only compute the ARI between RSEC and the other methods on those cells that RSEC do cluster. Note that in the second case, other pairs of methods are compared using all cells. We denote as RsecT the cluster assignement where all cells are assigned (i.e Rsec Total). 
 
-# ARI clustering with the Allen dataset
-## Reduction in the number of clusters
-```{r allen}
-plotPrePost(mergers)
-```
+The ARI merging method works as follow. We iterate over all pairs of clusters for every clustering method. For each pair, we try to merge the two clusters and see how it improves the ARI with the other methods. We then merge the pair that improves the ARI the most. We stop when the ARI cannot be improved anymore.
 
-## Improvement in ARI
+In the general case, we perform the ARI merging without the allen labels and we then use it as a comparison. A quick overview of how the algorithm performs with the allen labels is seen at the end.
 
-```{r ARI_imp_allen}
-plotARIReduce(mergers)
-```
-
-# ARI clustering without the Allen dataset
-## Reduction in the number of clusters
+# Reduction in the number of clusters
 
 ```{r Imp no allen}
 plotPrePost(mergers_no_allen)
 ```
 
-## Improvement in ARI
+# Improvement in ARI
 
 ```{r ARI imp no allen cell}
 plotARIReduce(mergers_no_allen)
@@ -91,9 +84,11 @@ plotARIReduce(mergers_no_allen)
 ```{r ARI trend, fig.width=9}
 ARItrend(merger = mergers_no_allen)
 ```
-## Comparison with Allen subclass
 
-### Final Merge
+# Comparison with Allen subclass
+
+## After ARI merging
+
 ```{r comp cell}
 allen_clusters <- read.csv(here("data", type,
                                 paste0(params$dataset, "_cluster.membership.csv")),
@@ -113,40 +108,105 @@ apply(mergers_no_allen$currentMat, 2, function(x) {
   kable(row.names = F)
 ```
 
-## Last consensus step
+## After a last consensus step
 
 ```{r}
-props <- c(1/3, 2/3, 1)
-names(props) <- round(props, 2)
 clusters <- mergers_no_allen$currentMat
 clusters[, "Rsec"] <- assignRsec(mergers_no_allen)
 
-lapply(props, function(p){
-  cellsConsensus <- suppressWarnings(
-    makeConsensus(x = clusters, clusterLabel = "makeConsensus",
-                  proportion = p, minSize = 20)
-                  )
-  consensus <- cbind(cellsConsensus$clustering,
-                     allen_clusters$subclass_label,
-                     clusters)
+cellsConsensus <- suppressWarnings(
+  makeConsensus(x = clusters, clusterLabel = "makeConsensus",
+                  proportion = 2/3, minSize = 20)
+  )
+consensus <- cbind(cellsConsensus$clustering,
+                   allen_clusters$subclass_label,
+                   clusters)
 
-  colnames(consensus)[c(1, 2)] <- c("Consensus", "Allen")
-  plotClusters(object = consensus)
-  title(paste("Consensus Merging with proportion ", round(p, 2)))
+colnames(consensus)[c(1, 2)] <- c("Consensus", "Allen\nsubclass")
+plotClusters(object = consensus)
+title("Consensus Merging with proportion and comparison with the allen subclass.")
 
-  consensus <- cellsConsensus$clustering
-  inds <- consensus != -1
-  ARI <- adjustedRandIndex(consensus[inds],
-                           allen_clusters$subclass_label[inds])
-  return(ARI)
-}) %>% unlist() %>%
-  data.frame(prop = names(.), ARI = round(., 2)) %>%
-  select(prop, ARI) %>%
-  kable(row.names = F)
-
-rm(props, clusters)
+rm(clusters, cellsConsensus, consensus)
 ```
 
+## Stopping during the merging
+
+```{r}
+allen_ARI <- function(clus, allen) {
+  inds <- clus == -1
+  adjustedRandIndex(clus[!inds], allen[!inds])
+}
+allenClustersARIchange <- FTracking(merger = mergers_no_allen,
+                            f = allen_ARI,
+                            allen = mergers$initalMat[,"allen"])
+allenClustersARIchange <- rowMeans(allenClustersARIchange)
+allenSubclassARIChange <- FTracking(merger = mergers_no_allen,
+                                    f = allen_ARI,
+                                    allen = allen_clusters$subclass_label)
+allenSubclassARIChange <- rowMeans(allenSubclassARIChange)
+df <- data.frame(step = seq_along(allenClustersARIchange),
+                 ARI_cluster = allenClustersARIchange,
+                 ARI_subclass = allenSubclassARIChange) %>%
+  gather(key = "type", value = "meanARI", -step)
+ggplot(df, aes(x = step, y = meanARI, col = type)) +
+  geom_line() +
+  theme_classic() +
+  scale_y_continuous(limits = c(0, 1)) +
+  labs(title = "Mean ARI between the three methods and the allen labels\nas we process on the ARI clustering") +
+  theme(title = element_text(hjust = .5))
+```
+
+```{r}
+rm(allenClustersARIchange, allenSubclassARIChange,
+   plot, df, allen_ARI)
+
+midMat <- intermediateMat(merger = mergers_no_allen,
+                          p = .9)
+midMat[, "Rsec"] <- assignRsec(mergers_no_allen, p = .9)
+
+cellsConsensus <- suppressWarnings(
+  makeConsensus(x = midMat, clusterLabel = "makeConsensus",
+                proportion = 2/3, minSize = 20)
+  )
+consensus <- cbind(cellsConsensus$clustering,
+                   allen_clusters$subclass_label,
+                   midMat)
+
+colnames(consensus)[c(1, 2)] <- c("Consensus", "Allen\nsubclass")
+plotClusters(object = consensus)
+title("Consensus Merging when stopping early")
+
+rm(cellsConsensus, consensus, midMat)
+```
+
+```{r, eval = FALSE}
+ImpARI <- ARItrendAllen(merger = mergers_no_allen,
+                        allen1 = allen_clusters$cluster_label,
+                        allen2 = allen_clusters$subclass_label,
+                        verbose = TRUE)
+
+ggplot(data.frame(step = 0:nrow(mergers_no_allen$merges),
+                  subclassAllen = ImpARI[, 2],
+                  clusterAllen = ImpARI[, 1]) %>%
+         gather(key = "type", value = "ImpARI", -step),
+       aes(x = step, y = ImpARI)) +
+  geom_line(aes(col = type)) +
+  scale_y_continuous(limits = c(0, 1))
+```
+
+We can see that the ARI may not be the best metric for that comparison.
+
+# ARI clustering with the Allen dataset 
+## Reduction in the number of clusters
+```{r allen}
+plotPrePost(mergers)
+```
+
+## Improvement in ARI
+
+```{r ARI_imp_allen}
+plotARIReduce(mergers)
+```
 
 # Seurat ARI Param
 

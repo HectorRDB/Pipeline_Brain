@@ -1,3 +1,12 @@
+#' Plot an heatmap of the ARI matrix
+#' 
+#' We can compute the ARI between pairs of cluster labels. This function plots
+#' a matrix where a cell is the adjusted Rand Index between cluster label of
+#' row i and cluster label of column j. 
+#' @param ARI the matrix of pairwise ARI
+#' @param small whether to also plot the values
+#' @return a ggplot object
+
 plotARIs <- function(ARI, small = T) {
   p <- ARI %>% as.data.frame() %>%
     mutate(label = rownames(ARI)) %>%
@@ -15,6 +24,9 @@ plotARIs <- function(ARI, small = T) {
   return(p)
 }
 
+#' Plot the reduction in cluster size for an ARI merging
+#' @param merger The output from an ARI merging
+#' @return a ggplot object
 plotPrePost <- function(merger) {
   r1 <- which(colnames(merger$initalMat) == "RsecT")
   pre <- apply(merger$initalMat[,-r1], 2, function(x) length(unique(x)))
@@ -33,6 +45,18 @@ plotPrePost <- function(merger) {
   return(p)
 }
 
+#' plot the ARI improvement between methods
+#' 
+#' The output from this function is a grid of 4 plots, based on the
+#' \code{\link{plotARIs}} function. The first row of 2 plots is before the 
+#' merging procedure, the second is after the merging procedure. The first 
+#' column is when RSEC uses all assigned cells, the second column is when only
+#' using the cells that RSEC cluster for computing the ARI between RSEC and 
+#' another partition of the data.
+#' @param merger the result from having run \code{\link{mergeManyPairwise}} 
+#' on the dataset
+#' @return the output from \code{\link{plot_grid}}
+#' @import cowplot
 plotARIReduce <- function(merger) {
   # Before, No unclustered cells for RSEC
   r1 <- which(colnames(merger$initalMat) == "RsecT")
@@ -92,12 +116,24 @@ plotARIReduce <- function(merger) {
             ncol = 2, rel_heights = rep(.25, 4), rel_widths = rep(.25, 4))
 }
 
-assignRsec <- function(merger) {
+#' Assign cells using the assignUnassigned function of RSEC
+#' 
+#' By default, RSEC does not assign all cells, leaving those as "-1". 
+#' However, to give a fair comparison with other labels, it is necessary to 
+#' assign cells so it is necessary to track that along the merging
+#' @param merger the result from having run \code{\link{mergeManyPairwise}} 
+#' on the dataset
+#' @param p when to stop the merging, when mean ARI has improved to p (between 0
+#' and 1) of the final value.
+assignRsec <- function(merger, p = 1) {
+  ARI <- ARIImp(merger)
+  K <- min(which(ARI >= min(ARI) + p * (max(ARI) - min(ARI))))
+  
   r1 <- which(colnames(merger$initalMat) == "RsecT")
   r2 <- which(colnames(merger$initalMat) == "Rsec")
   
   currentMat <- merger$currentMat
-  Rsec_merges <- merger$merges
+  Rsec_merges <- merger$merges[1:(K - 1), ]
   Rsec_merges <- Rsec_merges[Rsec_merges[,1] == 2, ]
   Rsec_merges <- Rsec_merges[, -1]
   assign <- lapply(1:nrow(currentMat), function(i) {
@@ -121,7 +157,8 @@ type <- function(dataset) {
 #' ARI improvement
 #' 
 #' Compute the ARI improvement over the ARI merging procedure
-#' @param merger the result from having run mergeManyPairwise on the dataset
+#' @param merger the result from having run \code{\link{mergeManyPairwise}}
+#'  on the dataset
 #' @return a vector with the mean ARI between methods at each step
 ARIImp <- function(merger) {
   baseMat <- merger$initalMat
@@ -141,19 +178,13 @@ ARIImp <- function(merger) {
 #' ARI improvement plot
 #' 
 #' A plot to see how ARI improves over merging
-#' @param merger the result from having run mergeManyPairwise on the dataset
+#' @param merger the result from having run \code{\link{mergeManyPairwise}}
+#'  on the dataset
 #' @return a ggplot object
 ARItrend <- function(merger) {
  baseMat <- merger$initalMat
  j <- which(colnames(baseMat) == "RsecT")
  baseMat <- baseMat[, -j]
- # baseARI <- apply(baseMat, 2, function(x) {
- #   apply(baseMat, 2, function(y) {
- #     adjustedRandIndex(x, y)
- #   })
- # })
- # baseARI <- baseARI[upper.tri(baseARI)] %>% mean()
- # ARI <- c(baseARI, merger$ImpARI)
  ARI <- ARIImp(merger)
  n_clus <- lapply(1:nrow(merger$merges), function(m){
               diff <- rep(0, 3)
@@ -169,7 +200,7 @@ ARItrend <- function(merger) {
                   ARI_Imp = ARI,
                   n_clus) %>%
    gather(key = "change", value = "value", -step) %>%
-   mutate(type = ifelse(change == "ARI_Imp", "ARI Improvement", "Cluster size"))
+   mutate(type = ifelse(change == "ARI_Imp", "ARI Improvement", "Nb of clusters"))
  p <- ggplot(df, aes(x = step, y = value)) +
    geom_path(size = 2, aes(group = change, col = change)) +
    facet_wrap(~type, scales = "free") +
@@ -188,7 +219,8 @@ ARItrend <- function(merger) {
 
 #' Find the clustering matrix that we would get if we stopped the ARI merging 
 #' early
-#' @param  merger the result from having run mergeManyPairwise on the dataset
+#' @param merger the result from having run \code{\link{mergeManyPairwise}} 
+#' on the dataset
 #' @param p A value between 0 and 1. We stop when the mean ARI has improved by p
 #' of the final total improvement
 #' @return A matrix with the same dimensions as the currentmMat of the merger
@@ -218,4 +250,94 @@ intermediateMat <- function(merger, p = .9) {
   j <- which(colnames(merger$initalMat) == "RsecT")
   colnames(assign) <- colnames(merger$initalMat)[-j]
   return(assign)
+}
+
+#' Track the evolution of a function along merging 
+#' 
+#' For a given ARI merging, compute the evolution on the function f with
+#' another partition
+#' @param merger the result from having run \code{\link{mergeManyPairwise}} 
+#' on the dataset
+#' @param f the function used, can be computed on any partition of the space 
+#' @param ... additional arguments passed to f
+#' @return a matrix with a column per initial clustering, and a row per merge
+#' with the f value computed
+FTracking <- function(merger, f, ...){
+  # Go over the merge and compute the homogeneity as we go
+  baseMat <- merger$initalMat
+  j <- which(colnames(baseMat) == "Rsec")
+  baseMat <- baseMat[, -j]
+  currentMat <- baseMat
+  
+  Evolution <- apply(baseMat, 2, f, ...) %>%  matrix(ncol = ncol(baseMat))
+  
+  for (m in seq_len(nrow(merger$merges))) {
+    wClus <- merger$merges[m, 1]
+    clus <- currentMat[, wClus]
+    pair <- merger$merges[m, 2:3]
+    clus[clus %in% pair] <- min(pair)
+    currentMat[, wClus] <- clus
+    Evolution <- rbind(Evolution, Evolution[nrow(Evolution), ])
+    Evolution[nrow(Evolution), wClus] <- f(clus, ...)
+  }
+  return(Evolution)
+}
+
+
+#' Track the evolution of the ARI between allen cluster and the consensus
+#' 
+#' For a given ARI merging, compute the evolution of the ARI between the allen
+#' cluster and the consensus merger.
+#' @param merger the result from having run \code{\link{mergeManyPairwise}} 
+#' on the dataset
+#' @param allen1 the first set of allen clustering
+#' @param allen2 the second set of allen clustering
+#' @param verbose Whether to print a progress bar
+#' @param ... Other arguments passed to \code{\link{MakeConsensus}}
+#' @import progress
+#' @return a vector with the ARI
+ARItrendAllen <- function(merger, allen1, allen2, verbose = TRUE, ...){
+  # Go over the merge and compute the homogeneity as we go
+  baseMat <- merger$initalMat
+  j <- which(colnames(baseMat) == "RsecT")
+  baseMat <- baseMat[, -j]
+  if (verbose) {
+    pb <- progress_estimated(n = nrow(merger$merges) + 1)
+  }
+  baseConsensus <- Consensus(baseMat, ...)
+  if (verbose) pb$tick()
+  inds <- baseConsensus == -1
+  currentMat <- baseMat
+  
+  ARI <- matrix(c(adjustedRandIndex(allen1[!inds], baseConsensus[!inds]),
+                  adjustedRandIndex(allen2[!inds], baseConsensus[!inds])), 
+                ncol = 2)
+  for (m in seq_len(nrow(merger$merges))) {
+    wClus <- merger$merges[m, 1]
+    clus <- currentMat[, wClus]
+    pair <- merger$merges[m, 2:3]
+    clus[clus %in% pair] <- min(pair)
+    currentMat[, wClus] <- clus
+    currentConsensus <- Consensus(currentMat, ...)
+    if (verbose) pb$tick()$print()
+    inds <- currentConsensus == -1
+    ARI <- rbind(ARI, matrix(
+                  c(adjustedRandIndex(allen1[!inds], currentConsensus[!inds]),
+                    adjustedRandIndex(allen2[!inds], currentConsensus[!inds])),
+                  ncol = 2)
+                 )
+  }
+  return(ARI)
+}
+
+#' Find the consensus clustering between three methods and return the consensus
+#' @param clusMat The clustering matrix with a row per cell and a column per 
+#' clustering label type
+#' @param ... Other arguments passed to \code{\link{MakeConsensus}}
+Consensus <- function(clusMat, ...) {
+  cellsConsensus <- suppressWarnings(
+    makeConsensus(x = as.matrix(clusMat), clusterLabel = "makeConsensus",
+                  proportion = 2/3, minSize = 20, ...)
+  )
+  return(cellsConsensus$clustering)
 }
