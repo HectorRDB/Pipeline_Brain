@@ -39,6 +39,8 @@ library(SingleCellExperiment)
 
 # Add a normalization step ? 
 sce <- readRDS(file = loc)
+print("Dataset of size")
+print(dim(sce))
 
 rowData(sce)$feature_symbol <- rownames(sce)
 # sce <- sc3_estimate_k(sce)
