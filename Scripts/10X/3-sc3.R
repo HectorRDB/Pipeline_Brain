@@ -49,8 +49,8 @@ K <- c(20, 30, 40)
 cat("Running the sc3 on a reduced set of ", round(.1 * ncol(sce)), "cells\n")
 sce <- sc3(sce, ks = K, svm_max = ncol(sce) + 1, biology = FALSE,
            n_cores = as.numeric(opt$n), svm_num_cells = round(.1 * ncol(sce)))
-cat("Fitting the other cells")
+cat("Fitting the other cells", "\n")
 sce <- sc3_run_svm(sce, ks = K)
 
-print(cat("Saving output at ", output))
+print(paste0("Saving output at ", output))
 saveRDS(sce, file = output)
