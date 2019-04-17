@@ -68,9 +68,6 @@ The following objects are masked from ‘package:base’:
 
     aperm, apply
 
-Warning messages:
-1: replacing previous import ‘RNeXML::slot<-’ by ‘methods::slot<-’ when loading ‘phylobase’ 
-2: replacing previous import ‘RNeXML::slot’ by ‘methods::slot’ when loading ‘phylobase’ 
 
 Attaching package: ‘zinbwave’
 
@@ -81,19 +78,19 @@ The following objects are masked from ‘package:clusterExperiment’:
 Starting RSEC
 
  *** caught segfault ***
-address 0x7f7b8aa19000, cause 'memory not mapped'
+address 0x7fa0e14da000, cause 'memory not mapped'
 
  *** caught segfault ***
-address 0x7f7b877b3000, cause 'memory not mapped'
+address 0x7fa0def0e000, cause 'memory not mapped'
 
  *** caught segfault ***
-address 0x7f7b890e5000, cause 'memory not mapped'
+address 0x7fa0e2174000, cause 'memory not mapped'
 
  *** caught segfault ***
-address 0x7f7b8844d000, cause 'memory not mapped'
+address 0x7fa0dfba8000, cause 'memory not mapped'
 
  *** caught segfault ***
-address 0x7f7b89d7f000, cause 'memory not mapped'
+address 0x7fa0e0840000, cause 'memory not mapped'
 Error in .local(x, ...) : 
   45 parameter values (of 45) hit an error. The first was:
 Error in .checkDissFunction(diss, algType = algType) : 
@@ -104,6 +101,6 @@ In addition: Warning messages:
   the condition has length > 1 and only the first element will be used
 2: In mclapply(seq_len(nrow(param)), FUN = paramFun, mc.cores = ncores,  :
   all scheduled cores encountered errors in user code
-Timing stopped at: 1.404 0.518 2.799e+04
+Timing stopped at: 2.093 0.59 2.573e+04
 Execution halted
 Error while shutting down parallel: unable to terminate some child processes
