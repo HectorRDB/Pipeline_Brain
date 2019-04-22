@@ -1,36 +1,30 @@
               total        used        free      shared  buff/cache   available
-Mem:           3.0T         57G        2.7T        376M        157G        2.9T
-Swap:            0B          0B          0B
+Mem:           3.0T         53G        2.8T         34M        112G        2.9T
+Swap:           16G          0B         16G
               total        used        free      shared  buff/cache   available
-Mem:           3.0T         57G        2.7T        376M        158G        2.9T
-Swap:            0B          0B          0B
+Mem:           3.0T         53G        2.8T         34M        113G        2.9T
+Swap:           16G          0B         16G
               total        used        free      shared  buff/cache   available
-Mem:           3.0T         57G        2.7T        376M        158G        2.9T
-Swap:            0B          0B          0B
+Mem:           3.0T         50G        2.8T         34M        113G        2.9T
+Swap:           16G          0B         16G
               total        used        free      shared  buff/cache   available
-Mem:           3.0T         57G        2.7T        376M        158G        2.9T
-Swap:            0B          0B          0B
+Mem:           3.0T         49G        2.8T         34M        113G        2.9T
+Swap:           16G          0B         16G
               total        used        free      shared  buff/cache   available
-Mem:           3.0T         57G        2.7T        376M        158G        2.9T
-Swap:            0B          0B          0B
+Mem:           3.0T         51G        2.8T         34M        113G        2.9T
+Swap:           16G          0B         16G
               total        used        free      shared  buff/cache   available
-Mem:           3.0T         57G        2.7T        376M        158G        2.9T
-Swap:            0B          0B          0B
+Mem:           3.0T         53G        2.8T         34M        113G        2.9T
+Swap:           16G          0B         16G
               total        used        free      shared  buff/cache   available
-Mem:           3.0T         57G        2.7T        376M        158G        2.9T
-Swap:            0B          0B          0B
+Mem:           3.0T         53G        2.8T         34M        113G        2.9T
+Swap:           16G          0B         16G
               total        used        free      shared  buff/cache   available
-Mem:           3.0T         57G        2.7T        376M        158G        2.9T
-Swap:            0B          0B          0B
+Mem:           3.0T         55G        2.8T         34M        114G        2.9T
+Swap:           16G          0B         16G
               total        used        free      shared  buff/cache   available
-Mem:           3.0T         57G        2.7T        376M        158G        2.9T
-Swap:            0B          0B          0B
+Mem:           3.0T         59G        2.8T         34M        114G        2.9T
+Swap:           16G          0B         16G
               total        used        free      shared  buff/cache   available
-Mem:           3.0T         60G        2.7T        376M        159G        2.9T
-Swap:            0B          0B          0B
-              total        used        free      shared  buff/cache   available
-Mem:           3.0T         63G        2.7T        376M        159G        2.9T
-Swap:            0B          0B          0B
-              total        used        free      shared  buff/cache   available
-Mem:           3.0T         68G        2.7T        376M        159G        2.9T
-Swap:            0B          0B          0B
+Mem:           3.0T         63G        2.8T         34M        115G        2.9T
+Swap:           16G          0B         16G
