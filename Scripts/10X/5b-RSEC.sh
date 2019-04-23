@@ -4,7 +4,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=5
 #SBATCH -p LM
-#SBATCH --mem=2000GB
+#SBATCH --mem=3000GB
 #SBATCH -t 4-00:00:00
 #SBATCH --nodes=1
 
