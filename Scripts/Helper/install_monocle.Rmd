@@ -1,0 +1,60 @@
+---
+author: "Hector Roux de Bézieux"
+date: '`r format(Sys.time(), "%d %B , %Y")`'
+title: "Installing Monocle"
+output: pdf_document
+---
+
+# Installing Monocle 2
+## First Try
+
+No module loaded.
+Just open __R__ and do _BiocManager::install("monocle")_.
+
+This fails for packages __densityClust__ and __DDRTree__.
+
+## Second try
+
+First do _module load gcc_ then try again. This works for __densityClust__ but not __DDRTree__.
+
+## Third try 
+
+I realized that this gives the same error as when trying to install _clusterExperiment_. 
+
+```{r, eval = FALSE}
+* installing *source* package ‘DDRTree’ ...
+** package ‘DDRTree’ successfully unpacked and MD5 sums checked
+** libs
+icpc -std=gnu++11 -I"/opt/packages/R/3.5.1-mkl/lib64/R/include" 
+-DNDEBUG  -I"/pylon5/ib5phhp/diyadas/rpack/3.5/Rcpp/include" 
+-I"/pylon5/ib5phhp/hectorrb/rpack/RcppEigen/include" 
+-I"/pylon5/ib5phhp/diyadas/rpack/3.5/BH/include" -I/usr/local/include   -fpic  -O3 
+-ipo -openmp -xHost -c DDRTree.cpp -o DDRTree.o
+icpc: command line error: option '-openmp' is not supported.
+Please use the replacement option '-qopenmp'
+make: *** [DDRTree.o] Error 1
+ERROR: compilation failed for package ‘DDRTree’
+* removing ‘/pylon5/ib5phhp/hectorrb/rpack/DDRTree’
+```
+
+I will try to use the same trick.
+
+# Installing other packages
+## Python packages
+
+
+```{python, eval = FALSE}
+pip install --user virtualenv
+```
+
+```{r, eval = FALSE}
+install.packages("reticulate")
+library(reticulate)
+py_install('umap-learn')
+```
+
+```{python, eval = FALSE}
+pip install --user louvain
+```
+
+Installing Louvain fails as well...
