@@ -50,8 +50,12 @@ DelayedArray:::set_verbose_block_processing(TRUE)
 options(DelayedArray.block.size = 1005)
 sce <- estimateSizeFactors(sce)
 sce <- estimateDispersions(sce)
-sce@reducedDimA <- sce@reducedDimS <- sce@reducedDimK <- zinbW
+sce@dim_reduce_type <- sce@dim_reduce_type <- "ZinbW"
+sce@normalized_data_projection <- sce@reducedDimA <- sce@reducedDimS <- 
+  sce@reducedDimK <- sce@reducedDimW <- zinbW
+
 # run RSEC ----
+print("Running RSEC")
 print(system.time(
   sce <- clusterCells(sce,
                       method = 'louvain',
@@ -60,4 +64,5 @@ print(system.time(
                       verbose = T)
 ))
 
+# pData(sce)$Cluster
 saveRDS(sce, file = output)
