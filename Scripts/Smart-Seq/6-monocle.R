@@ -50,16 +50,25 @@ DelayedArray:::set_verbose_block_processing(TRUE)
 options(DelayedArray.block.size = 1005)
 sce <- estimateSizeFactors(sce)
 sce <- estimateDispersions(sce)
-sce@dim_reduce_type <- sce@dim_reduce_type <- "ZinbW"
-sce@normalized_data_projection <- sce@reducedDimA <- sce@reducedDimS <- 
-  sce@reducedDimK <- sce@reducedDimW <- zinbW
+sce <- preprocessCDS(sce,
+                     method = 'PCA',
+                     norm_method = 'log',
+                     num_dim = 50,
+                     verbose = T)
+sce <- reduceDimension(sce,
+                       max_components = 2,
+                       reduction_method = 'UMAP',
+                       metric = "correlation",
+                       min_dist = 0.75,
+                       n_neighbors = 50,
+                       verbose = T)
 
 # run RSEC ----
 print("Running RSEC")
 print(system.time(
   sce <- clusterCells(sce,
                       method = 'louvain',
-                      res = 1e-6,
+                      res = 1e-2,
                       louvain_iter = 1,
                       verbose = T)
 ))
