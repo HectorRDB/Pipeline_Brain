@@ -28,8 +28,7 @@ plotARIs <- function(ARI, small = T) {
 #' @param merger The output from an ARI merging
 #' @return a ggplot object
 plotPrePost <- function(merger) {
-  r1 <- which(colnames(merger$initalMat) == "RsecT")
-  pre <- apply(merger$initalMat[,-r1], 2, function(x) length(unique(x)))
+  pre <- apply(merger$initalMat, 2, function(x) length(unique(x)))
   post <- apply(merger$currentMat, 2, function(x) length(unique(x)))
   df <- data.frame(methods = names(pre),
                    before = pre,
@@ -58,62 +57,30 @@ plotPrePost <- function(merger) {
 #' @return the output from \code{\link{plot_grid}}
 #' @import cowplot
 plotARIReduce <- function(merger) {
-  # Before, No unclustered cells for RSEC
-  r1 <- which(colnames(merger$initalMat) == "RsecT")
-  InitialARI <- apply(merger$initalMat[, -r1], 2, function(x) {
-    apply(merger$initalMat[, -r1], 2, function(y) {
+  InitialARI <- apply(merger$initalMat, 2, function(x) {
+    apply(merger$initalMat, 2, function(y) {
       adjustedRandIndex(x, y)
     })
   })
   
   p1 <- plotARIs(InitialARI) +
-    ggtitle("ARI before any merging, all cells assigned") +
+    ggtitle("ARI before any merging") +
     theme(title = element_text(size = 6))
   
-  # Before, All cells assigned
-  r2 <- which(colnames(merger$initalMat) == "Rsec")
-  InitialARI <- apply(merger$initalMat[,-r2], 2, function(x) {
-    apply(merger$initalMat[,-r2], 2, function(y) {
-      adjustedRandIndex(x, y)
-    })
-  })
-  
-  p2 <- plotARIs(InitialARI) +
-    ggtitle("ARI before any merging, all cells assigned") +
-    theme(title = element_text(size = 6))
-
   ## After, No unclustered cells for Rsec
   FinalARI <- apply(merger$currentMat, 2, function(x) {
     apply(merger$currentMat, 2, function(y) {
-      inds <- x != -1 & y != -1
-      xa <- x[inds]
-      ya <- y[inds]
-      adjustedRandIndex(xa, ya)
-    })
-  })
-  
-  p3 <- plotARIs(FinalARI) +
-    ggtitle("ARI after merging, no unclustered cells for RSEC") +
-    theme(title = element_text(size = 6))
-  
-  ## After, Rsec with all cells
-  currentMat <- merger$currentMat
-  currentMat[, "Rsec"] <- assignRsec(merger) 
-  FinalARI <- apply(currentMat, 2, function(x) {
-    apply(currentMat, 2, function(y) {
       adjustedRandIndex(x, y)
     })
   })
   
-  p4 <- plotARIs(FinalARI) +
-    ggtitle("ARI after merging, all cells assigned") +
+  p2 <- plotARIs(FinalARI) +
+    ggtitle("ARI after merging") +
     theme(title = element_text(size = 6))
   
   plot_grid(ggdraw() + draw_plot(p1),
             ggdraw() + draw_plot(p2),
-            ggdraw() + draw_plot(p3),
-            ggdraw() + draw_plot(p4),
-            ncol = 2, rel_heights = rep(.25, 4), rel_widths = rep(.25, 4))
+            ncol = 2, rel_heights = rep(1, 2), rel_widths = rep(.5, 2))
 }
 
 #' Assign cells using the assignUnassigned function of RSEC

@@ -10,7 +10,7 @@ output:
     
     
 params:
-  dataset: SMARTer_nuclei_MOp 
+  dataset: SMARTer_cells_MOp 
   title: "Analysis of the SMARTer_cells_MOp dataset"
 ---
 ---
