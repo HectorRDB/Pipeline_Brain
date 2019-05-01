@@ -24,20 +24,16 @@ opt <- parse_args(OptionParser(option_list = option_list))
 
 if (!is.na(opt$l)) {
   loc <- opt$l
-  cat("The selected dataset is located at", loc)
+  cat("The selected dataset is located at ", loc, "\n")
 } else {
   stop("Missing l argument")
-}
-if (!is.na(opt$p)) {
-  output_p <- opt$p
-} else {
-  stop("Missing p argument")
 }
 
 if (!is.na(opt$o)) {
   output <- opt$o
 } else {
   stop("Missing o argument")
+  cat("The output will be stored at ", output, "\n")
 }
 
 library(clusterExperiment)
