@@ -37,13 +37,55 @@ ERROR: compilation failed for package ‘DDRTree’
 * removing ‘/pylon5/ib5phhp/hectorrb/rpack/DDRTree’
 ```
 
-I will try to use the same trick.
+```{bash, eval = F}
+git clone https://github.com/cole-trapnell-lab/DDRTree.git
+cp clusterExperiment/src/Makevars DDRTree/src/
+R CMD INSTALL DDRTree/
+```
+
+That failed. Note that running the block above without line 2 resulted in the same issue.
+
+## Installing all Rcpp dependencies
+
+The issue seems to come from the Rcpp instances in Diya's scratch. So i did
+```{bash, eval = FALSE}
+[hectorrb@login006 ~]$ module list
+Currently Loaded Modulefiles:
+  1) psc_path/1.1    2) slurm/default   3) intel/19.3      4) xdusage/2.1-1   5) R/3.5.3-mkl
+```
+
+```{r, eval = FALSE}
+> install.packages("Rcpp")
+> install.packages("RcppEigen")
+> install.packages("BH")
+> install.packages("DDRTree")
+```
+
+This worked!!!
+
+I can then run 
+
+```{r, eval = FALSE}
+BiocManager::install("monocle")
+```
+
+This fails because of some packages (FNN, densityClust, tidyverse, igraph,...) that Diya installed. Reinstalling those packages worked for all but the "Rtsne" package.
 
 # Installing other packages
+## Installing other R packages
+
+Just ssh into bridges, load R and run
+```{r, eval = F}
+devtools::install_github("cole-trapnell-lab/DDRTree", ref="simple-ppt-like")
+devtools::install_github("cole-trapnell-lab/L1-graph")
+```
+This worked fine.
+
+## Installing 
 ## Python packages
 
 
-```{python, eval = FALSE}
+```{bash, eval = FALSE}
 pip install --user virtualenv
 ```
 
@@ -53,8 +95,8 @@ library(reticulate)
 py_install('umap-learn')
 ```
 
-```{python, eval = FALSE}
+```{bash, eval = FALSE}
 pip install --user louvain
 ```
 
-Installing Louvain fails as well...
+Installing Louvain fails.

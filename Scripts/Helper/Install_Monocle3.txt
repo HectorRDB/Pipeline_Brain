@@ -1,0 +1,385 @@
+[hectorrb@login018 ~]$ module list
+Currently Loaded Modulefiles:
+  1) psc_path/1.1    2) slurm/default   3) intel/19.3      4) xdusage/2.1-1   5) R/3.5.3-mkl
+[hectorrb@login018 ~]$ R
+in
+R version 3.5.3 (2019-03-11) -- "Great Truth"
+Copyright (C) 2019 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> BiocManager::install("monocle")
+Bioconductor version 3.8 (BiocManager 1.30.4), R 3.5.3 (2019-03-11)
+Installing package(s) 'monocle'
+also installing the dependency ‘Rtsne’
+
+trying URL 'https://cran.rstudio.com/src/contrib/Rtsne_0.15.tar.gz'
+Content type 'application/x-gzip' length 67595 bytes (66 KB)
+==================================================
+downloaded 66 KB
+
+trying URL 'https://bioconductor.org/packages/3.8/bioc/src/contrib/monocle_2.10.1.tar.gz'
+Content type 'application/x-gzip' length 9496811 bytes (9.1 MB)
+==================================================
+downloaded 9.1 MB
+
+* installing *source* package ‘Rtsne’ ...
+** package ‘Rtsne’ successfully unpacked and MD5 sums checked
+** libs
+icpc  -I"/opt/packages/R/3.5.3-mkl/lib64/R/include" -DNDEBUG  -I"/pylon5/ib5phhp/hectorrb/rpack/Rcpp/include" -I/usr/local/include   -fpic  -qopenmp -c RcppExports.cpp -o RcppExports.o
+icpc  -I"/opt/packages/R/3.5.3-mkl/lib64/R/include" -DNDEBUG  -I"/pylon5/ib5phhp/hectorrb/rpack/Rcpp/include" -I/usr/local/include   -fpic  -qopenmp -c Rtsne.cpp -o Rtsne.o
+icpc  -I"/opt/packages/R/3.5.3-mkl/lib64/R/include" -DNDEBUG  -I"/pylon5/ib5phhp/hectorrb/rpack/Rcpp/include" -I/usr/local/include   -fpic  -qopenmp -c normalize_input.cpp -o normalize_input.o
+icpc  -I"/opt/packages/R/3.5.3-mkl/lib64/R/include" -DNDEBUG  -I"/pylon5/ib5phhp/hectorrb/rpack/Rcpp/include" -I/usr/local/include   -fpic  -qopenmp -c sptree.cpp -o sptree.o
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(69): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          _M_value = __z._M_value;
+                         ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(77): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          _M_value = __z._M_value;
+                         ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(115): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value + __y._M_value;
+                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(115): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value + __y._M_value;
+                                    ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(120): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value - __y._M_value;
+                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(120): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value - __y._M_value;
+                                    ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(125): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value * __y._M_value;
+                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(125): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value * __y._M_value;
+                                    ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(130): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value / __y._M_value;
+                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(130): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value / __y._M_value;
+                                    ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(134): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return -__x._M_value;
+                      ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(141): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value == __y._M_value;
+                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(141): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value == __y._M_value;
+                                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(146): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value != __y._M_value;
+                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(146): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value != __y._M_value;
+                                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(150): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return ~__z._M_value;
+                      ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(159): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value + __y;
+                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(164): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x + __y._M_value;
+                           ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(169): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value - __y;
+                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(174): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x - __y._M_value;
+                           ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(179): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value * __y;
+                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(184): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x * __y._M_value;
+                           ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(189): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value / __y;
+                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(194): error #308: member "std::complex<float>::_M_value" (declared at line 1187 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x / __y._M_value;
+                           ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(232): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value + __y._M_value;
+                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(232): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value + __y._M_value;
+                                    ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(237): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value - __y._M_value;
+                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(237): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value - __y._M_value;
+                                    ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(242): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value * __y._M_value;
+                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(242): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value * __y._M_value;
+                                    ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(247): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value / __y._M_value;
+                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(247): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value / __y._M_value;
+                                    ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(251): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return -__x._M_value;
+                      ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(256): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value == __y._M_value;
+                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(256): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value == __y._M_value;
+                                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(261): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value != __y._M_value;
+                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(261): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value != __y._M_value;
+                                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(265): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return ~__z._M_value;
+                      ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(275): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value + __y;
+                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(280): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x + __y._M_value;
+                           ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(285): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value - __y;
+                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(290): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x - __y._M_value;
+                           ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(295): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value * __y;
+                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(300): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x * __y._M_value;
+                           ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(305): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x._M_value / __y;
+                     ^
+
+In file included from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/RcppCommon.h(64),
+                 from /pylon5/ib5phhp/hectorrb/rpack/Rcpp/include/Rcpp.h(27),
+                 from sptree.cpp(39):
+/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/include/complex(310): error #308: member "std::complex<double>::_M_value" (declared at line 1337 of "/usr/include/c++/4.8.5/complex") is inaccessible
+          return __x / __y._M_value;
+                           ^
+
+compilation aborted for sptree.cpp (code 2)
+make: *** [sptree.o] Error 2
+ERROR: compilation failed for package ‘Rtsne’
+* removing ‘/pylon5/ib5phhp/hectorrb/rpack/Rtsne’
+ERROR: dependency ‘Rtsne’ is not available for package ‘monocle’
+* removing ‘/pylon5/ib5phhp/hectorrb/rpack/monocle’
+
+The downloaded source packages are in
+	‘/tmp/RtmpV0phcf/downloaded_packages’
+installation path not writeable, unable to update packages: backports, boot,
+  clipr, cluster, data.table, dbplyr, devtools, GenomicFeatures, ggplot2,
+  httpuv, MASS, nlme, RcppArmadillo, remotes, rlang, rpart, shiny, sys,
+  usethis, xtable
+Warning messages:
+1: In install.packages(pkgs = doing, lib = lib, repos = repos, ...) :
+  installation of package ‘Rtsne’ had non-zero exit status
+2: In install.packages(pkgs = doing, lib = lib, repos = repos, ...) :
+  installation of package ‘monocle’ had non-zero exit status

@@ -129,8 +129,6 @@ type <- function(dataset) {
 #' @return a vector with the mean ARI between methods at each step
 ARIImp <- function(merger) {
   baseMat <- merger$initalMat
-  j <- which(colnames(baseMat) == "RsecT")
-  baseMat <- baseMat[, -j]
   baseARI <- apply(baseMat, 2, function(x) {
     apply(baseMat, 2, function(y) {
       adjustedRandIndex(x, y)
@@ -150,8 +148,6 @@ ARIImp <- function(merger) {
 #' @return a ggplot object
 ARItrend <- function(merger) {
  baseMat <- merger$initalMat
- j <- which(colnames(baseMat) == "RsecT")
- baseMat <- baseMat[, -j]
  ARI <- ARIImp(merger)
  n_clus <- lapply(1:nrow(merger$merges), function(m){
               diff <- rep(0, 3)
@@ -232,8 +228,6 @@ intermediateMat <- function(merger, p = .9) {
 FTracking <- function(merger, f, ...){
   # Go over the merge and compute the homogeneity as we go
   baseMat <- merger$initalMat
-  j <- which(colnames(baseMat) == "Rsec")
-  baseMat <- baseMat[, -j]
   currentMat <- baseMat
   
   Evolution <- apply(baseMat, 2, f, ...) %>%  matrix(ncol = ncol(baseMat))

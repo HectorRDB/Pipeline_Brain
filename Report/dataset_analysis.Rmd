@@ -112,7 +112,6 @@ apply(mergers_no_allen$currentMat, 2, function(x) {
 
 ```{r}
 clusters <- mergers_no_allen$currentMat
-clusters[, "Rsec"] <- assignRsec(mergers_no_allen)
 
 cellsConsensus <- suppressWarnings(
   makeConsensus(x = clusters, clusterLabel = "makeConsensus",
@@ -162,7 +161,6 @@ rm(allenClustersARIchange, allenSubclassARIChange,
 
 midMat <- intermediateMat(merger = mergers_no_allen,
                           p = .9)
-midMat[, "Rsec"] <- assignRsec(mergers_no_allen, p = .9)
 
 cellsConsensus <- suppressWarnings(
   makeConsensus(x = midMat, clusterLabel = "makeConsensus",
@@ -170,10 +168,10 @@ cellsConsensus <- suppressWarnings(
   )
 consensus <- cbind(cellsConsensus$clustering,
                    allen_clusters$subclass_label,
-                   midMat)
+                   midMat) %>% as.data.frame()
 
 colnames(consensus)[c(1, 2)] <- c("Consensus", "Allen\nsubclass")
-plotClusters(object = consensus)
+plotClusters(object = consensus %>% as.matrix())
 title("Consensus Merging when stopping early")
 
 rm(cellsConsensus, consensus, midMat)
