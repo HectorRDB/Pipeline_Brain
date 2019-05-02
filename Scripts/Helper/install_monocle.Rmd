@@ -92,7 +92,7 @@ py_install('umap-learn')
 Installing Louvain fails.
 
 
-## Using a virtual environment with anaconda
+# Using a virtual environment with anaconda
 
 Following the instructions from the help, I did
 
@@ -109,7 +109,7 @@ conda install -c conda-forge umap-learn
 ```
 This works up until installing reticulate. The version of R that is being used is 3.3 but the conda version of reticulate needs 3.4.
 
-### Installing reticulate
+## Installing reticulate
 
 We install from R, with no dependencies 
 
@@ -121,13 +121,15 @@ This fails with some compiler error.
 
 We thus build a skeleton from scratch.
 
-### Installing github R packages
+## Installing github R packages
 
 We try to install all dependencies first. Anything from conda-forge fails (it is based on a more advanced version of R).
 
 We then try to do it with a skeleton.
 
 ```{bash, eval = F}
-conda skeleton cran lpSolveAPI
+conda skeleton cran lpSolveAPI --recursive
 conda-build r-lpsolveapi
 ```
+
+This fails as well with some compiler error (the infamous "unrecognized command line option '-qopenmp'; did you mean '-fopenmp'?"). 
