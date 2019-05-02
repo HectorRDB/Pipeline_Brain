@@ -5,19 +5,18 @@ title: "Installing Monocle"
 output: pdf_document
 ---
 
-# Installing Monocle 2
-## First Try
+# First Try
 
 No module loaded.
 Just open __R__ and do _BiocManager::install("monocle")_.
 
 This fails for packages __densityClust__ and __DDRTree__.
 
-## Second try
+# Second try
 
 First do _module load gcc_ then try again. This works for __densityClust__ but not __DDRTree__.
 
-## Third try 
+# Third try 
 
 I realized that this gives the same error as when trying to install _clusterExperiment_. 
 
@@ -45,7 +44,7 @@ R CMD INSTALL DDRTree/
 
 That failed. Note that running the block above without line 2 resulted in the same issue.
 
-## Installing all Rcpp dependencies
+# Installing all Rcpp dependencies
 
 The issue seems to come from the Rcpp instances in Diya's scratch. So i did
 ```{bash, eval = FALSE}
@@ -71,19 +70,14 @@ BiocManager::install("monocle")
 
 This fails because of some packages (FNN, densityClust, tidyverse, igraph,...) that Diya installed. Reinstalling those packages worked for all but the "Rtsne" package.
 
-# Installing other packages
-## Installing other R packages
-
-Just ssh into bridges, load R and run
+I can also install future dependencies
 ```{r, eval = F}
 devtools::install_github("cole-trapnell-lab/DDRTree", ref="simple-ppt-like")
 devtools::install_github("cole-trapnell-lab/L1-graph")
 ```
 This worked fine.
 
-## Installing 
-## Python packages
-
+And
 
 ```{bash, eval = FALSE}
 pip install --user virtualenv
@@ -95,8 +89,45 @@ library(reticulate)
 py_install('umap-learn')
 ```
 
-```{bash, eval = FALSE}
-pip install --user louvain
+Installing Louvain fails.
+
+
+## Using a virtual environment with anaconda
+
+Following the instructions from the help, I did
+
+```{r bash, eval= F}
+module unload intel
+module load anaconda3
+conda create -n monocle_env
+source activate monocle_env
+conda install -c bioconda bioconductor-monocle
+conda install -c r r-devtools 
+conda install -c conda-forge python-louvain 
+conda install -c conda-forge umap-learn 
+# source deactivate
+```
+This works up until installing reticulate. The version of R that is being used is 3.3 but the conda version of reticulate needs 3.4.
+
+### Installing reticulate
+
+We install from R, with no dependencies 
+
+```{r, eval = F}
+install.packages("reticulate", dependencies=FALSE)
 ```
 
-Installing Louvain fails.
+This fails with some compiler error.
+
+We thus build a skeleton from scratch.
+
+### Installing github R packages
+
+We try to install all dependencies first. Anything from conda-forge fails (it is based on a more advanced version of R).
+
+We then try to do it with a skeleton.
+
+```{bash, eval = F}
+conda skeleton cran lpSolveAPI
+conda-build r-lpsolveapi
+```
