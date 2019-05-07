@@ -2,7 +2,7 @@
 #SBATCH --mail-user=hector.rouxdebezieux@berkeley.edu
 #SBATCH --mail-type=ALL
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=32
+#SBATCH --cpus-per-task=30
 #SBATCH --nodes=1
 
 # Load Data
@@ -45,7 +45,7 @@ echo "Step 6"
 MEMORYFILE="7b-memoryLogger.txt"
 out7="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp"
 # while true; do free -h >> $MEMORYFILE; sleep 15; done & \
-# Rscript --vanilla --verbose  7-RSEC.R -n 32 -l $out3 -o $out7 > 7b.out 2>&1
+# Rscript --vanilla --verbose  7-RSEC.R -n 30 -l $out3 -o $out7 > 7b.out 2>&1
 echo "Step 7"
 
 # ConsensusClustering
@@ -55,5 +55,5 @@ out="/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/Figures
 plot="/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/Figures/Smart-Seq/SMARTer_nuclei_MOp"
 
 while true; do free -h >> $MEMORYFILE; sleep 15; done & \
-Rscript --vanilla --verbose  7-ConsensusClustering.R -n 32 -l $loc8 -o $out -p $plot> 8ab.out 2>&1
+Rscript --vanilla --verbose  7-ConsensusClustering.R -n 30 -l $loc8 -o $out -p $plot> 8ab.out 2>&1
 echo "Step 8"
