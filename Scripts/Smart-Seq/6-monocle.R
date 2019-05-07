@@ -50,11 +50,12 @@ DelayedArray:::set_verbose_block_processing(TRUE)
 options(DelayedArray.block.size = 1005)
 sce <- estimateSizeFactors(sce)
 sce <- estimateDispersions(sce)
-sce <- preprocessCDS(sce,
-                     method = 'PCA',
-                     norm_method = 'log',
-                     num_dim = 50,
-                     verbose = T)
+# sce <- preprocessCDS(sce,
+#                      method = 'PCA',
+#                      norm_method = 'log',
+#                      num_dim = 50,
+#                      verbose = T)
+sce@normalized_data_projection <- zinbW
 sce <- reduceDimension(sce,
                        max_components = 2,
                        reduction_method = 'UMAP',

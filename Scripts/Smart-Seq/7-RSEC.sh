@@ -4,9 +4,9 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=10
 #SBATCH --nodes=1
-MEMORYFILE="6a_memoryLogger.txt"
+MEMORYFILE="7a-memoryLogger.txt"
 loc="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_zinbWs.rds"
 out="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp"
 
 while true; do free -h >> $MEMORYFILE; sleep 15; done & \
-Rscript --vanilla --verbose  6-RSEC.R -n 10 -l $loc -o $out> 6a.out 2>&1
+Rscript --vanilla --verbose  7-RSEC.R -n 10 -l $loc -o $out> 7a.out 2>&1
