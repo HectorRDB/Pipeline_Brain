@@ -37,7 +37,7 @@ echo "Step 5"
 
 # Monocle
 out6="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_monocle.rds"
-Rscript --vanilla --verbose 6-monocle.R -l $out3 -o $out6> 6a.out 2>&1
+# Rscript --vanilla --verbose 6-monocle.R -l $out3 -o $out6> 6a.out 2>&1
 echo "Step 6"
 
 # RSEC
@@ -54,5 +54,5 @@ out="/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/Figures
 plot="/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/Figures/Smart-Seq/SMARTer_cells_MOp"
 
 while true; do free -h >> $MEMORYFILE; sleep 15; done & \
-Rscript --vanilla --verbose  7-ConsensusClustering.R -n 30 -l $loc8 -o $out -p $plot> 8aa.out 2>&1
+Rscript --vanilla --verbose  8-ConsensusClustering.R -n 30 -l $loc8 -o $out -p $plot> 8aa.out 2>&1
 echo "Step 8"
