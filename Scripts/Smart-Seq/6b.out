@@ -1,14 +1,14 @@
 running
-  '/usr/lib/R/bin/R --slave --no-restore --vanilla --file=6-monocle.R --args -l /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp_zinbWs.rds -o /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp_monocle.rds'
+  '/usr/lib/R/bin/R --slave --no-restore --vanilla --file=6-monocle.R --args -l /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp_norm.rds -o /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp_monocle.rds'
 
-The selected dataset is located at /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp_zinbWs.rdsWarning messages:
+The selected dataset is located at /scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp_norm.rdsWarning messages:
 1: In rgl.init(initValue, onlyNULL) : RGL: unable to open X11 display
 2: 'rgl_init' failed, running with rgl.useNULL = TRUE 
 Module(louvain)
 [1] FALSE
 Removing 105 outliers
-Remove noise by PCA ...
 Retrieving normalized data ...
+Warning: The cds has not been pre-processed yet. Running preprocessCDS() with default parameters.
 Running Uniform Manifold Approximation and Projection
 UMAP(a=None, angular_rp_forest=False, b=None, init='spectral',
    learning_rate=1.0, local_connectivity=1, metric='correlation',
@@ -33,19 +33,22 @@ Construct embedding
 	completed  350  /  500 epochs
 	completed  400  /  500 epochs
 	completed  450  /  500 epochs
+Warning message:
+In if (method == "PCA") { :
+  the condition has length > 1 and only the first element will be used
 [1] "Running RSEC"
 Run kNN based graph clustering starts:
   -Input data of 6278 rows and 2 columns
   -k is set to 20
-  Finding nearest neighbors...DONE ~ 0.066 s
+  Finding nearest neighbors...DONE ~ 0.058 s
   Compute jaccard coefficient between nearest-neighbor sets ...DONE ~ 0.005 s
-  Build undirected graph from the weighted links ...DONE ~ 0.079 s
+  Build undirected graph from the weighted links ...DONE ~ 0.048 s
   Run louvain clustering on the graph ...
 Running louvain iteration  1 ...
 Current iteration is 1; current resolution is 0.01; Modularity is 0.916261295065638; Number of clusters are 32
 Maximal modularity is 0.916261295065638; corresponding resolution is 0.01
 
-Run kNN based graph clustering DONE, totally takes 1.70279145240784 s.
+Run kNN based graph clustering DONE, totally takes 0.98153281211853 s.
   -Number of clusters: 32 
    user  system elapsed 
-  4.186   0.459   4.659 
+  2.825   0.205   3.055 
