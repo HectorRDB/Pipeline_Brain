@@ -51,8 +51,7 @@ echo "Step 7"
 MEMORYFILE="8aa-memoryLogger.txt"
 loc8="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp"
 out="/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/Figures/Smart-Seq/SMARTer_cells_MOp"
-plot="/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/Figures/Smart-Seq/SMARTer_cells_MOp"
 
 while true; do free -h >> $MEMORYFILE; sleep 15; done & \
-Rscript --vanilla --verbose  8-ConsensusClustering.R -n 30 -l $loc8 -o $out -p $plot> 8aa.out 2>&1
+Rscript --vanilla --verbose  8-ConsensusClustering.R -n 30 -l $loc8 -o $out > 8aa.out 2>&1
 echo "Step 8"
