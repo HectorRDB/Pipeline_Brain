@@ -28,7 +28,8 @@ plotARIs <- function(ARI, small = T) {
 #' @param merger The output from an ARI merging
 #' @return a ggplot object
 plotPrePost <- function(merger) {
-  pre <- apply(merger$initalMat, 2, function(x) length(unique(x)))
+  r1 <- which(colnames(merger$initalMat) == "RsecT")
+  pre <- apply(merger$initalMat[,-r1], 2, function(x) length(unique(x)))
   post <- apply(merger$currentMat, 2, function(x) length(unique(x)))
   df <- data.frame(methods = names(pre),
                    before = pre,
@@ -57,30 +58,67 @@ plotPrePost <- function(merger) {
 #' @return the output from \code{\link{plot_grid}}
 #' @import cowplot
 plotARIReduce <- function(merger) {
-  InitialARI <- apply(merger$initalMat, 2, function(x) {
-    apply(merger$initalMat, 2, function(y) {
-      adjustedRandIndex(x, y)
+  # Before, No unclustered cells for RSEC
+  r1 <- which(colnames(merger$initalMat) == "RsecT")
+  InitialARI <- apply(merger$initalMat[, -r1], 2, function(x) {
+    apply(merger$initalMat[, -r1], 2, function(y) {
+      inds <- x != -1 & y != -1
+      xa <- x[inds]
+      ya <- y[inds]
+      adjustedRandIndex(xa, ya)
     })
   })
   
   p1 <- plotARIs(InitialARI) +
-    ggtitle("ARI before any merging") +
+    ggtitle("ARI before any merging, no unclustered cells for RSEC") +
+    theme(title = element_text(size = 6))
+  
+  # Before, All cells assigned
+  r2 <- which(colnames(merger$initalMat) == "Rsec")
+  InitialARI <- apply(merger$initalMat[,-r2], 2, function(x) {
+    apply(merger$initalMat[,-r2], 2, function(y) {
+      adjustedRandIndex(x, y)
+    })
+  })
+  colnames(InitialARI)[colnames(InitialARI) == "RsecT"] <- "Rsec"
+  rownames(InitialARI)[rownames(InitialARI) == "RsecT"] <- "Rsec"
+  
+  p2 <- plotARIs(InitialARI) +
+    ggtitle("ARI before any merging, all cells assigned") +
     theme(title = element_text(size = 6))
   
   ## After, No unclustered cells for Rsec
   FinalARI <- apply(merger$currentMat, 2, function(x) {
     apply(merger$currentMat, 2, function(y) {
+      inds <- x != -1 & y != -1
+      xa <- x[inds]
+      ya <- y[inds]
+      adjustedRandIndex(xa, ya)
+    })
+  })
+  
+  p3 <- plotARIs(FinalARI) +
+    ggtitle("ARI after merging, no unclustered cells for RSEC") +
+    theme(title = element_text(size = 6))
+  
+  ## After, Rsec with all cells
+  currentMat <- merger$currentMat
+  currentMat[, "Rsec"] <- assignRsec(merger) 
+  FinalARI <- apply(currentMat, 2, function(x) {
+    apply(currentMat, 2, function(y) {
       adjustedRandIndex(x, y)
     })
   })
   
-  p2 <- plotARIs(FinalARI) +
-    ggtitle("ARI after merging") +
+  p4 <- plotARIs(FinalARI) +
+    ggtitle("ARI after merging, all cells assigned") +
     theme(title = element_text(size = 6))
   
   plot_grid(ggdraw() + draw_plot(p1),
             ggdraw() + draw_plot(p2),
-            ncol = 2, rel_heights = rep(1, 2), rel_widths = rep(.5, 2))
+            ggdraw() + draw_plot(p3),
+            ggdraw() + draw_plot(p4),
+            ncol = 2, rel_heights = rep(.25, 4), rel_widths = rep(.25, 4))
 }
 
 #' Assign cells using the assignUnassigned function of RSEC
@@ -102,7 +140,9 @@ assignRsec <- function(merger, p = 1) {
   currentMat <- merger$currentMat
   Rsec_merges <- merger$merges[1:(K - 1), ]
   Rsec_merges <- Rsec_merges[Rsec_merges[,1] == 2, ]
+  if (is.null(dim(Rsec_merges))) Rsec_merges <- matrix(Rsec_merges, nrow = 1)
   Rsec_merges <- Rsec_merges[, -1]
+  if (is.null(dim(Rsec_merges))) Rsec_merges <- matrix(Rsec_merges, nrow = 1)
   assign <- lapply(1:nrow(currentMat), function(i) {
     cell <- merger$initalMat[i, r2]
     cellT <- merger$initalMat[i, r1]
@@ -129,6 +169,8 @@ type <- function(dataset) {
 #' @return a vector with the mean ARI between methods at each step
 ARIImp <- function(merger) {
   baseMat <- merger$initalMat
+  j <- which(colnames(baseMat) == "RsecT")
+  baseMat <- baseMat[, -j]
   baseARI <- apply(baseMat, 2, function(x) {
     apply(baseMat, 2, function(y) {
       adjustedRandIndex(x, y)
@@ -148,9 +190,11 @@ ARIImp <- function(merger) {
 #' @return a ggplot object
 ARItrend <- function(merger) {
  baseMat <- merger$initalMat
+ j <- which(colnames(baseMat) == "RsecT")
+ baseMat <- baseMat[, -j]
  ARI <- ARIImp(merger)
  n_clus <- lapply(1:nrow(merger$merges), function(m){
-              diff <- rep(0, 3)
+              diff <- rep(0, ncol(baseMat))
               diff[merger$merges[m, 1]] <- -1
               matrix(diff, nrow = 1)
              }) %>%
@@ -177,7 +221,7 @@ ARItrend <- function(merger) {
               col = "grey", linetype = "dashed", size = 2) +
    labs(y = "Change over merging",
         col = "type")
-  p
+  return(p)
 }
 
 #' Find the clustering matrix that we would get if we stopped the ARI merging 
@@ -228,6 +272,8 @@ intermediateMat <- function(merger, p = .9) {
 FTracking <- function(merger, f, ...){
   # Go over the merge and compute the homogeneity as we go
   baseMat <- merger$initalMat
+  j <- which(colnames(baseMat) == "Rsec")
+  baseMat <- baseMat[, -j]
   currentMat <- baseMat
   
   Evolution <- apply(baseMat, 2, f, ...) %>%  matrix(ncol = ncol(baseMat))
@@ -298,7 +344,7 @@ ARItrendAllen <- function(merger, allen1, allen2, verbose = TRUE, ...){
 Consensus <- function(clusMat, ...) {
   cellsConsensus <- suppressWarnings(
     makeConsensus(x = as.matrix(clusMat), clusterLabel = "makeConsensus",
-                  proportion = 2/3, minSize = 20, ...)
+                  proportion = 2/3, minSize = 100, ...)
   )
   return(cellsConsensus$clustering)
 }

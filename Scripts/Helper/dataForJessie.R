@@ -18,17 +18,17 @@ for (dataset in datasets) {
   cellsConsensus <- suppressWarnings(
     makeConsensus(x = as.matrix(merger$initalMat[, -2]),
                   clusterLabel = "makeConsensus",
-                  proportion = 2/3, minSize = 20)
+                  proportion = 2/3, minSize = 50)
   )
   consensusInit <- cellsConsensus$clustering
   
   print("...Final consensus")
   currentMat <- merger$currentMat
-  currentMat[, 2] <- assignRsec(merger)
+  currentMat[, "Rsec"] <- assignRsec(merger)
   cellsConsensus <- suppressWarnings(
     makeConsensus(x = currentMat, 
                   clusterLabel = "makeConsensus",
-                  proportion = 2/3, minSize = 20)
+                  proportion = 2/3, minSize = 100)
   )
   consensusFinal <- cellsConsensus$clustering
   
@@ -37,7 +37,7 @@ for (dataset in datasets) {
   stopMatrix[, "Rsec"] <- assignRsec(merger, p = .9)
   cellsConsensus <- suppressWarnings(
     makeConsensus(x = merger$currentMat, clusterLabel = "makeConsensus",
-                  proportion = 2/3, minSize = 20)
+                  proportion = 2/3, minSize = 100)
   )
   consensusInt <- cellsConsensus$clustering
   
@@ -50,9 +50,12 @@ for (dataset in datasets) {
                currentMat, consensusFinal)
   
   colnames(mat) <- c("cells",
-    paste(c("sc3", "RSEC", "Seurat", "Consensus"), "Initial", sep = "-"),
-    paste(c("sc3", "RSEC", "Seurat", "Consensus"), "Intermediate", sep = "-"),
-    paste(c("sc3", "RSEC", "Seurat", "Consensus"), "Final", sep = "-")
+    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "Initial",
+          sep = "-"),
+    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "Intermediate",
+          sep = "-"),
+    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "Final",
+          sep = "-")
     )
   
   write_csv(x = mat,

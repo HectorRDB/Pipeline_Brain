@@ -10,8 +10,8 @@ output:
     
     
 params:
-  dataset: SMARTer_cells_MOp 
-  title: "Analysis of the SMARTer_cells_MOp dataset"
+  dataset: SMARTer_nuclei_MOp 
+  title: "Analysis of the SMARTer_nuclei_MOp dataset"
 ---
 ---
 title: `r params$title`
@@ -104,18 +104,19 @@ apply(mergers_no_allen$currentMat, 2, function(x) {
     xa <- x[inds]
     y <- allen_clusters$subclass_label[inds]
     mclust::adjustedRandIndex(xa, y)
-}) %>% data.frame(method = names(.), ARI = round(., 2)) %>%
-  kable(row.names = F)
+}) %>% data.frame(ARI = round(., 2)) %>%
+  select(ARI)
 ```
 
 ## After a last consensus step
 
 ```{r}
 clusters <- mergers_no_allen$currentMat
+clusters[,"Rsec"] <- assignRsec(mergers_no_allen)
 
 cellsConsensus <- suppressWarnings(
   makeConsensus(x = clusters, clusterLabel = "makeConsensus",
-                  proportion = 2/3, minSize = 20)
+                  proportion = 0.67, minSize = 100)
   )
 consensus <- cbind(cellsConsensus$clustering,
                    allen_clusters$subclass_label,
@@ -123,7 +124,7 @@ consensus <- cbind(cellsConsensus$clustering,
 
 colnames(consensus)[c(1, 2)] <- c("Consensus", "Allen\nsubclass")
 plotClusters(object = consensus)
-title("Consensus Merging with proportion and comparison with the allen subclass.")
+title("Consensus Merging with proportion\nand comparison with the allen subclass.")
 
 rm(clusters, cellsConsensus, consensus)
 ```
@@ -161,10 +162,11 @@ rm(allenClustersARIchange, allenSubclassARIChange,
 
 midMat <- intermediateMat(merger = mergers_no_allen,
                           p = .9)
+midMat[,"Rsec"] <- assignRsec(mergers_no_allen, p = .9)
 
 cellsConsensus <- suppressWarnings(
   makeConsensus(x = midMat, clusterLabel = "makeConsensus",
-                proportion = 2/3, minSize = 20)
+                proportion = 1/3, minSize = 100)
   )
 consensus <- cbind(cellsConsensus$clustering,
                    allen_clusters$subclass_label,
