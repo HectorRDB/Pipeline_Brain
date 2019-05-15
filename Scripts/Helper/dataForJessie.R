@@ -18,7 +18,7 @@ for (dataset in datasets) {
   cellsConsensus <- suppressWarnings(
     makeConsensus(x = as.matrix(merger$initalMat[, -2]),
                   clusterLabel = "makeConsensus",
-                  proportion = 2/3, minSize = 50)
+                  proportion = 2/3, minSize = 100)
   )
   consensusInit <- cellsConsensus$clustering
   
@@ -32,29 +32,53 @@ for (dataset in datasets) {
   )
   consensusFinal <- cellsConsensus$clustering
   
-  print("...Intermediary consensus")
-  stopMatrix <- intermediateMat(merger = merger)
-  stopMatrix[, "Rsec"] <- assignRsec(merger, p = .9)
+  print("...Intermediary consensus at 33.3%")
+  stopMatrix_33 <- intermediateMat(merger = merger)
+  stopMatrix_33[, "Rsec"] <- assignRsec(merger, p = 1/3)
   cellsConsensus <- suppressWarnings(
     makeConsensus(x = merger$currentMat, clusterLabel = "makeConsensus",
                   proportion = 2/3, minSize = 100)
   )
-  consensusInt <- cellsConsensus$clustering
+  consensusInt_33 <- cellsConsensus$clustering
+  
+  print("...Intermediary consensus at 66.7%")
+  stopMatrix_66 <- intermediateMat(merger = merger)
+  stopMatrix_66[, "Rsec"] <- assignRsec(merger, p = 2/3)
+  cellsConsensus <- suppressWarnings(
+    makeConsensus(x = merger$currentMat, clusterLabel = "makeConsensus",
+                  proportion = 2/3, minSize = 100)
+  )
+  consensusInt_66 <- cellsConsensus$clustering
+  
+  print("...Intermediary consensus at 90%")
+  stopMatrix_90 <- intermediateMat(merger = merger)
+  stopMatrix_90[, "Rsec"] <- assignRsec(merger, p = .9)
+  cellsConsensus <- suppressWarnings(
+    makeConsensus(x = merger$currentMat, clusterLabel = "makeConsensus",
+                  proportion = 2/3, minSize = 100)
+  )
+  consensusInt_90 <- cellsConsensus$clustering
   
   print("...Full matrix")
   names <- read_csv(here("data", type(dataset),
                          paste0(dataset, "_cluster.membership.csv")))
   mat <- cbind(names$X1,
                merger$initalMat[,-2], consensusInit,
-               stopMatrix, consensusInt,
+               stopMatrix_33, consensusInt_33,
+               stopMatrix_66, consensusInt_66,
+               stopMatrix_90, consensusInt_90,
                currentMat, consensusFinal)
   
   colnames(mat) <- c("cells",
-    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "Initial",
+    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "_Initial",
           sep = "-"),
-    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "Intermediate",
+    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "_33",
           sep = "-"),
-    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "Final",
+    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "_66",
+          sep = "-"),
+    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "_90",
+          sep = "-"),
+    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "_Final",
           sep = "-")
     )
   

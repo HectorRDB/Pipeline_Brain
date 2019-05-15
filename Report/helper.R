@@ -143,16 +143,20 @@ assignRsec <- function(merger, p = 1) {
   if (is.null(dim(Rsec_merges))) Rsec_merges <- matrix(Rsec_merges, nrow = 1)
   Rsec_merges <- Rsec_merges[, -1]
   if (is.null(dim(Rsec_merges))) Rsec_merges <- matrix(Rsec_merges, nrow = 1)
-  assign <- lapply(1:nrow(currentMat), function(i) {
-    cell <- merger$initalMat[i, r2]
-    cellT <- merger$initalMat[i, r1]
-    for (j in 1:nrow(Rsec_merges)) {
-      if (cellT %in% Rsec_merges[j, ]) cellT <- min(Rsec_merges[j, ])
-    }
-    return(cellT)
-  }) %>%
-    unlist()
-  return(assign)
+  if (nrow(Rsec_merges) == 0) {
+    return(merger$initalMat$RsecT)
+  } else {
+    assign <- lapply(1:nrow(currentMat), function(i) {
+      cell <- merger$initalMat[i, r2]
+      cellT <- merger$initalMat[i, r1]
+      for (j in 1:nrow(Rsec_merges)) {
+        if (cellT %in% Rsec_merges[j, ]) cellT <- min(Rsec_merges[j, ])
+      }
+      return(cellT)
+    }) %>%
+      unlist()
+    return(assign)
+  }
 }
 
 type <- function(dataset) {
