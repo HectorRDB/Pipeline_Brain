@@ -50,29 +50,28 @@ DelayedArray:::set_verbose_block_processing(TRUE)
 options(DelayedArray.block.size = 1005)
 sce <- estimateSizeFactors(sce)
 sce <- estimateDispersions(sce)
-# sce <- preprocessCDS(sce,
-#                      method = 'PCA',
-#                      norm_method = 'log',
-#                      num_dim = 50,
-#                      verbose = T)
 sce@normalized_data_projection <- zinbW
-sce <- reduceDimension(sce,
-                       max_components = 2,
-                       reduction_method = 'UMAP',
-                       metric = "correlation",
-                       min_dist = 0.75,
-                       n_neighbors = 50,
-                       verbose = T)
 
-# run Monocle ----
-print("Running Monocle")
-print(system.time(
-  sce <- clusterCells(sce,
-                      method = 'louvain',
-                      res = 1e-2,
-                      louvain_iter = 1,
-                      verbose = T)
-))
 
-# pData(sce)$Cluster
+# print("Reducing the dimensions with UMAP")
+# print(system.time(
+#   sce <- reduceDimension(sce,
+#                        max_components = 2,
+#                        reduction_method = 'UMAP',
+#                        metric = "correlation",
+#                        min_dist = 0.75,
+#                        n_neighbors = 50,
+#                        verbose = T)
+# ))
+# 
+# # run Monocle ----
+# print("Running Monocle")
+# print(system.time(
+#   sce <- clusterCells(sce,
+#                       method = 'louvain',
+#                       res = 1e-2,
+#                       louvain_iter = 1,
+#                       verbose = T)
+# ))
+
 saveRDS(sce, file = output)
