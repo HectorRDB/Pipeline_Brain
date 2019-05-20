@@ -45,6 +45,7 @@ sce <- newCellDataSet(assays(sce)$counts,
 sce <- estimateSizeFactors(sce)
 sce <- estimateDispersions(sce)
 sce@normalized_data_projection <- zinbW
+sce@auxOrderingData$normalize_expr_data <- t(zinbW)
 sce@assayData$exprs <- NULL
 
 saveRDS(sce, file = output)
