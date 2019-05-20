@@ -38,7 +38,8 @@ import("louvain")
 # Load data and convert to Delayed Array ----
 sce <- readRDS(file = loc)
 pd <- new("AnnotatedDataFrame", data = as.data.frame(sce@colData))
-fd <- new("AnnotatedDataFrame", data = data.frame(gene_short_name = rownames(assays(sce)$counts)))
+fd <- new("AnnotatedDataFrame",
+          data = data.frame(gene_short_name = rownames(assays(sce)$counts)))
 zinbW <- reducedDim(sce, type = reducedDimNames(sce)[3])
 rownames(fd) <- rownames(assays(sce)$counts)
 sce <- newCellDataSet(assays(sce)$counts,
@@ -52,7 +53,8 @@ sce <- estimateSizeFactors(sce)
 sce <- estimateDispersions(sce)
 sce@normalized_data_projection <- zinbW
 sce@assayData$exprs <- sce@auxOrderingData$normalize_expr_data <- t(zinbW[,1:2])
-
+sce@featureData <- new("AnnotatedDataFrame",
+                       data = data.frame(gene_short_name = 1:2))
 
 print("Doing the reduced dimension")
 sce <- reduceDimension(sce,
