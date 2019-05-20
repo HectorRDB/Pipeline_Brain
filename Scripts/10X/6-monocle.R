@@ -1,43 +1,16 @@
-suppressWarnings(library(optparse))
-
-# Arguments for R Script ----
-option_list <- list(
-  make_option(c("-o", "--output"),
-              action = "store", default = NA, type = "character",
-              help = "Where to store the output"
-  ),
-  make_option(c("-l", "--location"),
-              action = "store", default = NA, type = "character",
-              help = "The location of the data"
-  )
-)
-
-opt <- parse_args(OptionParser(option_list = option_list))
-
-if (!is.na(opt$l)) {
-  loc <- opt$l
-  cat("The selected dataset is located at", loc)
-} else {
-  stop("Missing l argument")
-}
-
-if (!is.na(opt$o)) {
-  output <- opt$o
-} else {
-  stop("Missing o argument")
-}
+loc <- "/pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_norm.rds"
+output <- "/pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_monocle.rds"
 
 suppressMessages(library(monocle))
-suppressMessages(library(SingleCellExperiment))
-suppressMessages(library(zinbwave))
 
-# Load data and convert to Delayed Array ----
+# Load data and convert to Çell Dataset ----
 sce <- readRDS(file = loc)
 pd <- new("AnnotatedDataFrame", data = as.data.frame(sce@colData))
-fd <- new("AnnotatedDataFrame", data = data.frame(gene_short_name = rownames(assays(sce)$counts)))
-zinbW <- reducedDim(sce, type = reducedDimNames(sce)[3])
-rownames(fd) <- rownames(assays(sce)$counts)
-sce <- newCellDataSet(assays(sce)$counts,
+fd <- new("AnnotatedDataFrame",
+          data = data.frame(gene_short_name = rownames(sce@assays$data$counts)))
+rownames(fd) <- rownames(sce@assays$data$counts)
+zinbW <- sce@reducedDims[[3]]
+sce <- newCellDataSet(sce@assays$data$counts,
                       phenoData = pd,
                       featureData = fd)
 

@@ -147,5 +147,8 @@ conda create -n monocle_env
 source activate monocle_env
 conda install -c bioconda bioconductor-monocle
 conda install -c r r-devtools 
+conda install -c conda-forge r-optparse
+conda install -c bioconda bioconductor-zinbwave
+conda install -c bioconda bioconductor-SingleCellExperiment
 # source deactivate
 ```
