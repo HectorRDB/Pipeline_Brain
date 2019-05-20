@@ -51,8 +51,8 @@ options(DelayedArray.block.size = 1005)
 sce <- estimateSizeFactors(sce)
 sce <- estimateDispersions(sce)
 sce@normalized_data_projection <- zinbW
-sce@auxOrderingData$normalize_expr_data <- t(zinbW)
-sce@assayData$exprs <- NULL
+sce@assayData$exprs <- sce@auxOrderingData$normalize_expr_data <- t(zinbW[,1:2])
+
 
 print("Doing the reduced dimension")
 sce <- reduceDimension(sce,
