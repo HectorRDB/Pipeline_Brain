@@ -1,3 +1,4 @@
+.libPaths("/home/hectorrb/.conda/envs/monocle_env/lib/R/library")
 loc <- "/pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_norm.rds"
 output <- "/pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_monocle.rds"
 

@@ -30,7 +30,7 @@ echo $TIMELAPSES >> $MEMORYFILE
 # This can be more than one line
 source activate monocle_env
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
-  R CMD BATCH --vanilla --verbose 6-monocle.R -l $loc -o $out> 6b.out 2>&1
+  R CMD BATCH --vanilla --verbose 6-monocle.R 
 
 # This can also be stored globally
 logStorage=/pylon5/ib5phhp/shared/improved-happiness/xsedelogs
