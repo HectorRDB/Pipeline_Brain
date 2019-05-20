@@ -47,6 +47,6 @@ sce <- estimateDispersions(sce)
 sce@normalized_data_projection <- zinbW
 sce@assayData$exprs <- sce@auxOrderingData$normalize_expr_data <- t(zinbW[,1:2])
 sce@featureData <- new("AnnotatedDataFrame",
-                       data = data.frame(gene_short_name = 1:2))
+                       data = data.frame(gene_short_name = colnames(zinbW)[1:2]))
 
 saveRDS(sce, file = output)
