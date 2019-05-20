@@ -50,9 +50,10 @@ DelayedArray:::set_verbose_block_processing(TRUE)
 options(DelayedArray.block.size = 1005)
 sce <- estimateSizeFactors(sce)
 sce <- estimateDispersions(sce)
-sce@normalized_data_projection <- zinbW
+cds@auxOrderingData$normalize_expr_data <- sce@normalized_data_projection <- zinbW
 sce@assayData$exprs <- NULL
 
+print("Doing the reduced dimension")
 sce <- reduceDimension(sce,
                        max_components = 2,
                        reduction_method = 'UMAP',
