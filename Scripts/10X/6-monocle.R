@@ -27,13 +27,9 @@ if (!is.na(opt$o)) {
   stop("Missing o argument")
 }
 
-suppressMessages(library(reticulate))
 suppressMessages(library(monocle))
 suppressMessages(library(SingleCellExperiment))
-suppressMessages(library(flexclust))
-suppressMessages(library(mcclust))
 suppressMessages(library(zinbwave))
-import("louvain")
 
 # Load data and convert to Delayed Array ----
 sce <- readRDS(file = loc)
@@ -46,32 +42,9 @@ sce <- newCellDataSet(assays(sce)$counts,
                       featureData = fd)
 
 # Pre-process
-DelayedArray:::set_verbose_block_processing(TRUE)
-options(DelayedArray.block.size = 1005)
 sce <- estimateSizeFactors(sce)
 sce <- estimateDispersions(sce)
 sce@normalized_data_projection <- zinbW
-
-
-# print("Reducing the dimensions with UMAP")
-# print(system.time(
-#   sce <- reduceDimension(sce,
-#                        max_components = 2,
-#                        reduction_method = 'UMAP',
-#                        metric = "correlation",
-#                        min_dist = 0.75,
-#                        n_neighbors = 50,
-#                        verbose = T)
-# ))
-# 
-# # run Monocle ----
-# print("Running Monocle")
-# print(system.time(
-#   sce <- clusterCells(sce,
-#                       method = 'louvain',
-#                       res = 1e-2,
-#                       louvain_iter = 1,
-#                       verbose = T)
-# ))
+sce@assayData$exprs <- NULL
 
 saveRDS(sce, file = output)

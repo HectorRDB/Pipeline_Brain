@@ -8,7 +8,7 @@ output: pdf_document
 # First Try
 
 No module loaded.
-Just open __R__ and do _BiocManager::install("monocle")_.
+Just open __R__ and do `BiocManager::install("monocle")`.
 
 This fails for packages __densityClust__ and __DDRTree__.
 
@@ -133,3 +133,19 @@ conda-build r-lpsolveapi
 ```
 
 This fails as well with some compiler error (the infamous "unrecognized command line option '-qopenmp'; did you mean '-fopenmp'?"). 
+
+# Working with both clusters
+
+A idea that could work is to use the clusters only to do the zinbwave reduction, and then to tranfer the data to the scf cluster and do there the UMAP reduction and the clustering. Since we only carry around a matrix of #n cells by 30, it will fit into memory on the scf. Moreover, UMAP and clustering should be coded well enough so as to not compute a full distance matrix.
+
+So, we just need to install monocle 2 on bridges.
+
+```{r bash, eval= F}
+module unload intel
+module load anaconda3
+conda create -n monocle_env
+source activate monocle_env
+conda install -c bioconda bioconductor-monocle
+conda install -c r r-devtools 
+# source deactivate
+```
