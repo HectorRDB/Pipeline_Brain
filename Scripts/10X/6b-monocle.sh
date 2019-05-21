@@ -8,13 +8,11 @@
 #SBATCH -t 4-00:00:00
 #SBATCH --nodes=1
 
-loc="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_norm.rds"
-out="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_monocle.rds"
 module unload intel
 module load anaconda3
 
 timestamp=$(date +"%m-%d-%H:%M")
-MEMORYFILE=${timestamp}_6a-monocle_n-1.txt
+MEMORYFILE=${timestamp}_6b-monocle_n-1.txt
 
 echo $NAME > $MEMORYFILE
 echo 1 "LM" 1000GB >> $MEMORYFILE
@@ -25,6 +23,6 @@ echo $TIMELAPSES >> $MEMORYFILE
 # This can be more than one line
 source activate monocle_env
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
-  R CMD BATCH  6a-monocle.R 6a.out
+  R CMD BATCH  6b-monocle.R 6b.out
 
 cp $MEMORYFILE ${logStorage}/$MEMORYFILE
