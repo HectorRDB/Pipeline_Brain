@@ -1,6 +1,6 @@
 .libPaths("/home/hectorrb/.conda/envs/monocle_env/lib/R/library")
-loc <- "/pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_norm.rds"
-output <- "/pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_monocle.rds"
+loc <- "/pylon5/ib5phhp/hectorrb/ProcessedData/10x_cells_MOp_norm.rds"
+output <- "/pylon5/ib5phhp/hectorrb/ProcessedData/10x_cells_MOp_monocle.rds"
 
 suppressMessages(library(monocle))
 
@@ -18,8 +18,7 @@ sce <- newCellDataSet(sce@assays$data$counts,
 # Pre-process
 sce <- estimateSizeFactors(sce)
 sce <- estimateDispersions(sce)
-# sce@normalized_data_projection <- zinbW
-print(slotNames(sce))
+sce@normalized_data_projection <- zinbW
 sce@assayData$exprs <- sce@auxOrderingData$normalize_expr_data <- t(zinbW[,1:2])
 fd <- new("AnnotatedDataFrame",
           data = data.frame(gene_short_name = colnames(zinbW)[1:2]))

@@ -96,7 +96,7 @@ Installing Louvain fails.
 
 Following the instructions from the help, I did
 
-```{r bash, eval= F}
+```{bash, eval= F}
 module unload intel
 module load anaconda3
 conda create -n monocle_env
@@ -140,12 +140,14 @@ A idea that could work is to use the clusters only to do the zinbwave reduction,
 
 So, we just need to install monocle 2 on bridges.
 
-```{r bash, eval= F}
+```{bash, eval= F}
 module unload intel
 module load anaconda3
 conda create -n monocle_env
 source activate monocle_env
 conda install -c bioconda bioconductor-monocle
-conda install -c bioconda bioconductor-biobase 
+conda install -c bioconda bioconductor-biobase
+conda install -c bioconda bioconductor-s4vectors
+conda install -c bioconda bioconductor-summarizedexperiment
 # source deactivate
 ```
