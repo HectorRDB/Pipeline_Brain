@@ -38,7 +38,8 @@ import("louvain")
 # Load data and convert to Delayed Array ----
 sce <- readRDS(file = loc)
 pd <- new("AnnotatedDataFrame", data = as.data.frame(sce@colData))
-fd <- new("AnnotatedDataFrame", data = data.frame(gene_short_name = rownames(assays(sce)$counts)))
+fd <- new("AnnotatedDataFrame",
+          data = data.frame(gene_short_name = rownames(assays(sce)$counts)))
 zinbW <- reducedDim(sce, type = reducedDimNames(sce)[3])
 rownames(fd) <- rownames(assays(sce)$counts)
 sce <- newCellDataSet(assays(sce)$counts,
@@ -50,12 +51,14 @@ DelayedArray:::set_verbose_block_processing(TRUE)
 options(DelayedArray.block.size = 1005)
 sce <- estimateSizeFactors(sce)
 sce <- estimateDispersions(sce)
-# sce <- preprocessCDS(sce,
-#                      method = 'PCA',
-#                      norm_method = 'log',
-#                      num_dim = 50,
-#                      verbose = T)
 sce@normalized_data_projection <- zinbW
+sce@assayData$exprs <- sce@auxOrderingData$normalize_expr_data <- t(zinbW[,1:2])
+fd <- new("AnnotatedDataFrame",
+          data = data.frame(gene_short_name = colnames(zinbW)[1:2]))
+rownames(fd) <- colnames(zinbW)[1:2]
+sce@featureData <- fd
+
+print("Doing the reduced dimension")
 sce <- reduceDimension(sce,
                        max_components = 2,
                        reduction_method = 'UMAP',
@@ -64,8 +67,8 @@ sce <- reduceDimension(sce,
                        n_neighbors = 50,
                        verbose = T)
 
-# run RSEC ----
-print("Running RSEC")
+# run Monocle ----
+print("Running Monocle")
 print(system.time(
   sce <- clusterCells(sce,
                       method = 'louvain',
@@ -74,5 +77,4 @@ print(system.time(
                       verbose = T)
 ))
 
-# pData(sce)$Cluster
-saveRDS(sce, file = output)
+# saveRDS(sce, file = output)

@@ -76,13 +76,60 @@ The following objects are masked from ‘package:clusterExperiment’:
     nFeatures, nSamples
 
 Cluster Many
+
+ *** caught segfault ***
+address 0x7f68f72c2000, cause 'memory not mapped'
+Error in deparse(call) : 
+  long vectors not supported yet: ../../src/include/Rinlinedfuns.h:519
+Calls: print ... tryCatchList -> tryCatchOne -> <Anonymous> -> deparse
+In addition: There were 14 warnings (use warnings() to see them)
+
+ *** caught segfault ***
+address 0x7f68f8bf4000, cause 'memory not mapped'
+Error in deparse(call) : 
+  long vectors not supported yet: ../../src/include/Rinlinedfuns.h:519
+Calls: print ... tryCatchList -> tryCatchOne -> <Anonymous> -> deparse
+In addition: Warning messages:
+1: Quick-TRANSfer stage steps exceeded maximum (= 2890000) 
+2: Quick-TRANSfer stage steps exceeded maximum (= 2890000) 
+
+ *** caught segfault ***
+address 0x7f68f988e000, cause 'memory not mapped'
+Error in deparse(call) : 
+  long vectors not supported yet: ../../src/include/Rinlinedfuns.h:519
+Calls: print ... tryCatchList -> tryCatchOne -> <Anonymous> -> deparse
+In addition: Warning messages:
+1: did not converge in 10 iterations 
+2: Quick-TRANSfer stage steps exceeded maximum (= 2890000) 
+3: Quick-TRANSfer stage steps exceeded maximum (= 2890000) 
+4: Quick-TRANSfer stage steps exceeded maximum (= 2890000) 
+5: Quick-TRANSfer stage steps exceeded maximum (= 2890000) 
+6: did not converge in 10 iterations 
+
+ *** caught segfault ***
+address 0x7f68f6628000, cause 'memory not mapped'
+Error in deparse(call) : 
+  long vectors not supported yet: ../../src/include/Rinlinedfuns.h:519
+Calls: print ... tryCatchList -> tryCatchOne -> <Anonymous> -> deparse
+In addition: There were 27 warnings (use warnings() to see them)
+
+ *** caught segfault ***
+address 0x7f68f7f5a000, cause 'memory not mapped'
+Error in deparse(call) : 
+  long vectors not supported yet: ../../src/include/Rinlinedfuns.h:519
+Calls: print ... tryCatchList -> tryCatchOne -> <Anonymous> -> deparse
+In addition: Warning messages:
+1: Quick-TRANSfer stage steps exceeded maximum (= 2890000) 
+2: did not converge in 10 iterations 
+3: did not converge in 10 iterations 
+4: did not converge in 10 iterations 
 Error in .local(x, ...) : 
   45 parameter values (of 45) hit an error. The first was:
-Error in (function (x, k, diss = inherits(x, "dist"), metric = c("euclidean",  : 
-  have 82572 observations, but not more than 65536 are allowed
+fatal error in wrapper code
 Calls: print ... system.time -> clusterMany -> clusterMany -> .local
 In addition: Warning message:
 In mclapply(seq_len(nrow(param)), FUN = paramFun, mc.cores = ncores,  :
   all scheduled cores encountered errors in user code
-Timing stopped at: 0.683 0.29 4.066
+Timing stopped at: 1.681 0.56 2.699e+04
 Execution halted
+Error while shutting down parallel: unable to terminate some child processes
