@@ -23,6 +23,6 @@ echo $TIMELAPSES >> $MEMORYFILE
 # This can be more than one line
 source activate monocle_env
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
-  R CMD BATCH  6a-monocle.R 6b.out
+  R CMD BATCH  6a-monocle.R 6a.out
 
 cp $MEMORYFILE ${logStorage}/$MEMORYFILE
