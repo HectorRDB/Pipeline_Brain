@@ -3,26 +3,10 @@
 #SBATCH --mail-type=ALL
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
-#SBATCH -p LM
-#SBATCH --mem=1000GB
-#SBATCH -t 4-00:00:00
 #SBATCH --nodes=1
+MEMORYFILE="6bb-memoryLogger.txt"
+loc="/scratch/users/singlecell/MiniAtlas/data/rds/10x_nuclei_MOp"
+out="/scratch/users/singlecell/MiniAtlas/data/rds/10x_nuclei_MOp_monocle2.rds"
 
-module unload intel
-module load anaconda3
-
-timestamp=$(date +"%m-%d-%H:%M")
-MEMORYFILE=${timestamp}_6b-monocle_n-1.txt
-
-echo $NAME > $MEMORYFILE
-echo 1 "LM" 1000GB >> $MEMORYFILE
-TIMELAPSES=30
-echo $TIMELAPSES >> $MEMORYFILE
-
-# Example of a script you could run
-# This can be more than one line
-source activate monocle_env
-while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
-  R CMD BATCH  6b-monocle.R 6b.out
-
-cp $MEMORYFILE ${logStorage}/$MEMORYFILE
+while true; do free -h >> $MEMORYFILE; sleep 15; done & \
+Rscript --vanilla --verbose 6-monocle.R -l $loc -o $out> 6bb.out 2>&1
