@@ -1,0 +1,51 @@
+running
+  '/usr/lib/R/bin/R --slave --no-restore --vanilla --file=6-monocle.R --args -l /scratch/users/singlecell/MiniAtlas/data/rds/10x_nuclei_MOp -o /scratch/users/singlecell/MiniAtlas/data/rds/10x_nuclei_MOp_monocle2.rds'
+
+The selected dataset is located at /scratch/users/singlecell/MiniAtlas/data/rds/10x_nuclei_MOpWarning messages:
+1: In rgl.init(initValue, onlyNULL) : RGL: unable to open X11 display
+2: 'rgl_init' failed, running with rgl.useNULL = TRUE 
+Module(louvain)
+[1] "Doing the reduced dimension"
+Retrieving normalized data ...
+Running Uniform Manifold Approximation and Projection
+UMAP(a=None, angular_rp_forest=False, b=None, init='spectral',
+   learning_rate=1.0, local_connectivity=1, metric='correlation',
+   metric_kwds={}, min_dist=0.75, n_components=2, n_epochs=None,
+   n_neighbors=50, negative_sample_rate=5, random_state=0,
+   repulsion_strength=1.0, set_op_mix_ratio=1.0, spread=1.0,
+   target_metric='categorical', target_metric_kwds={},
+   target_n_neighbors=-1, target_weight=0.5, transform_queue_size=4.0,
+   transform_seed=42, verbose=True)
+Construct fuzzy simplicial set
+	 0  /  16
+	 1  /  16
+	 2  /  16
+	 3  /  16
+	 4  /  16
+Construct embedding
+	completed  0  /  200 epochs
+	completed  20  /  200 epochs
+	completed  40  /  200 epochs
+	completed  60  /  200 epochs
+	completed  80  /  200 epochs
+	completed  100  /  200 epochs
+	completed  120  /  200 epochs
+	completed  140  /  200 epochs
+	completed  160  /  200 epochs
+	completed  180  /  200 epochs
+[1] "Running Monocle"
+Run kNN based graph clustering starts:
+  -Input data of 82572 rows and 2 columns
+  -k is set to 20
+  Finding nearest neighbors...DONE ~ 2.098 s
+  Compute jaccard coefficient between nearest-neighbor sets ...DONE ~ 0.123 s
+  Build undirected graph from the weighted links ...DONE ~ 4.081 s
+  Run louvain clustering on the graph ...
+Running louvain iteration  1 ...
+Current iteration is 1; current resolution is 0.001; Modularity is 0.947987233605113; Number of clusters are 80
+Maximal modularity is 0.947987233605113; corresponding resolution is 0.001
+
+Run kNN based graph clustering DONE, totally takes 49.7564346790314 s.
+  -Number of clusters: 80 
+   user  system elapsed 
+ 61.647   3.898  65.702 

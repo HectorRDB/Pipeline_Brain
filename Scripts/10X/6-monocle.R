@@ -59,7 +59,7 @@ print("Running Monocle")
 print(system.time(
   sce <- clusterCells(sce,
                       method = 'louvain',
-                      res = 1e-6,
+                      res = 1e-3,
                       louvain_iter = 1,
                       verbose = T)
 ))
