@@ -46,7 +46,7 @@ sce <- readRDS(file = loc)
 ##---- run RSEC
 sequential <- FALSE
 subsample <- TRUE
-clusterFunction <- "pam"
+clusterFunction <- "kmeans"
 NCORES <- as.numeric(opt$n)
 reduceMeth <- reducedDimNames(sce)
 cat("Cluster Many\n")
