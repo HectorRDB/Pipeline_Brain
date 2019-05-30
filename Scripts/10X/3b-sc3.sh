@@ -9,9 +9,26 @@
 #SBATCH --nodes=1
 
 module load gcc/8.2.0
+
+# Create the MEMORYFILE file
+timestamp=$(date +"%Y%m%d-%H%M%S")
+basename=sc3_10x-nuclei_${timestamp}
+MEMORYFILE=${basename}.txt
+# Add the first few lines for analytic purposes.
+# The name variable can also be defined gloably by modifyinh the .bashrc file
+NAME=Hector
+echo $NAME > $MEMORYFILE
+# Replace with your own variables. This is cpus-per-tasks partition mem
+echo 1 LM 1500GB >> $MEMORYFILE
+TIMELAPSES=15
+echo $TIMELAPSES >> $MEMORYFILE
+
 loc="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_filt.rds"
 out="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_sc3.rds"
 MEMORYFILE="3a-memoryLogger.txt"
 
-while true; do free -h >> $MEMORYFILE; sleep 30; done & Rscript \
-  --no-save --verbose  3-sc3.R -n 1 -l $loc -o $out> 3a.out 2>&1
+while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & Rscript \
+  --no-save --verbose  3-sc3.R -n 1 -l $loc -o $out> ${basename}.out 2>&1
+
+logStorage=/pylon5/ib5phhp/shared/improved-happiness/xsedelogs
+cp $MEMORYFILE ${logStorage}/$MEMORYFILE
