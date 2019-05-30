@@ -45,7 +45,7 @@ print(dim(sce))
 rowData(sce)$feature_symbol <- rownames(sce)
 # sce <- sc3_estimate_k(sce)
 # K <- metadata(sce)$sc3$k_estimation
-K <- c(20, 30, 40)
+K <- c(60, 80, 100, 120, 140)
 cat("Running the sc3 on a reduced set of ", round(.1 * ncol(sce)), "cells\n")
 sce <- sc3(sce, ks = K, svm_max = ncol(sce) + 1, biology = FALSE,
            n_cores = as.numeric(opt$n), svm_num_cells = round(.1 * ncol(sce)))
