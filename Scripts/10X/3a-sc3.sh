@@ -27,7 +27,7 @@ loc="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_cells_MOp_filt.rds"
 out="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_cells_MOp_sc3.rds"
 
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & Rscript \
-  --no-save --verbose  3-sc3.R -n 1 -l $loc -o $out> ${basename}.out 2>&1
+  --no-save --verbose  3-sc3.R -n 1 -l $loc -o $out > ${basename}.out 2>&1
 
 logStorage=/pylon5/ib5phhp/shared/improved-happiness/xsedelogs
 cp $MEMORYFILE ${logStorage}/$MEMORYFILE
