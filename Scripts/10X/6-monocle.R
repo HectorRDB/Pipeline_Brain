@@ -63,5 +63,7 @@ print(system.time(
                       louvain_iter = 1,
                       verbose = T)
 ))
-sce <- pData(sce)$Cluster
-saveRDS(sce, file = output)
+clusters <- pData(sce)$Cluster
+names(clusters) <- colnames(sce)
+
+saveRDS(clusters, file = output)
