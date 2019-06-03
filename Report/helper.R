@@ -240,21 +240,21 @@ intermediateMat <- function(merger, p = .9) {
   # Compute ARI imp and find where to stop the merge
   ARI <- ARIImp(merger)
   int_merges <- merger$merges
-  j <- min(which(ARI >= min(ARI) + p * (max(ARI) - min(ARI))))
+  j <- min(which(ARI[2:length(ARI)] >= min(ARI) + p * (max(ARI) - min(ARI))))
   int_merges <- int_merges[1:j, ]
-  assign <- sapply(1:ncol(merger$currentMat), function(clus) {
-    if (sum(int_merges[, 1] == clus) == 0) {
-      return(merger$initalMat[,clus])
+  assign <- sapply(colnames(merger$currentMat), function(clus) {
+    J <- which(colnames(merger$initalMat) == clus)
+    if (sum(int_merges[, 1] == J) == 0) {
+      return(merger$initalMat[, clus])
     } else {
-      clus_merges <- int_merges[int_merges[, 1] == clus, ] %>%
-        as.matrix(matrix(ncol = 3))
-      lapply(1:nrow(merger$currentMat), function(i){
-        cell <- merger$initalMat[i, clus]
-        for (j in 1:nrow(clus_merges)) {
-          if (cell %in% clus_merges[j, ]) cell <- min(clus_merges[j, ])
-        }
-        return(cell)
-      }) %>% unlist() %>% return()
+      clus_merges <- int_merges[int_merges[, 1] == J, ] %>%
+        as.matrix() %>% matrix(ncol = 3)
+      cells <- merger$initalMat[, clus]
+      walk(1:nrow(clus_merges), function(i){
+        indsPair <- which(cells %in% clus_merges[i, 2:3])
+        cells[indsPair] <- min(clus_merges[i, 2:3])
+      })
+      return(cells)
     }
   }) 
   
