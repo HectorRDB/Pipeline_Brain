@@ -62,23 +62,25 @@ for (dataset in datasets) {
   print("...Full matrix")
   names <- read_csv(here("data", type(dataset),
                          paste0(dataset, "_cluster.membership.csv")))
+  currentMat <- merger$currentMat
+  j <- which(colnames(merger$initalMat) == "RsecT")
   mat <- cbind(names$X1,
-               merger$initalMat[,-2], consensusInit,
+               merger$initalMat[, -j], consensusInit,
                stopMatrix_33, consensusInt_33,
                stopMatrix_66, consensusInt_66,
                stopMatrix_90, consensusInt_90,
                currentMat, consensusFinal)
   
   colnames(mat) <- c("cells",
-    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "_Initial",
+    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "Initial",
           sep = "-"),
-    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "_33",
+    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "33",
           sep = "-"),
-    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "_66",
+    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "66",
           sep = "-"),
-    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "_90",
+    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "90",
           sep = "-"),
-    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "_Final",
+    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "Final",
           sep = "-")
     )
   

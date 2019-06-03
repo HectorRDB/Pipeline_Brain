@@ -52,6 +52,7 @@ rm(k)
 
 # Load monocle and allen clustering results
 Monocle <- readRDS(paste0(loc, "_monocle.rds"))
+Names <- colnames(Monocle)
 allen <- pData(Monocle)$allenClusters
 Monocle <- pData(Monocle)$Cluster
 
@@ -81,7 +82,7 @@ if (opt$a) {
   clusMatT <- data.frame("sc3" = sc3, "RsecT" = RsecT, "Monocle" = Monocle,
                          "seurat" = seurat)
 }
-  
+rownames(clusMat) <- Names  
 
 # Do the consensus clustering ----
 print(paste0("Number of cores: ", opt$n))
