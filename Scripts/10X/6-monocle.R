@@ -63,5 +63,5 @@ print(system.time(
                       louvain_iter = 1,
                       verbose = T)
 ))
-
+sce <- pData(sce)$Cluster
 saveRDS(sce, file = output)

@@ -33,7 +33,7 @@ for (dataset in datasets) {
   consensusFinal <- cellsConsensus$clustering
   
   print("...Intermediary consensus at 33.3%")
-  stopMatrix_33 <- intermediateMat(merger = merger)
+  stopMatrix_33 <- intermediateMat(merger = merger, p = 1/3)
   stopMatrix_33[, "Rsec"] <- assignRsec(merger, p = 1/3)
   cellsConsensus <- suppressWarnings(
     makeConsensus(x = merger$currentMat, clusterLabel = "makeConsensus",
@@ -42,7 +42,7 @@ for (dataset in datasets) {
   consensusInt_33 <- cellsConsensus$clustering
   
   print("...Intermediary consensus at 66.7%")
-  stopMatrix_66 <- intermediateMat(merger = merger)
+  stopMatrix_66 <- intermediateMat(merger = merger, p = 2/3)
   stopMatrix_66[, "Rsec"] <- assignRsec(merger, p = 2/3)
   cellsConsensus <- suppressWarnings(
     makeConsensus(x = merger$currentMat, clusterLabel = "makeConsensus",
