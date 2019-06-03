@@ -4,8 +4,8 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
 #SBATCH -p LM
-#SBATCH --mem=1500GB
-#SBATCH -t 4-00:00:00
+#SBATCH --mem=1000GB
+#SBATCH -t 7-00:00:00
 #SBATCH --nodes=1
 
 module load gcc/8.2.0
@@ -19,7 +19,7 @@ MEMORYFILE=${basename}.txt
 NAME=Hector
 echo $NAME > $MEMORYFILE
 # Replace with your own variables. This is cpus-per-tasks partition mem
-echo 1 LM 1500GB >> $MEMORYFILE
+echo 1 LM 1000GB >> $MEMORYFILE
 TIMELAPSES=15
 echo $TIMELAPSES >> $MEMORYFILE
 
