@@ -250,10 +250,10 @@ intermediateMat <- function(merger, p = .9) {
       clus_merges <- int_merges[int_merges[, 1] == J, ] %>%
         as.matrix() %>% matrix(ncol = 3)
       cells <- merger$initalMat[, clus]
-      walk(1:nrow(clus_merges), function(i){
+      for (i in 1:nrow(clus_merges)) {
         indsPair <- which(cells %in% clus_merges[i, 2:3])
         cells[indsPair] <- min(clus_merges[i, 2:3])
-      })
+      }
       return(cells)
     }
   }) 
