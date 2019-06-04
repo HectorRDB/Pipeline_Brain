@@ -16,7 +16,7 @@ for (dataset in datasets) {
   
   print("...Initial consensus")
   cellsConsensus <- suppressWarnings(
-    makeConsensus(x = as.matrix(merger$initalMat[, -2]),
+    makeConsensus(x = as.matrix(merger$initalMat[, -5]),
                   clusterLabel = "makeConsensus",
                   proportion = 2/3, minSize = 100)
   )
@@ -26,7 +26,7 @@ for (dataset in datasets) {
   currentMat <- merger$currentMat
   currentMat[, "Rsec"] <- assignRsec(merger)
   cellsConsensus <- suppressWarnings(
-    makeConsensus(x = currentMat, 
+    makeConsensus(x = currentMat %>% as.matrix(), 
                   clusterLabel = "makeConsensus",
                   proportion = 2/3, minSize = 100)
   )
@@ -34,27 +34,30 @@ for (dataset in datasets) {
   
   print("...Intermediary consensus at 33.3%")
   stopMatrix_33 <- intermediateMat(merger = merger, p = 1/3)
-  stopMatrix_33[, "Rsec"] <- assignRsec(merger, p = 1/3)
+  full_33 <- stopMatrix_33
+  full_33[, "Rsec"] <- assignRsec(merger, p = 1/3)
   cellsConsensus <- suppressWarnings(
-    makeConsensus(x = merger$currentMat, clusterLabel = "makeConsensus",
+    makeConsensus(x = full_33, clusterLabel = "makeConsensus",
                   proportion = 2/3, minSize = 100)
   )
   consensusInt_33 <- cellsConsensus$clustering
   
   print("...Intermediary consensus at 66.7%")
   stopMatrix_66 <- intermediateMat(merger = merger, p = 2/3)
-  stopMatrix_66[, "Rsec"] <- assignRsec(merger, p = 2/3)
+  full_66 <- stopMatrix_66
+  full_66[, "Rsec"] <- assignRsec(merger, p = 2/3)
   cellsConsensus <- suppressWarnings(
-    makeConsensus(x = merger$currentMat, clusterLabel = "makeConsensus",
+    makeConsensus(x = full_66, clusterLabel = "makeConsensus",
                   proportion = 2/3, minSize = 100)
   )
   consensusInt_66 <- cellsConsensus$clustering
   
   print("...Intermediary consensus at 90%")
   stopMatrix_90 <- intermediateMat(merger = merger)
-  stopMatrix_90[, "Rsec"] <- assignRsec(merger, p = .9)
+  full_90 <- stopMatrix_90
+  full_90[, "Rsec"] <- assignRsec(merger, p = .9)
   cellsConsensus <- suppressWarnings(
-    makeConsensus(x = merger$currentMat, clusterLabel = "makeConsensus",
+    makeConsensus(x = full_90, clusterLabel = "makeConsensus",
                   proportion = 2/3, minSize = 100)
   )
   consensusInt_90 <- cellsConsensus$clustering
