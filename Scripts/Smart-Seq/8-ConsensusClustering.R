@@ -47,20 +47,20 @@ library(tidyverse)
 # Load sc3 clustering results
 sc3 <- readRDS(paste0(loc, "_sc3.rds"))
 k <- names(metadata(sc3)$sc3$consensus)
-sc3 <- colData(sc3)[, paste0("sc3_", k, "_clusters")]
+sc3 <- colData(sc3)[, paste0("sc3_", k, "_clusters")] %>% as.numeric()
 rm(k)
 
 # Load monocle and allen clustering results
 Monocle <- readRDS(paste0(loc, "_monocle.rds"))
 Names <- colnames(Monocle)
-allen <- pData(Monocle)$allenClusters
-Monocle <- pData(Monocle)$Cluster
+allen <- pData(Monocle)$allenClusters %>% as.numeric()
+Monocle <- pData(Monocle)$Cluster %>% as.numeric()
 
 # Load RSEC results
 Rsec <- readRDS(paste0(loc, "_RSEC.rds"))
 RsecT <- assignUnassigned(Rsec, clusterLabel = "Assigned")
-RsecT <- primaryCluster(RsecT)
-Rsec <- primaryCluster(Rsec)
+RsecT <- primaryCluster(RsecT) %>% as.numeric()
+Rsec <- primaryCluster(Rsec) %>% as.numeric()
 
 # Load all seurat results and keep one of them
 seurat <- readRDS(paste0(loc, "_seurat.rds"))
@@ -68,7 +68,7 @@ source("/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/Scri
 
 seurat_p <- "1.6,50"
 
-seurat <- seurat[, seurat_p]
+seurat <- seurat[, seurat_p] %>% as.numeric()
 
 # Get the final clustering labels
 if (opt$a) {
