@@ -37,15 +37,15 @@ Construct embedding
 Run kNN based graph clustering starts:
   -Input data of 82572 rows and 2 columns
   -k is set to 20
-  Finding nearest neighbors...DONE ~ 2.098 s
-  Compute jaccard coefficient between nearest-neighbor sets ...DONE ~ 0.123 s
-  Build undirected graph from the weighted links ...DONE ~ 4.081 s
+  Finding nearest neighbors...DONE ~ 0.948 s
+  Compute jaccard coefficient between nearest-neighbor sets ...DONE ~ 0.065 s
+  Build undirected graph from the weighted links ...DONE ~ 1.366 s
   Run louvain clustering on the graph ...
 Running louvain iteration  1 ...
 Current iteration is 1; current resolution is 0.001; Modularity is 0.947987233605113; Number of clusters are 80
 Maximal modularity is 0.947987233605113; corresponding resolution is 0.001
 
-Run kNN based graph clustering DONE, totally takes 49.7564346790314 s.
+Run kNN based graph clustering DONE, totally takes 22.3851463794708 s.
   -Number of clusters: 80 
    user  system elapsed 
- 61.647   3.898  65.702 
+ 28.254   1.038  29.331 
