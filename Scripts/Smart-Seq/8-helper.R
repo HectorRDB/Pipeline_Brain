@@ -38,6 +38,7 @@ mergeManyPairwise <- function(clusteringMatrix, nCores = 3) {
   
   # Initialize the values
   clusters <- apply(clusMat, 2, unique)
+  rownames(clusMat) <- rownames(clusteringMatrix)
   currentMat <- clusMat
   baseARI <- apply(clusMat, 2, function(x) {
     apply(clusMat, 2, function(y) {
@@ -104,7 +105,7 @@ mergeManyPairwise <- function(clusteringMatrix, nCores = 3) {
   
   colnames(merges) <- c("clustering", "cluster1", "cluster2")
   return(list("initalMat" = clusteringMatrix,
-              "currentMat" = currentMat,
+              "currentMat" = as.data.frame(currentMat),
               "merges" = merges,
               "ImpARI" = ImpARI))
 }
