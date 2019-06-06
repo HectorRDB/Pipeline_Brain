@@ -4,7 +4,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
 #SBATCH -p LM
-#SBATCH --mem=1000GB
+#SBATCH --mem=1500GB
 #SBATCH -t 7-00:00:00
 #SBATCH --nodes=1
 
@@ -19,8 +19,8 @@ MEMORYFILE=${basename}.txt
 NAME=Hector
 echo $NAME > $MEMORYFILE
 # Replace with your own variables. This is cpus-per-tasks partition mem
-echo 1 LM 1000GB >> $MEMORYFILE
-TIMELAPSES=15
+echo 1 LM 1500GB >> $MEMORYFILE
+TIMELAPSES=30
 echo $TIMELAPSES >> $MEMORYFILE
 
 loc="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_cells_MOp_filt.rds"
