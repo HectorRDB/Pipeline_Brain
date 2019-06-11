@@ -4,7 +4,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=10
 #SBATCH -p LM
-#SBATCH --mem=1500GB
+#SBATCH --mem=800GB
 #SBATCH -t 7-00:00:00
 #SBATCH --nodes=1
 
@@ -19,13 +19,12 @@ MEMORYFILE=${basename}.txt
 NAME=Hector
 echo $NAME > $MEMORYFILE
 # Replace with your own variables. This is cpus-per-tasks partition mem
-echo 1 LM 1500GB >> $MEMORYFILE
+echo 1 LM 800GB >> $MEMORYFILE
 TIMELAPSES=30
 echo $TIMELAPSES >> $MEMORYFILE
 
 loc="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_filt.rds"
 out="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_sc3.rds"
-MEMORYFILE="3a-memoryLogger.txt"
 
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & Rscript \
   --no-save --verbose  3-sc3.R -n 1 -l $loc -o $out> ${basename}.out 2>&1
