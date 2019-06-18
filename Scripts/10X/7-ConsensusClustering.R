@@ -6,10 +6,6 @@ option_list <- list(
               action = "store", default = NA, type = "character",
               help = "Where to store the output"
   ),
-  make_option(c("-p", "--plot-output"),
-              action = "store", default = NA, type = "character",
-              help = "Where to store the plots"
-  ),
   make_option(c("-l", "--location"),
               action = "store", default = NA, type = "character",
               help = "The location of the data"
@@ -32,11 +28,6 @@ if (!is.na(opt$l)) {
 } else {
   stop("Missing l argument")
 }
-if (!is.na(opt$p)) {
-  output_p <- opt$p
-} else {
-  stop("Missing p argument")
-}
 
 if (!is.na(opt$o)) {
   output <- opt$o
@@ -44,7 +35,6 @@ if (!is.na(opt$o)) {
   stop("Missing o argument")
 }
 
-library(clusterExperiment)
 library(SummarizedExperiment)
 library(parallel)
 library(matrixStats)
