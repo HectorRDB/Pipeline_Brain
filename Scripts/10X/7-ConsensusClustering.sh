@@ -9,7 +9,8 @@
 #SBATCH --nodes=1
 
 timestamp=$(date +"%m-%d-%H:%M")
-MEMORYFILE=${timestamp}_nuclei-cells-ARI-merging_allen-no-allen.txt
+basename=nuclei-cells-ARI-merging_allen-no-allen_${timestamp}
+MEMORYFILE=${basename}.txt
 
 echo $NAME > $MEMORYFILE
 echo 10 "LM" 1500GB >> $MEMORYFILE
