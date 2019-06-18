@@ -1,33 +1,3 @@
-plotARIs <- function(ARI, small = T) {
-  p <- ARI %>% as.data.frame() %>%
-    mutate(label = rownames(ARI)) %>%
-    gather(key = label2, value = ari, -(ncol(ARI) + 1)) %>%
-    ggplot(aes(x = label, y = label2, fill = ari)) +
-    geom_tile() +
-    scale_fill_viridis_c(limits = c(0, 1)) +
-    theme_classic() +
-    theme(axis.line = element_blank())
-  if (small) {
-    p <- p  +
-      geom_text(aes(label = round(ari, 2))) +
-      guides(fill = F)
-  }
-  return(p)
-}
-
-seurat_params <- function(seurat_ARI) {
-  tree <- as.dendrogram(hclust(dist(seurat_ARI)))
-  inds1 <- unlist(tree[[1]])
-  inds2 <- unlist(tree[[2]])
-  seurat_ARI1 <- seurat_ARI[inds1, inds1]
-  seurat_ARI2 <- seurat_ARI[inds2, inds2]
-  param1 <- names(which.max(colMeans(seurat_ARI1)))
-  param2 <- names(which.max(colMeans(seurat_ARI2)))
-  print(param1)
-  print(param2)
-  return(c(param1, param2))
-}
-
 mergeManyPairwise <- function(clusteringMatrix, nCores = 3) {
   # Turn the matrix into a numeric matrix
   clusMat <- apply(clusteringMatrix, 2, function(x) {
