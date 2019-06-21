@@ -22,8 +22,8 @@ opts_chunk$set(
   fig.pos = "!h", out.extra = "", warning = F, message = F,
   fig.width = 5, fig.align = "center", echo = F
 )
-libs <- c("here", "tidyverse", "cowplot", "clusterExperiment", "mclust",
-          "RColorBrewer", "progress", "merger")
+libs <- c("here", "dplyr", "ggplot2", "tidyr", "stringr", "readr", "cowplot",
+          "clusterExperiment", "mclust", "RColorBrewer", "progress", "merger")
 suppressMessages(
   suppressWarnings(sapply(libs, require, character.only = TRUE))
 )
