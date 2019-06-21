@@ -15,7 +15,7 @@ timestamp=$(date +"%Y%m%d-%H%M%S")
 basename=sc3_10x-nuclei_${timestamp}
 MEMORYFILE=${basename}.txt
 # Add the first few lines for analytic purposes.
-# The name variable can also be defined gloably by modifyinh the .bashrc file
+# The name variable can also be defined gloably by modifying the .bashrc file
 NAME=Hector
 echo $NAME > $MEMORYFILE
 # Replace with your own variables. This is cpus-per-tasks partition mem
