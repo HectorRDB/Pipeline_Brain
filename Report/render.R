@@ -21,6 +21,8 @@ if (!is.na(opt$d)) {
 
 if (opt$l) {
   Sys.setenv(RSTUDIO_PANDOC = "/Applications/RStudio.app/Contents/MacOS/pandoc")  
+} else {
+  .libPaths("/pylon5/ib5phhp/shared/rpack/3.5")
 }
 
 rmarkdown::render('dataset_analysis.Rmd',
