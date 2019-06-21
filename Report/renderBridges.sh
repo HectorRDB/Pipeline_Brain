@@ -30,7 +30,7 @@ do
   echo $dataset
   while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
     Rscript --vanilla --verbose render.R -d $dataset -l FALSE \
-      > ${basename}.out 2>&1
+      >> ${basename}.out 2>&1
 done
 
 # Note that if your script fail, you will need to execute this line manually.
