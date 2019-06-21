@@ -23,7 +23,8 @@ opts_chunk$set(
   fig.width = 5, fig.align = "center", echo = F
 )
 libs <- c("here", "dplyr", "ggplot2", "tidyr", "stringr", "readr", "cowplot",
-          "clusterExperiment", "mclust", "RColorBrewer", "progress", "merger")
+          "clusterExperiment", "mclust", "RColorBrewer", "progress", "merger",
+          "png")
 suppressMessages(
   suppressWarnings(sapply(libs, require, character.only = TRUE))
 )
@@ -44,12 +45,13 @@ mergers_no_allen <- readRDS(here("data", type,
 
 We can first visualize the data after dimension reduction with zinbWave. We then use t-SNE and color the cells with the allen labels. Since we use various values for the k parameter, we plot two representations with the most extreme values of k.
 
-```{r, fig.width=9, fig.height=9}
-plot <- list.files(here("Figures", "EDA"))
-plot <- plot[str_detect(plot, params$dataset)]
-plot_grid(ggdraw() + draw_image(here("Figures", "EDA", plot[1])),
-          ggdraw() + draw_image(here("Figures", "EDA", plot[length(plot)])),
-          ncol = 2)
+```{r, fig.width=9, fig.height=4.5}
+plots <- list.files(here("Figures", "EDA"))
+plots <- plots[str_detect(plots, params$dataset)]
+plot.new()
+plot.window(0:1, 0:1)
+rasterImage(readPNG(here("Figures", "EDA", plots[1])), 0, 0, .5, 1)
+rasterImage(readPNG(here("Figures", "EDA", plots[length(plots)])), 0.5, 0, 1, 1)
 ```
 
 
@@ -58,7 +60,9 @@ plot_grid(ggdraw() + draw_image(here("Figures", "EDA", plot[1])),
 We have the following workflow
 
 ```{r workflow}
-ggdraw() + draw_image(here("Figures", "SMART-Seq_workflow.png"))
+plot.new()
+plot.window(0:1, 0:1)
+rasterImage(readPNG(here("Figures", "SMART-Seq_workflow.png")), 0, 0, 1, 1)
 ```
 
 In the Seurat clustering, there are two parameters to choose from: the resolution and the k.param (use in a knn step). From the seurat help file, for the resolution parameter: use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities.
@@ -216,7 +220,9 @@ plotARIReduce(mergers)
 # Seurat ARI Param
 
 ```{r}
-ggdraw() + draw_image(here("Figures", type,
-                           paste0(params$dataset, "_seurat_ARI.pdf"))
-                      )
+plot.new()
+plot.window(0:1, 0:1)
+rasterImage(readPNG(
+  here("Figures", type, paste0(params$dataset, "_seurat_ARI.png"))),
+  0, 0, 1, 1)
 ```
