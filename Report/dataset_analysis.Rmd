@@ -23,12 +23,16 @@ opts_chunk$set(
   fig.width = 5, fig.align = "center", echo = F
 )
 libs <- c("here", "tidyverse", "cowplot", "clusterExperiment", "mclust",
-          "RColorBrewer", "progress")
+          "RColorBrewer", "progress", "merger")
 suppressMessages(
   suppressWarnings(sapply(libs, require, character.only = TRUE))
 )
 rm(libs)
-suppressMessages(suppressWarnings(source(here("Report", "helper.R"))))
+type <- function(dataset) {
+  if (str_detect(dataset, "SMART")) return("Smart-Seq")
+  if (str_detect(dataset, "10x")) return("10X")
+  stop("Type unknown")
+}
 type <- type(params$dataset)
 mergers <- readRDS(here("data", type, paste0(params$dataset, "_mergers.rds")))
 
@@ -111,7 +115,8 @@ apply(mergers_no_allen$currentMat, 2, function(x) {
 
 ```{r}
 clusters <- mergers_no_allen$currentMat
-clusters[,"Rsec"] <- assignRsec(mergers_no_allen)
+clusters[,"Rsec"] <- assignRsec(mergers_no_allen) 
+clusters <- as.matrix(clusters) 
 
 cellsConsensus <- suppressWarnings(
   makeConsensus(x = clusters, clusterLabel = "makeConsensus",
@@ -133,7 +138,7 @@ rm(clusters, cellsConsensus, consensus)
 ```{r}
 allen_ARI <- function(clus, allen) {
   inds <- clus == -1
-  adjustedRandIndex(clus[!inds], allen[!inds])
+  mclust::adjustedRandIndex(clus[!inds], allen[!inds])
 }
 allenClustersARIchange <- FTracking(merger = mergers_no_allen,
                             f = allen_ARI,
@@ -162,6 +167,7 @@ rm(allenClustersARIchange, allenSubclassARIChange,
 midMat <- intermediateMat(merger = mergers_no_allen,
                           p = .9)
 midMat[,"Rsec"] <- assignRsec(mergers_no_allen, p = .9)
+midMat <- as.matrix(midMat)
 
 cellsConsensus <- suppressWarnings(
   makeConsensus(x = midMat, clusterLabel = "makeConsensus",

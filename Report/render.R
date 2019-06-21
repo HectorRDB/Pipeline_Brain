@@ -5,6 +5,10 @@ option_list <- list(
   make_option(c("-d", "--dataset"),
               action = "store", default = "SMARTer_cells_MOp", type = "character",
               help = "Where to store the output"
+  ),
+  make_option(c("-l", "--local"),
+              action = "store", default = "TRUE", type = "logical",
+              help = "Whether we are running the script locally or on xsede"
   )
 )
 opt <- parse_args(OptionParser(option_list = option_list))
@@ -15,8 +19,9 @@ if (!is.na(opt$d)) {
   stop("Missing d argument")
 }
 
-Sys.setenv(RSTUDIO_PANDOC = "/Applications/RStudio.app/Contents/MacOS/pandoc")
-
+if (opt$l) {
+  Sys.setenv(RSTUDIO_PANDOC = "/Applications/RStudio.app/Contents/MacOS/pandoc")  
+}
 
 rmarkdown::render('dataset_analysis.Rmd',
                   params = list(dataset = opt$d,
