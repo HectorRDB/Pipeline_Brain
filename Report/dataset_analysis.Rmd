@@ -45,7 +45,7 @@ mergers_no_allen <- readRDS(here("data", type,
 
 We can first visualize the data after dimension reduction with zinbWave. We then use t-SNE and color the cells with the allen labels. Since we use various values for the k parameter, we plot two representations with the most extreme values of k.
 
-```{r, fig.width=9, fig.height=4.5}
+```{r, fig.width=18, fig.height=9}
 plots <- list.files(here("Figures", "EDA"))
 plots <- plots[str_detect(plots, params$dataset)]
 plot.new()
@@ -59,7 +59,7 @@ rasterImage(readPNG(here("Figures", "EDA", plots[length(plots)])), 0.5, 0, 1, 1)
 
 We have the following workflow
 
-```{r workflow}
+```{r workflow, fig.height=6, fig.width=10}
 plot.new()
 plot.window(0:1, 0:1)
 rasterImage(readPNG(here("Figures", "SMART-Seq_workflow.png")), 0, 0, 1, 1)
