@@ -119,7 +119,10 @@ apply(mergers_no_allen$currentMat, 2, function(x) {
 
 ```{r}
 clusters <- mergers_no_allen$currentMat
-clusters[,"Rsec"] <- assignRsec(mergers_no_allen) 
+r <- which(colnames(clusters) == "RsecT")
+if (all.equal(integer(0) ,r) != TRUE) {
+  clusters[,"Rsec"] <- assignRsec(mergers_no_allen) 
+}
 clusters <- as.matrix(clusters) 
 
 cellsConsensus <- suppressWarnings(
@@ -170,7 +173,10 @@ rm(allenClustersARIchange, allenSubclassARIChange,
 
 midMat <- intermediateMat(merger = mergers_no_allen,
                           p = .9)
-midMat[,"Rsec"] <- assignRsec(mergers_no_allen, p = .9)
+r <- which(colnames(midMat) == "RsecT")
+if (all.equal(integer(0) ,r) != TRUE) {
+  midMat[,"Rsec"] <- assignRsec(mergers_no_allen, p = .9)
+}
 midMat <- as.matrix(midMat)
 
 cellsConsensus <- suppressWarnings(
