@@ -23,11 +23,11 @@ loc="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp"
 out="/home/hectorrb/Pipeline_Brain/data/10X/10x_nuclei_MOp"
 echo "... No allen"
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
-      Rscript --vanilla --verbose  7-ConsensusClustering.R -n 10 -l $loc \
+      Rscript --no-save --verbose  7-ConsensusClustering.R -n 10 -l $loc \
       -o $out -a FALSE > 7bb.out 2>&1
 echo "... Allen"
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
-      Rscript --vanilla --verbose  7-ConsensusClustering.R -n 10 -l $loc \
+      Rscript --no-save --verbose  7-ConsensusClustering.R -n 10 -l $loc \
       -o $out -a TRUE > 7ba.out 2>&1
 
 echo "Cells dataset"
@@ -35,9 +35,12 @@ loc="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_cells_MOp"
 out="/home/hectorrb/Pipeline_Brain/data/10X/10x_cells_MOp"
 echo "... No allen"
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
-      Rscript --vanilla --verbose  7-ConsensusClustering.R -n 10 -l $loc \
+      Rscript --no-save --verbose  7-ConsensusClustering.R -n 10 -l $loc \
       -o $out -a FALSE > 7ab.out 2>&1
 echo "... Allen"
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
-      Rscript --vanilla --verbose  7-ConsensusClustering.R -n 10 -l $loc \
+      Rscript --no-save --verbose  7-ConsensusClustering.R -n 10 -l $loc \
       -o $out -a TRUE > 7aa.out 2>&1
+
+logStorage=/pylon5/ib5phhp/shared/improved-happiness/xsede/xsedelogs
+cp $MEMORYFILE ${logStorage}/$MEMORYFILE
