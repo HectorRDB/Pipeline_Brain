@@ -55,9 +55,9 @@ Monocle <- readRDS(paste0(loc, "_monocle2.rds"))
 print("Loading sc3")
 sc3 <- readRDS(paste0(loc, "_sc3.rds"))
 allen <- colData(sc3)[, "allenClusters"]
-mean(names(Monocle) %in% rownames(colData(sc3)))
+Monocle <- Monocle[rownames(colData(sc3))]
+sum(is.na(Monocle))
 sc3 <- colData(sc3)[, "sc3_100_clusters"]
-print(length(sc3))
 
 
 # Load Seurat
