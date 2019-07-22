@@ -35,7 +35,7 @@ out="/home/hectorrb/Pipeline_Brain/data/10X/10x_cells_MOp"
 echo "... No allen"
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
       Rscript --vanilla --verbose  7-ConsensusClustering.R -n 10 -l $loc \
-      -o $out -a FALSE > 7ab.out 2>&
+      -o $out -a FALSE > 7ab.out 2>&1
 echo "... Allen"
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
       Rscript --vanilla --verbose  7-ConsensusClustering.R -n 10 -l $loc \
