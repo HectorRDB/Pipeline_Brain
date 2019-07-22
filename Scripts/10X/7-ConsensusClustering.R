@@ -46,18 +46,22 @@ library(stringr)
 library(merger)
 
 # Load Data and clean seurat ----
+# Load Monocle clustering results
+print("Loading Monocle")
+Monocle <- readRDS(paste0(loc, "_monocle2.rds"))
+# Monocle <- Monocle[names(sc3)]
+
 # Load sc3  and allen clustering results
 print("Loading sc3")
 sc3 <- readRDS(paste0(loc, "_sc3.rds"))
 allen <- colData(sc3)[, "allenClusters"]
+lapply(colData(sc3) %>% as.data.frame(),
+       function(df){
+  mean(names(Monocle) %in% df)
+})
 sc3 <- colData(sc3)[, "sc3_100_clusters"]
 print(length(sc3))
 
-# Load Monocle clustering results
-print("Loading Monocle")
-Monocle <- readRDS(paste0(loc, "_monocle2.rds"))
-print(length(Monocle))
-Monocle <- Monocle[names(sc3)]
 
 # Load Seurat
 print("Loading Seurat")
