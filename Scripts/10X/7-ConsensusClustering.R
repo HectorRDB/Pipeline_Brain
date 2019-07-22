@@ -51,21 +51,18 @@ print("Loading sc3")
 sc3 <- readRDS(paste0(loc, "_sc3.rds"))
 allen <- colData(sc3)[, "allenClusters"]
 sc3 <- colData(sc3)[, "sc3_100_clusters"]
-print(sum(is.na(sc3)))
-print("Allen")
-print(sum(is.na(allen)))
+print(length(sc3))
 
 # Load Monocle clustering results
 print("Loading Monocle")
 Monocle <- readRDS(paste0(loc, "_monocle2.rds"))
+print(length(Monocle))
 Monocle <- Monocle[names(sc3)]
-print(sum(is.na(Monocle)))
 
 # Load Seurat
 print("Loading Seurat")
 seurat <- readRDS(paste0(loc, "_seurat.rds"))
 seurat <- seurat[, "1.2,30"]
-print(sum(is.na(seurat)))
 
 # Load Allen
 # Get the final clustering labels
