@@ -39,7 +39,11 @@ library(SummarizedExperiment)
 library(parallel)
 library(matrixStats)
 library(mclust)
-library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(merger)
 
 # Load Data and clean seurat ----
 # Load sc3  and allen clustering results

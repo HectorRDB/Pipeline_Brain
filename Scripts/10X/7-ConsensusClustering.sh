@@ -8,6 +8,7 @@
 #SBATCH -t 4-00:00:00
 #SBATCH --nodes=1
 
+module load gcc
 timestamp=$(date +"%m-%d-%H:%M")
 basename=nuclei-cells-ARI-merging_allen-no-allen_${timestamp}
 MEMORYFILE=${basename}.txt
