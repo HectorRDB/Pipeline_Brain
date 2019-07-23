@@ -17,5 +17,5 @@ for (i in seq(from = .1, to = 1, by = .05)) {
                         plot = F,
                         DEMethod = "limma")  
   print(i)
-  n_distinct(primaryCluster(Rsec2))
+  print(n_distinct(primaryCluster(Rsec2)))
 }
