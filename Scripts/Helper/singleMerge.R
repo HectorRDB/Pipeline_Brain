@@ -12,10 +12,10 @@ for (i in seq(from = .1, to = 1, by = .05)) {
   Rsec2 <- mergeClusters(Rsec,
                         mergeMethod = "adjP",
                         plotInfo = "adjP",
-                        cutoff = 0.01,
+                        cutoff = i,
                         clusterLabel = "Clusters",
                         plot = F,
                         DEMethod = "limma")  
   print(i)
-  print(n_distinct(primaryCluster(Rsec2)))
+  print(n_distinct(Rsec2@clusterMatrix[,"Clusters"]))
 }
