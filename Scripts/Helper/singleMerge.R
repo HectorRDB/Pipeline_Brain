@@ -19,3 +19,7 @@ for (i in seq(from = .1, to = 1, by = .05)) {
   print(i)
   print(n_distinct(Rsec2@clusterMatrix[,"Clusters"]))
 }
+
+Monocle <- addClusterings(Rsec, sample(1:20, size = nrow(Rsec@clusterMatrix), replace = T),
+                          makePrimary = TRUE, clusterLabels = "Monocle")
+Monocle <- makeDendrogram(Monocle, whichCluster = "Monocle")
