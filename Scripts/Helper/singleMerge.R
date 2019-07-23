@@ -8,18 +8,33 @@ library(clusterExperiment)
 loc <- "/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp"
 Rsec <- readRDS(paste0(loc, "_RSEC.rds"))
 
-for (i in seq(from = .1, to = 1, by = .05)) {
-  Rsec2 <- mergeClusters(Rsec,
-                        mergeMethod = "adjP",
-                        plotInfo = "adjP",
-                        cutoff = i,
-                        clusterLabel = "Clusters",
-                        plot = F,
-                        DEMethod = "limma")  
-  print(i)
-  print(n_distinct(Rsec2@clusterMatrix[,"Clusters"]))
-}
+res_nuclei <- map_df(seq(from = .05, to = 1, by = .05),
+                     function(i){
+                 Rsec2 <- mergeClusters(Rsec,
+                                        mergeMethod = "adjP",
+                                        plotInfo = "adjP",
+                                        cutoff = i,
+                                        clusterLabel = "Clusters",
+                                        plot = F,
+                                        DEMethod = "limma")  
+                 
+                 return(Rsec2@clusterMatrix[,"Clusters"])  
+  })
 
-Monocle <- addClusterings(Rsec, sample(1:20, size = nrow(Rsec@clusterMatrix), replace = T),
-                          makePrimary = TRUE, clusterLabels = "Monocle")
-Monocle <- makeDendrogram(Monocle, whichCluster = "Monocle")
+loc <- "/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp"
+Rsec <- readRDS(paste0(loc, "_RSEC.rds"))
+res_cells <- map_df(seq(from = .05, to = 1, by = .05), 
+               function(i){
+                 Rsec2 <- mergeClusters(Rsec,
+                                        mergeMethod = "adjP",
+                                        plotInfo = "adjP",
+                                        cutoff = i,
+                                        clusterLabel = "Clusters",
+                                        plot = F,
+                                        DEMethod = "limma")  
+                 
+              return(Rsec2@clusterMatrix[,"Clusters"])
+               })
+
+write_csv(cbind(res_nuclei, res_cells), 
+          path = "../../data/Smart-Seq/Rsec_single_merge.csv")
