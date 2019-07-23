@@ -35,8 +35,6 @@ type <- function(dataset) {
   stop("Type unknown")
 }
 type <- type(params$dataset)
-mergers <- readRDS(here("data", type, paste0(params$dataset, "_mergers.rds")))
-
 mergers_no_allen <- readRDS(here("data", type,
                                  paste0(params$dataset, "_no_allen_mergers.rds")))
 ```
@@ -210,19 +208,6 @@ ggplot(data.frame(step = 0:nrow(mergers_no_allen$merges),
 ```
 
 We can see that the ARI may not be the best metric for that comparison.
-
-# ARI clustering with the Allen dataset 
-## Reduction in the number of clusters
-```{r allen}
-plotPrePost(mergers)
-```
-
-## Improvement in ARI
-
-```{r ARI_imp_allen}
-plotARIReduce(mergers)
-```
-
 # Seurat ARI Param
 
 ```{r}
