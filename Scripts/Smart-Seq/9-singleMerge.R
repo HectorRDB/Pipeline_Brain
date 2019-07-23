@@ -58,9 +58,13 @@ Monocle <- pData(Monocle)$Cluster %>% as.numeric()
 
 # Load RSEC results
 Rsec <- readRDS(paste0(loc, "_RSEC.rds"))
-RsecT <- assignUnassigned(Rsec, clusterLabel = "Assigned")
-RsecT <- primaryCluster(RsecT) %>% as.numeric()
-Rsec <- primaryCluster(Rsec) %>% as.numeric()
+Rsec <- mergeClusters(Rsec,
+                      mergeMethod = "adjP",
+                      plotInfo = "adjP",
+                      cutoff = 0.01,
+                      clusterLabel = "Clusters",
+                      plot = F,
+                      DEMethod = "limma")
 
 # Load all seurat results and keep one of them
 seurat <- readRDS(paste0(loc, "_seurat.rds"))
@@ -69,27 +73,3 @@ source("/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/Scri
 seurat_p <- "1.6,50"
 
 seurat <- seurat[, seurat_p] %>% as.numeric()
-
-# Get the final clustering labels
-if (opt$a) {
-  clusMat <- data.frame("sc3" = sc3, "Rsec" = Rsec, "Monocle" = Monocle,
-                        "allen" = allen, "seurat" = seurat)
-  clusMatT <- data.frame("sc3" = sc3, "RsecT" = RsecT, "Monocle" = Monocle,
-                         "allen" = allen, "seurat" = seurat)
-  } else {
-  clusMat <- data.frame("sc3" = sc3, "Rsec" = Rsec, "Monocle" = Monocle,
-                        "seurat" = seurat)
-  clusMatT <- data.frame("sc3" = sc3, "RsecT" = RsecT, "Monocle" = Monocle,
-                         "seurat" = seurat)
-}
-rownames(clusMat) <- Names  
-
-# Do the consensus clustering ----
-print(paste0("Number of cores: ", opt$n))
-print(system.time(
-  mergers <- mergeManyPairwise(clusteringMatrix = clusMat, nCores = opt$n)
-))
-cat("Finished Consensus Merge\n")
-mergers$initalMat <- cbind(mergers$initalMat, clusMatT[,"RsecT"])
-colnames(mergers$initalMat)[5 + opt$a] <- "RsecT"
-saveRDS(object = mergers, file = paste0(output, "_mergers.rds"))
