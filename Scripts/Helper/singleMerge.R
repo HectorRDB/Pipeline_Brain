@@ -8,7 +8,9 @@ library(clusterExperiment)
 loc <- "/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp"
 Rsec <- readRDS(paste0(loc, "_RSEC.rds"))
 
-res_nuclei <- map_df(seq(from = .05, to = 1, by = .05),
+cutoffs <- seq(from = .05, to = 1, by = .05)
+names(cutoffs) <- cutoffs
+res_nuclei <- map_df(cutoffs,
                      function(i){
                  Rsec2 <- mergeClusters(Rsec,
                                         mergeMethod = "adjP",
@@ -23,7 +25,7 @@ res_nuclei <- map_df(seq(from = .05, to = 1, by = .05),
 
 loc <- "/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp"
 Rsec <- readRDS(paste0(loc, "_RSEC.rds"))
-res_cells <- map_df(seq(from = .05, to = 1, by = .05), 
+res_cells <- map_df(cutoffs,
                function(i){
                  Rsec2 <- mergeClusters(Rsec,
                                         mergeMethod = "adjP",
