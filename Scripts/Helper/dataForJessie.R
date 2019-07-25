@@ -102,7 +102,7 @@ for (dataset in datasets) {
     paste(chars, "Final", sep = "-")
     )
   
-  write_csv(x = mat,
+  write_csv(x = as.data.frame(mat),
             path = here("data", "ForJessie", paste0(dataset, ".csv")))
 }
 
