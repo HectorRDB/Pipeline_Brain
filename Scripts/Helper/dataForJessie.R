@@ -20,10 +20,10 @@ for (dataset in datasets) {
                          paste0(dataset, "_no_allen_mergers.rds")))
   
   print("...Initial consensus")
-  clusters <- mergers_no_allen$initalMat
+  clusters <- merger$initalMat
   r <- which(colnames(clusters) == "RsecT")
   if (all.equal(integer(0) ,r) != TRUE) {
-    clusters[,"Rsec"] <- assignRsec(mergers_no_allen) 
+    clusters[,"Rsec"] <- assignRsec(merger) 
   }
   clusters <- as.matrix(clusters) 
   cellsConsensus <- Consensus(clusMat = clusters,
@@ -31,10 +31,10 @@ for (dataset in datasets) {
   consensusInit <- cellsConsensus
   
   print("...Final consensus")
-  clusters <- mergers_no_allen$currentMat
+  clusters <- merger$currentMat
   r <- which(colnames(clusters) == "RsecT")
   if (all.equal(integer(0) ,r) != TRUE) {
-    clusters[,"Rsec"] <- assignRsec(mergers_no_allen) 
+    clusters[,"Rsec"] <- assignRsec(merger) 
   }
   clusters <- as.matrix(clusters) 
   
@@ -43,11 +43,11 @@ for (dataset in datasets) {
   consensusFinal <- cellsConsensus$clustering
   
   print("...Intermediary consensus at 33.3%")
-  midMat <- intermediateMat(merger = mergers_no_allen,
+  midMat <- intermediateMat(merger = merger,
                             p = 1/3)
   r <- which(colnames(midMat) == "RsecT")
   if (all.equal(integer(0) ,r) != TRUE) {
-    midMat[,"Rsec"] <- assignRsec(mergers_no_allen, p = 1/3)
+    midMat[,"Rsec"] <- assignRsec(merger, p = 1/3)
   }
   midMat <- as.matrix(midMat)
   
@@ -56,11 +56,11 @@ for (dataset in datasets) {
   consensusInt_33 <- cellsConsensus
   
   print("...Intermediary consensus at 66.7%")
-  midMat <- intermediateMat(merger = mergers_no_allen,
+  midMat <- intermediateMat(merger = merger,
                             p = 2/3)
   r <- which(colnames(midMat) == "RsecT")
   if (all.equal(integer(0) ,r) != TRUE) {
-    midMat[,"Rsec"] <- assignRsec(mergers_no_allen, p = 2/3)
+    midMat[,"Rsec"] <- assignRsec(merger, p = 2/3)
   }
   midMat <- as.matrix(midMat)
   
@@ -69,11 +69,11 @@ for (dataset in datasets) {
   consensusInt_66 <- cellsConsensus
   
   print("...Intermediary consensus at 90%")
-  midMat <- intermediateMat(merger = mergers_no_allen,
+  midMat <- intermediateMat(merger = merger,
                             p = .9)
   r <- which(colnames(midMat) == "RsecT")
   if (all.equal(integer(0) ,r) != TRUE) {
-    midMat[,"Rsec"] <- assignRsec(mergers_no_allen, p = .9)
+    midMat[,"Rsec"] <- assignRsec(merger, p = .9)
   }
   midMat <- as.matrix(midMat)
   
@@ -84,10 +84,10 @@ for (dataset in datasets) {
   print("...Full matrix")
   names <- read_csv(here("data", type(dataset),
                          paste0(dataset, "_cluster.membership.csv")))
-  clusters <- mergers_no_allen$initalMat
+  clusters <- merger$initalMat
   r <- which(colnames(clusters) == "RsecT")
   if (all.equal(integer(0) ,r) != TRUE) {
-    clusters[,"Rsec"] <- assignRsec(mergers_no_allen) 
+    clusters[,"Rsec"] <- assignRsec(merger) 
   }
   clusters <- as.matrix(clusters) 
   mat <- cbind(names$X1,
