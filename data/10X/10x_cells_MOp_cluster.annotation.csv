@@ -1,0 +1,138 @@
+"cluster_label","subclass_label","class_label","cluster_color","size","gene.counts","cluster_id"
+"Lamp5 Pax6","Lamp5","GABAergic","#DDACC9",303,4389,1
+"Lamp5 Egln3_1","Lamp5","GABAergic","#FF88AD",229,4246,2
+"Lamp5 Egln3_2","Lamp5","GABAergic","#DD8091",335,4040,3
+"Lamp5 Pdlim5_2","Lamp5","GABAergic","#FF829E",386,3559,4
+"Lamp5 Pdlim5_1","Lamp5","GABAergic","#FF7290",1191,4003,5
+"Lamp5 Slc35d3","Lamp5","GABAergic","#FFA388",3275,4467,6
+"Lamp5 Lhx6","Lamp5","GABAergic","#C77963",294,4301,7
+"Sncg Col14a1_1","Sncg","GABAergic","#6C00BF",101,5801,8
+"Sncg Col14a1_2","Sncg","GABAergic","#7E0ACB",276,5123,9
+"Sncg Col14a1_3","Sncg","GABAergic","#8F1ADB",72,5312,10
+"Sncg Slc17a8","Sncg","GABAergic","#9440F3",268,5570,11
+"Sncg Calb1_3","Sncg","GABAergic","#9611B6",102,6132,12
+"Sncg Npy2r_2","Sncg","GABAergic","#8B02A5",91,4441,13
+"Sncg Npy2r_1","Sncg","GABAergic","#7A0099",284,4487,14
+"Sncg Calb1_1","Sncg","GABAergic","#A20EAC",127,5568,15
+"Sncg Calb1_2","Sncg","GABAergic","#9900B3",79,5842,16
+"Vip Serpinf1_1","Vip","GABAergic","#A720FF",123,4210,17
+"Vip Serpinf1_2","Vip","GABAergic","#AB1DFF",313,4015,18
+"Vip Htr1f_2","Vip","GABAergic","#FF5FCD",139,4190,19
+"Vip Htr1f_3","Vip","GABAergic","#FF6FCF",48,4018,20
+"Vip Htr1f_1","Vip","GABAergic","#FF4DC1",725,3190,21
+"Vip Htr1f_4","Vip","GABAergic","#EC7CDF",76,3711,22
+"Vip Igfbp6_1","Vip","GABAergic","#7779BF",502,3077,23
+"Vip Igfbp6_2","Vip","GABAergic","#8584C3",357,3103,24
+"Vip Igfbp6_3","Vip","GABAergic","#8F8ED2",35,2757,25
+"Vip Lmo1","Vip","GABAergic","#9FAAFF",200,3329,26
+"Vip Mybpc1","Vip","GABAergic","#F70CF3",427,3641,27
+"Vip Chat","Vip","GABAergic","#FF00FF",1328,3096,28
+"Vip Lypd1","Vip","GABAergic","#B3128A",432,2934,29
+"Vip Pbx3 Igfbp4","Vip","GABAergic","#FF00B3",103,3210,30
+"Vip Cbln4","Vip","GABAergic","#FC26D2",371,3338,31
+"Vip Gpc3","Vip","GABAergic","#B09FFF",762,3529,32
+"Vip C1ql1","Vip","GABAergic","#BD3D9A",774,3374,33
+"Vip Crispld2","Vip","GABAergic","#992E81",803,3313,34
+"Sst Chodl","Sst","GABAergic","#FFFF00",355,4970,35
+"Sst Myh8_1","Sst","GABAergic","#FF8011",265,3839,36
+"Sst Myh8_2","Sst","GABAergic","#FF9F2C",1652,3943,37
+"Sst Myh8_3","Sst","GABAergic","#FFB22B",118,5000,38
+"Sst Myh8_4","Sst","GABAergic","#FFB307",422,4357,39
+"Sst Hspe_1","Sst","GABAergic","#FFBF09",136,4805,40
+"Sst Hpse_2","Sst","GABAergic","#BFAF00",226,4969,41
+"Sst Hpse_3","Sst","GABAergic","#CDB115",321,4872,42
+"Sst Sfrp2","Sst","GABAergic","#BF880D",109,5274,43
+"Sst Calb2","Sst","GABAergic","#D2A328",571,4781,44
+"Sst C1ql3_1","Sst","GABAergic","#802600",366,4661,45
+"Sst C1ql3_2","Sst","GABAergic","#804600",281,5230,46
+"Sst C1ql3_3","Sst","GABAergic","#90620F",125,5507,47
+"Sst C1ql3_4","Sst","GABAergic","#B97541",61,4773,48
+"Sst Crhr2_1","Sst","GABAergic","#BE8652",591,5060,49
+"Sst Crhr2_2","Sst","GABAergic","#B0993C",458,5248,50
+"Sst Th","Sst","GABAergic","#A81111",130,5068,51
+"Sst Pvalb Etv1_1","Sst","GABAergic","#D9C566",300,5279,52
+"Sst Pvalb Etv1_2","Sst","GABAergic","#804811",714,4798,53
+"Pvalb Sst Calb1","Pvalb","GABAergic","#BC2B11",135,5714,54
+"Sst Th Etv1","Sst","GABAergic","#A83111",42,4375,55
+"Pvalb Gabrg1","Pvalb","GABAergic","#ED4C50",294,4207,56
+"Pvalb Sst Th","Pvalb","GABAergic","#FF2F7E",138,5465,57
+"Pvalb Calb1","Pvalb","GABAergic","#BC4B11",281,5487,58
+"Pvalb Prdm8","Pvalb","GABAergic","#BC2C51",190,5914,59
+"Pvalb Gpr149","Pvalb","GABAergic","#E62A5D",427,5196,60
+"Pvalb Il1rapl2","Pvalb","GABAergic","#BC2C41",799,5146,61
+"Pvalb Reln_2","Pvalb","GABAergic","#BC2D71",2157,4473,62
+"Pvalb Reln_1","Pvalb","GABAergic","#9D357A",176,5066,63
+"Pvalb Vipr2","Pvalb","GABAergic","#FF197F",248,4405,64
+"L2/3 IT Cdh13 Fos","L2/3 IT","Glutamatergic","#7E9376",497,5202,65
+"L2/3 IT Cdh13 Sla","L2/3 IT","Glutamatergic","#81B389",653,5840,66
+"L2/3 IT Cdh13 Met","L2/3 IT","Glutamatergic","#7F867C",988,4870,67
+"L2/3 IT S100a6 ","L2/3 IT","Glutamatergic","#6F836B",9172,5257,68
+"L2/3 IT Macc1","L2/3 IT","Glutamatergic","#7A8076",134,5918,69
+"L5 IT Rspo1_1","L5 IT","Glutamatergic","#3CBC78",21002,4145,70
+"L5 IT Rspo2_1","L5 IT","Glutamatergic","#3CBC45",11890,4961,71
+"L5 IT Tcap_1","L5 IT","Glutamatergic","#5DDB65",1447,5990,72
+"L5 IT Tcap_2","L5 IT","Glutamatergic","#52CA74",358,5905,73
+"L5 IT S100b_1","L5 IT","Glutamatergic","#00CF1E",7082,5655,74
+"L5 IT S100b_2","L5 IT","Glutamatergic","#2F8C4D",627,6759,75
+"L5 IT Pld5_2","L5 IT","Glutamatergic","#40BC3C",33,6141,76
+"L5 IT Pld5_1","L5 IT","Glutamatergic","#00CF1F",1766,5370,77
+"L5 IT Pld5_3","L5 IT","Glutamatergic","#3F9753",217,5537,78
+"L5 IT Pld5_4","L5 IT","Glutamatergic","#3CBCAC",160,5198,79
+"L6 IT Sulf1_1","L6 IT","Glutamatergic","#37BEA2",1587,5235,80
+"L6 IT Sulf1_2","L6 IT","Glutamatergic","#4DB39E",362,5358,81
+"L6 IT Sulf1_3","L6 IT","Glutamatergic","#3CBC92",7299,5096,82
+"L6 IT Car3","L6 IT Car3","Glutamatergic","#5100FF",710,5714,83
+"L5 PT_1","L5 PT","Glutamatergic","#53A367",368,6451,84
+"L5 PT_2","L5 PT","Glutamatergic","#5D8E76",185,6197,85
+"L5 PT_3","L5 PT","Glutamatergic","#518C7F",154,6589,86
+"L5 NP Slc17a8","L5/6 NP","Glutamatergic","#3C78BC",1438,3974,87
+"L6 NP Trh_1","L5/6 NP","Glutamatergic","#47867A",1518,4034,88
+"L6 NP Trh_2","L5/6 NP","Glutamatergic","#4E7B6A",40,4356,89
+"L6 NP CT","L5/6 NP","Glutamatergic","#1AAB99",189,3826,90
+"L6 CT Gpr139_1","L6 CT","Glutamatergic","#168577",167,5286,91
+"L6 CT Gpr139_2","L6 CT","Glutamatergic","#188D85",113,4732,92
+"L6 CT Gpr139_3","L6 CT","Glutamatergic","#197A6E",398,4979,93
+"L6 CT Gpr139_4","L6 CT","Glutamatergic","#23886D",61,5208,94
+"L6 CT Cpa6","L6 CT","Glutamatergic","#338C5E",19978,4571,95
+"L6 CT Nxph2 Pou3f2","L6 CT","Glutamatergic","#3E766C",1934,4623,96
+"L6 CT Nxph2 Kit","L6 CT","Glutamatergic","#516B78",312,4181,97
+"L6b Rprm","L6b","Glutamatergic","#3CBC99",934,5133,98
+"L6b Shisa6_1","L6b","Glutamatergic","#2B9880",498,5032,99
+"L6b Shisa6_2","L6b","Glutamatergic","#1F7C70",545,5440,100
+"L6b Ror1","L6b","Glutamatergic","#09564C",951,5336,101
+"L6b Kcnip1","L6b","Glutamatergic","#335280",105,6033,102
+"Astro Aqp4","Astro","Non-Neuronal","#7C2D1F",46,2161,103
+"OPC Pdgfra","OPC","Non-Neuronal","#476655",13,2704,104
+"Oligo Enpp6_1","Oligo","Non-Neuronal","#6B998D",36,2684,105
+"Oligo Enpp6_2","Oligo","Non-Neuronal","#749F86",30,2996,106
+"Oligo Opalin_1","Oligo","Non-Neuronal","#474662",44,2226,107
+"Oligo Opalin_2","Oligo","Non-Neuronal","#478662",60,3189,108
+"Endo Slc38a5","Endo","Non-Neuronal","#810E3C",35,3003,109
+"Sncg low","Low quality","Noise","#BE2DC0",41,2690,110
+"Lamp5 Serpinf1_2_2","Low quality","Noise","#A740FF",13,2456,111
+"Vip Serpinf1_3","doublet","Noise","#AC5BD2",48,4065,112
+"Vip Crispld2_3","","Noise","#AA4DB5",211,3003,113
+"Sst Myh8_Vip","doublet","Noise","#A746B4",129,6425,114
+"Sst Etv1_Chodl","doublet","Noise","#BF680D",41,5216,115
+"Pvalb Il1rapl2_Vip","doublet","Noise","#9A551A",55,6430,116
+"Pvalb Reln_low","Low quality","Noise","#87481F",22,2424,117
+"L2/3 IT S100a3_low","Low quality","Noise","#85601C",570,3389,118
+"L5 IT Tcap_NP","doublet","Noise","#76563A",277,6362,119
+"L5 IT Foxp2","doublet","Noise","#7D5B39",207,7125,120
+"L5 IT Aldh1a7_low","Low quality","Noise","#746C41",114,4007,121
+"L5 IT Aldh1a7_low_1","Low quality","Noise","#706842",471,3483,122
+"L5 IT Aldh1a7_low_2","Low quality","Noise","#5E5640",88,2739,123
+"L5 IT Tcap_low","Low quality","Noise","#525050",262,3908,124
+"L6 IT Maf_Foxp2","doublet","Noise","#4A5F62",196,6804,125
+"L6 IT Car3_IT","doublet","Noise","#3D6E74",37,7523,126
+"L5 PT_3_3","doublet","Noise","#347C65",12,2712,127
+"L5 NP Slc17a8_low","Low quality","Noise","#4D6577",882,3358,128
+"L6 CT Grp_low_1","Low quality","Noise","#4C5870",261,2718,129
+"L6 CT Grp_low_2","Low quality","Noise","#42567C",25,3020,130
+"L6 CT Grp_doublet_1","doublet","Noise","#5C6B77",105,6338,131
+"L6 CT Grp_doublet_2","doublet","Noise","#685875",2358,7018,132
+"L6b Mup5_IT","doublet","Noise","#795D78",156,6984,133
+"L6b Kcnj5_Ex","doublet","Noise","#697175",45,6734,134
+"Lamp5 Vip","doublet","Noise","#605C63",60,6029,135
+"Pvalb Sst","doublet","Noise","#756B63",38,6440,136
+"L6b F2r_2","Low quality","Noise","#806D61",54,2977,137
