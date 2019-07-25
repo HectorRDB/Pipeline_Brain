@@ -21,78 +21,70 @@ for (dataset in datasets) {
                          paste0(dataset, "_no_allen_mergers.rds")))
   
   print("...Initial consensus")
-  clusters <- merger$initalMat
-  r <- which(colnames(clusters) == "RsecT")
+  initialMat <- merger$initalMat
+  r <- which(colnames(initialMat) == "RsecT")
   if (all.equal(integer(0) ,r) != TRUE) {
-    clusters[,"Rsec"] <- assignRsec(merger) 
+    initialMat[,"Rsec"] <- assignRsec(merger) 
   }
-  clusters <- as.matrix(clusters) 
-  cellsConsensus <- Consensus(clusMat = clusters,
+  initialMat <- as.matrix(initialMat) 
+  cellsConsensus <- Consensus(clusMat = initialMat,
                               large = (type != "Smart-Seq"))
   consensusInit <- cellsConsensus
   
   print("...Final consensus")
-  clusters <- merger$currentMat
-  r <- which(colnames(clusters) == "RsecT")
+  currentMat <- merger$currentMat
+  r <- which(colnames(currentMat) == "RsecT")
   if (all.equal(integer(0) ,r) != TRUE) {
-    clusters[,"Rsec"] <- assignRsec(merger) 
+    currentMat[,"Rsec"] <- assignRsec(merger) 
   }
-  clusters <- as.matrix(clusters) 
+  currentMat <- as.matrix(currentMat) 
   
-  cellsConsensus <- Consensus(clusMat = clusters,
+  cellsConsensus <- Consensus(clusMat = currentMat,
                               large = (type != "Smart-Seq"))
   consensusFinal <- cellsConsensus
   
   print("...Intermediary consensus at 33.3%")
-  midMat <- intermediateMat(merger = merger,
+  stopMatrix_33 <- intermediateMat(merger = merger,
                             p = 1/3)
-  r <- which(colnames(midMat) == "RsecT")
+  r <- which(colnames(stopMatrix_33) == "RsecT")
   if (all.equal(integer(0) ,r) != TRUE) {
-    midMat[,"Rsec"] <- assignRsec(merger, p = 1/3)
+    stopMatrix_33[,"Rsec"] <- assignRsec(merger, p = 1/3)
   }
-  midMat <- as.matrix(midMat)
+  stopMatrix_33 <- as.matrix(stopMatrix_33)
   
-  cellsConsensus <- Consensus(clusMat = midMat,
+  cellsConsensus <- Consensus(clusMat = stopMatrix_33,
                               large = (type != "Smart-Seq"))
   consensusInt_33 <- cellsConsensus
   
   print("...Intermediary consensus at 66.7%")
-  midMat <- intermediateMat(merger = merger,
-                            p = 2/3)
-  r <- which(colnames(midMat) == "RsecT")
+  stopMatrix_66 <- intermediateMat(merger = merger, p = 2/3)
+  r <- which(colnames(stopMatrix_66) == "RsecT")
   if (all.equal(integer(0) ,r) != TRUE) {
-    midMat[,"Rsec"] <- assignRsec(merger, p = 2/3)
+    stopMatrix_66[,"Rsec"] <- assignRsec(merger, p = 2/3)
   }
-  midMat <- as.matrix(midMat)
+  stopMatrix_66 <- as.matrix(stopMatrix_66)
   
-  cellsConsensus <- Consensus(clusMat = midMat,
+  cellsConsensus <- Consensus(clusMat = stopMatrix_66,
                               large = (type != "Smart-Seq"))
   consensusInt_66 <- cellsConsensus
   
   print("...Intermediary consensus at 90%")
-  midMat <- intermediateMat(merger = merger,
-                            p = .9)
-  r <- which(colnames(midMat) == "RsecT")
+  stopMatrix_90 <- intermediateMat(merger = merger, p = .9)
+  r <- which(colnames(stopMatrix_90) == "RsecT")
   if (all.equal(integer(0) ,r) != TRUE) {
-    midMat[,"Rsec"] <- assignRsec(merger, p = .9)
+    stopMatrix_90[,"Rsec"] <- assignRsec(merger, p = .9)
   }
-  midMat <- as.matrix(midMat)
+  stopMatrix_90 <- as.matrix(stopMatrix_90)
   
-  cellsConsensus <- Consensus(clusMat = midMat,
+  cellsConsensus <- Consensus(clusMat = stopMatrix_90,
                               large = (type != "Smart-Seq"))
   consensusInt_90 <- cellsConsensus
   
   print("...Full matrix")
   names <- read_csv(here("data", types(dataset),
                          paste0(dataset, "_cluster.membership.csv")))
-  clusters <- merger$initalMat
-  r <- which(colnames(clusters) == "RsecT")
-  if (all.equal(integer(0) ,r) != TRUE) {
-    clusters[,"Rsec"] <- assignRsec(merger) 
-  }
-  clusters <- as.matrix(clusters) 
   mat <- cbind(names$X1,
-               clusters, consensusInit,
+               initialMat, consensusInit,
                stopMatrix_33, consensusInt_33,
                stopMatrix_66, consensusInt_66,
                stopMatrix_90, consensusInt_90,
