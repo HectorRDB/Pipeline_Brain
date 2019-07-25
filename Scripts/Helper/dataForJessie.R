@@ -41,7 +41,7 @@ for (dataset in datasets) {
   
   cellsConsensus <- Consensus(clusMat = clusters,
                               large = (type != "Smart-Seq"))
-  consensusFinal <- cellsConsensus$clustering
+  consensusFinal <- cellsConsensus
   
   print("...Intermediary consensus at 33.3%")
   midMat <- intermediateMat(merger = merger,
