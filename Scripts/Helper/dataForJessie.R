@@ -8,7 +8,11 @@ library(readr)
 datasets <- c("SMARTer_cells_MOp", "SMARTer_nuclei_MOp",
               "10x_cells_MOp", "10x_nuclei_MOp")
 # datasets <- c("SMARTer_cells_MOp",  "SMARTer_nuclei_MOp", )
-
+type <- function(dataset) {
+  if (str_detect(dataset, "SMART")) return("Smart-Seq")
+  if (str_detect(dataset, "10x")) return("10X")
+  stop("Type unknown")
+}
 
 for (dataset in datasets) {
   print(dataset)
