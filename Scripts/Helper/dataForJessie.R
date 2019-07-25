@@ -5,9 +5,8 @@ library(clusterExperiment)
 library(mclust)
 library(readr)
 
-# datasets <- "SMARTer_cells_MOp SMARTer_nuclei_MOp 10x_cells_MOp 10x_nuclei_MOp"
-source(here("Report", "helper.R"))
-datasets <- c("SMARTer_cells_MOp",  "SMARTer_nuclei_MOp", )
+datasets <- "SMARTer_cells_MOp SMARTer_nuclei_MOp 10x_cells_MOp 10x_nuclei_MOp"
+# datasets <- c("SMARTer_cells_MOp",  "SMARTer_nuclei_MOp", )
 
 
 for (dataset in datasets) {
