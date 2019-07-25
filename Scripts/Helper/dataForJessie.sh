@@ -11,7 +11,8 @@
 module load gcc
 
 timestamp=$(date +"%m-%d-%H:%M")
-MEMORYFILE=${timestamp}_dataForJessie_4-datasets.txt
+basename=dataForJessie_4-datasets_${timestamp}
+MEMORYFILE=${basename}.txt
 
 echo $NAME > $MEMORYFILE
 echo 1 "LM" 500GB >> $MEMORYFILE
