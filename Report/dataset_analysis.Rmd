@@ -9,14 +9,14 @@ output:
     code_download: TRUE
     
 params:
-  dataset: 10x_nuclei_MOp 
+  dataset: SMARTer_nuclei_MOp 
   title: "Analysis of the SMARTer_nuclei_MOp dataset"
 ---
 ---
 title: `r params$title`
 ---
 
-```{r packages, include=F}
+```{r load packages, include=F}
 library(knitr)
 opts_chunk$set(
   fig.pos = "!h", out.extra = "", warning = F, message = F,
@@ -43,7 +43,7 @@ mergers_no_allen <- readRDS(here("data", type,
 
 We can first visualize the data after dimension reduction with zinbWave. We then use t-SNE and color the cells with the allen labels. Since we use various values for the k parameter, we plot two representations with the most extreme values of k.
 
-```{r, fig.width=18, fig.height=9}
+```{r t-SNE plots, fig.width=18, fig.height=9}
 plots <- list.files(here("Figures", "EDA"))
 plots <- plots[str_detect(plots, params$dataset)]
 plot.new()
@@ -115,7 +115,7 @@ apply(mergers_no_allen$currentMat, 2, function(x) {
 
 ## After a last consensus step
 
-```{r}
+```{r final consensus}
 clusters <- mergers_no_allen$currentMat
 r <- which(colnames(clusters) == "RsecT")
 if (all.equal(integer(0) ,r) != TRUE) {
@@ -140,7 +140,7 @@ rm(clusters, cellsConsensus, consensus)
 
 ## Stopping during the merging
 
-```{r}
+```{r ARI with allen}
 allen_ARI <- function(clus, allen) {
   inds <- clus == -1
   mclust::adjustedRandIndex(clus[!inds], allen[!inds])
@@ -165,7 +165,7 @@ ggplot(df, aes(x = step, y = meanARI, col = type)) +
   theme(title = element_text(hjust = .5))
 ```
 
-```{r}
+```{r consensus with intermediate}
 rm(allenClustersARIchange, allenSubclassARIChange,
    plot, df, allen_ARI)
 
@@ -192,7 +192,7 @@ title("Consensus Merging when stopping early")
 rm(cellsConsensus, consensus, midMat)
 ```
 
-```{r, eval = FALSE}
+```{r plot, eval = FALSE}
 ImpARI <- ARItrendAllen(merger = mergers_no_allen,
                         allen1 = allen_clusters$cluster_label,
                         allen2 = allen_clusters$subclass_label,
@@ -210,7 +210,7 @@ ggplot(data.frame(step = 0:nrow(mergers_no_allen$merges),
 We can see that the ARI may not be the best metric for that comparison.
 # Seurat ARI Param
 
-```{r}
+```{r seurat param}
 plot.new()
 plot.window(0:1, 0:1)
 rasterImage(readPNG(
