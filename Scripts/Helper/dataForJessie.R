@@ -8,7 +8,7 @@ library(readr)
 datasets <- c("SMARTer_cells_MOp", "SMARTer_nuclei_MOp",
               "10x_cells_MOp", "10x_nuclei_MOp")
 # datasets <- c("SMARTer_cells_MOp",  "SMARTer_nuclei_MOp", )
-type <- function(dataset) {
+types <- function(dataset) {
   if (str_detect(dataset, "SMART")) return("Smart-Seq")
   if (str_detect(dataset, "10x")) return("10X")
   stop("Type unknown")
@@ -16,7 +16,8 @@ type <- function(dataset) {
 
 for (dataset in datasets) {
   print(dataset)
-  merger <- readRDS(here("data", type(dataset),
+  type <- types(dataset)
+  merger <- readRDS(here("data", types(dataset),
                          paste0(dataset, "_no_allen_mergers.rds")))
   
   print("...Initial consensus")
@@ -82,7 +83,7 @@ for (dataset in datasets) {
   consensusInt_90 <- cellsConsensus
   
   print("...Full matrix")
-  names <- read_csv(here("data", type(dataset),
+  names <- read_csv(here("data", types(dataset),
                          paste0(dataset, "_cluster.membership.csv")))
   clusters <- merger$initalMat
   r <- which(colnames(clusters) == "RsecT")
