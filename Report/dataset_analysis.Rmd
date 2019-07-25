@@ -123,11 +123,9 @@ if (all.equal(integer(0) ,r) != TRUE) {
 }
 clusters <- as.matrix(clusters) 
 
-cellsConsensus <- suppressWarnings(
-  makeConsensus(x = clusters, clusterLabel = "makeConsensus",
-                  proportion = 0.67, minSize = 100)
-  )
-consensus <- cbind(cellsConsensus$clustering,
+cellsConsensus <- Consensus(clusMat = clusters,
+                            large = (type != "Smart-Seq"))
+consensus <- cbind(cellsConsensus,
                    allen_clusters$subclass_label,
                    clusters)
 
@@ -140,35 +138,7 @@ rm(clusters, cellsConsensus, consensus)
 
 ## Stopping during the merging
 
-```{r ARI with allen}
-allen_ARI <- function(clus, allen) {
-  inds <- clus == -1
-  mclust::adjustedRandIndex(clus[!inds], allen[!inds])
-}
-allenClustersARIchange <- FTracking(merger = mergers_no_allen,
-                            f = allen_ARI,
-                            allen = mergers$initalMat[,"allen"])
-allenClustersARIchange <- rowMeans(allenClustersARIchange)
-allenSubclassARIChange <- FTracking(merger = mergers_no_allen,
-                                    f = allen_ARI,
-                                    allen = allen_clusters$subclass_label)
-allenSubclassARIChange <- rowMeans(allenSubclassARIChange)
-df <- data.frame(step = seq_along(allenClustersARIchange),
-                 ARI_cluster = allenClustersARIchange,
-                 ARI_subclass = allenSubclassARIChange) %>%
-  gather(key = "type", value = "meanARI", -step)
-ggplot(df, aes(x = step, y = meanARI, col = type)) +
-  geom_line() +
-  theme_classic() +
-  scale_y_continuous(limits = c(0, 1)) +
-  labs(title = "Mean ARI between the three methods and the allen labels\nas we process on the ARI clustering") +
-  theme(title = element_text(hjust = .5))
-```
-
 ```{r consensus with intermediate}
-rm(allenClustersARIchange, allenSubclassARIChange,
-   plot, df, allen_ARI)
-
 midMat <- intermediateMat(merger = mergers_no_allen,
                           p = .9)
 r <- which(colnames(midMat) == "RsecT")
@@ -177,11 +147,9 @@ if (all.equal(integer(0) ,r) != TRUE) {
 }
 midMat <- as.matrix(midMat)
 
-cellsConsensus <- suppressWarnings(
-  makeConsensus(x = midMat, clusterLabel = "makeConsensus",
-                proportion = 1/3, minSize = 100)
-  )
-consensus <- cbind(cellsConsensus$clustering,
+cellsConsensus <- Consensus(clusMat = midMat,
+                            large = (type != "Smart-Seq"))
+consensus <- cbind(cellsConsensus,
                    allen_clusters$subclass_label,
                    midMat) %>% as.data.frame()
 
