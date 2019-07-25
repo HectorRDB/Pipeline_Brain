@@ -90,9 +90,11 @@ for (dataset in datasets) {
                stopMatrix_66, consensusInt_66,
                stopMatrix_90, consensusInt_90,
                currentMat, consensusFinal)
-  chars <- ifelse(type == "Smart-Seq",
-                  yes = c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"),
-                  no = c("sc3", "Monocle", "Seurat", "Consensus"))
+  if (type == "Smart-Seq") {
+    chars <- c("sc3", "RSEC", "Monocle", "Seurat", "Consensus")
+  } else {
+    chars <- c("sc3", "Monocle", "Seurat", "Consensus")
+  }
   
   colnames(mat) <- c("cells",
     paste(chars, "Initial", sep = "-"), paste(chars, "33", sep = "-"),
