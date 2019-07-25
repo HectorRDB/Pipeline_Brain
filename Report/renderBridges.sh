@@ -3,7 +3,8 @@
 #SBATCH --mail-type=ALL
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
-#SBATCH -p RM
+#SBATCH -p LM
+#SBATCH --mem=500GB
 #SBATCH -t 1-00:00:00
 #SBATCH --nodes=1
 
@@ -23,8 +24,9 @@ echo $TIMELAPSES >> $MEMORYFILE
 
 module load gcc
 module load pandoc
-datasets="SMARTer_cells_MOp SMARTer_nuclei_MOp"
+# datasets="SMARTer_cells_MOp SMARTer_nuclei_MOp"
 # datasets="SMARTer_cells_MOp SMARTer_nuclei_MOp 10x_cells_MOp 10x_nuclei_MOp"
+datasets="10x_nuclei_MOp"
 
 for dataset in $datasets
 do
