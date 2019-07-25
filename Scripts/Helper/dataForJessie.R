@@ -1,12 +1,13 @@
 library(here)
 library(stringr)
+library(merger)
 library(clusterExperiment)
 library(mclust)
 library(readr)
 
 # datasets <- "SMARTer_cells_MOp SMARTer_nuclei_MOp 10x_cells_MOp 10x_nuclei_MOp"
 source(here("Report", "helper.R"))
-datasets <- c("SMARTer_cells_MOp",  "SMARTer_nuclei_MOp")
+datasets <- c("SMARTer_cells_MOp",  "SMARTer_nuclei_MOp", )
 
 
 for (dataset in datasets) {
@@ -15,60 +16,78 @@ for (dataset in datasets) {
                          paste0(dataset, "_no_allen_mergers.rds")))
   
   print("...Initial consensus")
-  cellsConsensus <- suppressWarnings(
-    makeConsensus(x = as.matrix(merger$initalMat[, -5]),
-                  clusterLabel = "makeConsensus",
-                  proportion = 2/3, minSize = 100)
-  )
-  consensusInit <- cellsConsensus$clustering
+  clusters <- mergers_no_allen$initalMat
+  r <- which(colnames(clusters) == "RsecT")
+  if (all.equal(integer(0) ,r) != TRUE) {
+    clusters[,"Rsec"] <- assignRsec(mergers_no_allen) 
+  }
+  clusters <- as.matrix(clusters) 
+  cellsConsensus <- Consensus(clusMat = clusters,
+                              large = (type != "Smart-Seq"))
+  consensusInit <- cellsConsensus
   
   print("...Final consensus")
-  currentMat <- merger$currentMat
-  currentMat[, "Rsec"] <- assignRsec(merger)
-  cellsConsensus <- suppressWarnings(
-    makeConsensus(x = currentMat %>% as.matrix(), 
-                  clusterLabel = "makeConsensus",
-                  proportion = 2/3, minSize = 100)
-  )
+  clusters <- mergers_no_allen$currentMat
+  r <- which(colnames(clusters) == "RsecT")
+  if (all.equal(integer(0) ,r) != TRUE) {
+    clusters[,"Rsec"] <- assignRsec(mergers_no_allen) 
+  }
+  clusters <- as.matrix(clusters) 
+  
+  cellsConsensus <- Consensus(clusMat = clusters,
+                              large = (type != "Smart-Seq"))
   consensusFinal <- cellsConsensus$clustering
   
   print("...Intermediary consensus at 33.3%")
-  stopMatrix_33 <- intermediateMat(merger = merger, p = 1/3)
-  full_33 <- stopMatrix_33
-  full_33[, "Rsec"] <- assignRsec(merger, p = 1/3)
-  cellsConsensus <- suppressWarnings(
-    makeConsensus(x = full_33, clusterLabel = "makeConsensus",
-                  proportion = 2/3, minSize = 100)
-  )
-  consensusInt_33 <- cellsConsensus$clustering
+  midMat <- intermediateMat(merger = mergers_no_allen,
+                            p = 1/3)
+  r <- which(colnames(midMat) == "RsecT")
+  if (all.equal(integer(0) ,r) != TRUE) {
+    midMat[,"Rsec"] <- assignRsec(mergers_no_allen, p = 1/3)
+  }
+  midMat <- as.matrix(midMat)
+  
+  cellsConsensus <- Consensus(clusMat = midMat,
+                              large = (type != "Smart-Seq"))
+  consensusInt_33 <- cellsConsensus
   
   print("...Intermediary consensus at 66.7%")
-  stopMatrix_66 <- intermediateMat(merger = merger, p = 2/3)
-  full_66 <- stopMatrix_66
-  full_66[, "Rsec"] <- assignRsec(merger, p = 2/3)
-  cellsConsensus <- suppressWarnings(
-    makeConsensus(x = full_66, clusterLabel = "makeConsensus",
-                  proportion = 2/3, minSize = 100)
-  )
-  consensusInt_66 <- cellsConsensus$clustering
+  midMat <- intermediateMat(merger = mergers_no_allen,
+                            p = 2/3)
+  r <- which(colnames(midMat) == "RsecT")
+  if (all.equal(integer(0) ,r) != TRUE) {
+    midMat[,"Rsec"] <- assignRsec(mergers_no_allen, p = 2/3)
+  }
+  midMat <- as.matrix(midMat)
+  
+  cellsConsensus <- Consensus(clusMat = midMat,
+                              large = (type != "Smart-Seq"))
+  consensusInt_66 <- cellsConsensus
   
   print("...Intermediary consensus at 90%")
-  stopMatrix_90 <- intermediateMat(merger = merger)
-  full_90 <- stopMatrix_90
-  full_90[, "Rsec"] <- assignRsec(merger, p = .9)
-  cellsConsensus <- suppressWarnings(
-    makeConsensus(x = full_90, clusterLabel = "makeConsensus",
-                  proportion = 2/3, minSize = 100)
-  )
-  consensusInt_90 <- cellsConsensus$clustering
+  midMat <- intermediateMat(merger = mergers_no_allen,
+                            p = .9)
+  r <- which(colnames(midMat) == "RsecT")
+  if (all.equal(integer(0) ,r) != TRUE) {
+    midMat[,"Rsec"] <- assignRsec(mergers_no_allen, p = .9)
+  }
+  midMat <- as.matrix(midMat)
+  
+  cellsConsensus <- Consensus(clusMat = midMat,
+                              large = (type != "Smart-Seq"))
+  consensusInt_90 <- cellsConsensus
   
   print("...Full matrix")
   names <- read_csv(here("data", type(dataset),
                          paste0(dataset, "_cluster.membership.csv")))
-  currentMat <- merger$currentMat
-  j <- which(colnames(merger$initalMat) == "RsecT")
+  clusters <- mergers_no_allen$initalMat
+  r <- which(colnames(clusters) == "RsecT")
+  if (all.equal(integer(0) ,r) != TRUE) {
+    clusters[,"Rsec"] <- assignRsec(mergers_no_allen) 
+  }
+  clusters <- as.matrix(clusters) 
   mat <- cbind(names$X1,
-               merger$initalMat[, -j], consensusInit,
+               clusters, consensusInit,
                stopMatrix_33, consensusInt_33,
                stopMatrix_66, consensusInt_66,
                stopMatrix_90, consensusInt_90,
