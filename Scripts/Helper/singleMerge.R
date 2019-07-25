@@ -38,5 +38,7 @@ res_cells <- map_df(cutoffs,
               return(Rsec2@clusterMatrix[,"Clusters"])
                })
 
-write_csv(cbind(res_nuclei, res_cells), 
-          path = "../../data/Smart-Seq/Rsec_single_merge.csv")
+write_csv(res_cells, 
+          path = "../../data/Smart-Seq/SMARTer_cells_MOp_Rsec_single_merge.csv")
+write_csv(res_nuclei,
+          path = "../../data/Smart-Seq/SMARTer_nuclei_MOp_Rsec_single_merge.csv")
