@@ -24,6 +24,7 @@ for (dataset in datasets) {
   initialMat <- merger$initalMat
   r <- which(colnames(initialMat) == "RsecT")
   if (all.equal(integer(0) ,r) != TRUE) {
+    initialMat <- initialMat[, -r]
     initialMat[,"Rsec"] <- assignRsec(merger) 
   }
   initialMat <- as.matrix(initialMat) 
@@ -89,18 +90,14 @@ for (dataset in datasets) {
                stopMatrix_66, consensusInt_66,
                stopMatrix_90, consensusInt_90,
                currentMat, consensusFinal)
+  chars <- ifelse(type == "Smart-Seq",
+                  yes = c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"),
+                  no = c("sc3", "Monocle", "Seurat", "Consensus"))
   
   colnames(mat) <- c("cells",
-    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "Initial",
-          sep = "-"),
-    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "33",
-          sep = "-"),
-    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "66",
-          sep = "-"),
-    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "90",
-          sep = "-"),
-    paste(c("sc3", "RSEC", "Monocle", "Seurat", "Consensus"), "Final",
-          sep = "-")
+    paste(chars, "Initial", sep = "-"), paste(chars, "33", sep = "-"),
+    paste(chars, "66", sep = "-"), paste(chars, "90", sep = "-"),
+    paste(chars, "Final", sep = "-")
     )
   
   write_csv(x = mat,
