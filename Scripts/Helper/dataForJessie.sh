@@ -8,8 +8,6 @@
 #SBATCH -t 4-00:00:00
 #SBATCH --nodes=1
 
-module unload intel
-module load anaconda3
 module load gcc
 
 timestamp=$(date +"%m-%d-%H:%M")
