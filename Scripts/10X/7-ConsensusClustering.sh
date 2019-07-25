@@ -14,7 +14,7 @@ basename=nuclei-cells-ARI-merging_allen-no-allen_${timestamp}
 MEMORYFILE=${basename}.txt
 
 echo $NAME > $MEMORYFILE
-echo 10 "LM" 1500GB >> $MEMORYFILE
+echo 10 "LM" 1000GB >> $MEMORYFILE
 TIMELAPSES=30
 echo $TIMELAPSES >> $MEMORYFILE
 

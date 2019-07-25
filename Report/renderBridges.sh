@@ -18,7 +18,7 @@ MEMORYFILE=${basename}.txt
 NAME=Hector
 echo $NAME > $MEMORYFILE
 # Replace with your own variables. This is cpus-per-tasks partition mem
-echo 1 RM 128GB >> $MEMORYFILE
+echo 1 LM 500GB >> $MEMORYFILE
 TIMELAPSES=30
 echo $TIMELAPSES >> $MEMORYFILE
 
