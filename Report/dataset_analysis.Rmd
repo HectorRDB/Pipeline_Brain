@@ -9,7 +9,7 @@ output:
     code_download: TRUE
     
 params:
-  dataset: SMARTer_nuclei_MOp 
+  dataset: 10x_nuclei_MOp 
   title: "Analysis of the SMARTer_nuclei_MOp dataset"
 ---
 ---
