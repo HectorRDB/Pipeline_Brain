@@ -7,7 +7,7 @@ library(clusterExperiment)
 
 loc <- "/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp"
 Rsec <- readRDS(paste0(loc, "_RSEC.rds"))
-
+Rsec <- assignUnassigned(Rsec)
 cutoffs <- seq(from = .05, to = 1, by = .05)
 names(cutoffs) <- cutoffs
 res_nuclei <- map_df(cutoffs,
