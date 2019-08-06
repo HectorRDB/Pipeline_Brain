@@ -74,6 +74,7 @@ sce <- readRDS(file = loc)
 Prop <- .1
 NCORES <- as.numeric(opt$n)
 BiocParallel::register(MulticoreParam(NCORES))
+## Look at zinb vignette, use the mac option for everything 
 
 vars <- matrixStats::rowVars(logcounts(sce))
 ind <- vars > sort(vars,decreasing = TRUE)[1000]
