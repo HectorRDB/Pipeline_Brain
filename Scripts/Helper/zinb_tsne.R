@@ -1,32 +1,53 @@
+suppressWarnings(library(optparse))
+
+# Arguments for R Script ----
+option_list <- list(
+  make_option(c("-o", "--output"),
+              action = "store", default = NA, type = "character",
+              help = "Where to store the object after running"
+  ),
+  make_option(c("-l", "--location"),
+              action = "store", default = NA, type = "character",
+              help = "The location of the data"
+  ),
+  make_option(c("-n", "--nCores"),
+              action = "store", default = 1,
+              help = "Number of cores to use [default %default]"
+  ),
+  make_option(c("-K"),
+              action = "store", default = 10,
+              help = "The value of K [default %default]"
+  ),
+)
+
+opt <- parse_args(OptionParser(option_list = option_list))
+
+if (!is.na(opt$l)) {
+  loc <- opt$l
+  cat("The selected dataset is located at", loc, "\n")
+} else {
+  stop("Missing l argument\n")
+}
+if (!is.na(opt$o)) {
+  output <- opt$o
+} else {
+  stop("Missing o argument\n")
+}
+
+# Loading the data ----
+library(clusterExperiment)
+library(stringr)
+library(dplyr)
+library(BiocParallel)
 library(Rtsne)
-library(SingleCellExperiment)
-library(tidyverse)
-loc <- "/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp_zinbWs.rds"
+library(zinbwave)
+library(matrixStats)
+library(ggplot2)
+
 sce <- readRDS(loc)
 
-dims <- reducedDimNames(sce)
-zinbWs <- reducedDims(sce)
-clusters <- read.csv(
-"/scratch/users/singlecell/MiniAtlas/data/SMARTer_nuclei_MOp/cluster.annotation.csv",
-header = T)
-cols2 <- clusters$cluster_color %>% as.character()
-names(cols2) <- clusters$cluster_id %>% as.character()
+zinbW <- reducedDims(sce)[[paste0("zinb-K", K)]]
+TNSE <- Rtsne(zinbW, initial_dims = min(50, K))
 
-# Is zinbWave the problem? ----
-for (i in 1:length(zinbWs)) {
-  zinbW <- zinbWs[[i]]
-  print(i)
-  TNSE <- Rtsne(zinbW)
-  print("     tsne")
-  df <- data.frame(x = TNSE$Y[, 1], y = TNSE$Y[, 2],
-                   cols = as.factor(colData(sce)$allenClusters))
-  p <- ggplot(df, aes(x = x, y = y, col = cols)) +
-        geom_point() +
-        theme_classic() +
-        scale_color_manual(values = cols2, breaks = names(cols2)) +
-        labs(x = "dim1", y = "dim2")
-  ggsave(paste0(
-  "/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/Figures/Exploration/tsne_nuclei_K", dims[i], ".pdf"),
-  p)
-  print("     saving plot")
-}
+write.csv(data.frame(x = TNSE$Y[, 1], y = TNSE$Y[, 2]),
+          file = output)
