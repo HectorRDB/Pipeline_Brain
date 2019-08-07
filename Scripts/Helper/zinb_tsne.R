@@ -13,7 +13,7 @@ option_list <- list(
   make_option(c("-K", "--Kvalue"),
               action = "store", default = 10,
               help = "The value of K [default %default]"
-  ),
+  )
 )
 
 opt <- parse_args(OptionParser(option_list = option_list))
