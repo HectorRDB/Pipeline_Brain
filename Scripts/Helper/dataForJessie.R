@@ -25,7 +25,6 @@ for (dataset in datasets) {
   r <- which(colnames(initialMat) == "RsecT")
   if (all.equal(integer(0) ,r) != TRUE) {
     initialMat <- initialMat[, -r]
-    initialMat[,"Rsec"] <- assignRsec(merger, p = 0) 
   }
   initialMat <- as.matrix(initialMat) 
   cellsConsensus <- Consensus(clusMat = initialMat,
@@ -34,10 +33,6 @@ for (dataset in datasets) {
   
   print("...Final consensus")
   currentMat <- merger$currentMat
-  r <- which(colnames(currentMat) == "RsecT")
-  if (all.equal(integer(0) ,r) != TRUE) {
-    currentMat[,"Rsec"] <- assignRsec(merger) 
-  }
   currentMat <- as.matrix(currentMat) 
   
   cellsConsensus <- Consensus(clusMat = currentMat,
@@ -47,10 +42,6 @@ for (dataset in datasets) {
   print("...Intermediary consensus at 33.3%")
   stopMatrix_33 <- intermediateMat(merger = merger,
                             p = 1/3)
-  r <- which(colnames(stopMatrix_33) == "RsecT")
-  if (all.equal(integer(0) ,r) != TRUE) {
-    stopMatrix_33[,"Rsec"] <- assignRsec(merger, p = 1/3)
-  }
   stopMatrix_33 <- as.matrix(stopMatrix_33)
   
   cellsConsensus <- Consensus(clusMat = stopMatrix_33,
@@ -59,10 +50,6 @@ for (dataset in datasets) {
   
   print("...Intermediary consensus at 66.7%")
   stopMatrix_66 <- intermediateMat(merger = merger, p = 2/3)
-  r <- which(colnames(stopMatrix_66) == "RsecT")
-  if (all.equal(integer(0) ,r) != TRUE) {
-    stopMatrix_66[,"Rsec"] <- assignRsec(merger, p = 2/3)
-  }
   stopMatrix_66 <- as.matrix(stopMatrix_66)
   
   cellsConsensus <- Consensus(clusMat = stopMatrix_66,
@@ -71,10 +58,6 @@ for (dataset in datasets) {
   
   print("...Intermediary consensus at 90%")
   stopMatrix_90 <- intermediateMat(merger = merger, p = .9)
-  r <- which(colnames(stopMatrix_90) == "RsecT")
-  if (all.equal(integer(0) ,r) != TRUE) {
-    stopMatrix_90[,"Rsec"] <- assignRsec(merger, p = .9)
-  }
   stopMatrix_90 <- as.matrix(stopMatrix_90)
   
   cellsConsensus <- Consensus(clusMat = stopMatrix_90,
