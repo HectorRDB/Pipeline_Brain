@@ -45,9 +45,12 @@ library(zinbwave)
 library(matrixStats)
 library(ggplot2)
 
-sce <- readRDS(loc)
-
-zinbW <- reducedDims(sce)[[paste0("zinb-K", K)]]
+if (str_detect(loc, "SMARTer")) {
+  sce <- readRDS(loc)
+  zinbW <- reducedDims(sce)[[paste0("zinb-K", K)]]
+} else {
+  zinbW <- readRDS(loc)
+}
 TNSE <- Rtsne(zinbW, initial_dims = min(50, K))
 
 write.csv(data.frame(x = TNSE$Y[, 1], y = TNSE$Y[, 2]),
