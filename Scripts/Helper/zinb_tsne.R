@@ -10,10 +10,6 @@ option_list <- list(
               action = "store", default = NA, type = "character",
               help = "The location of the data"
   ),
-  make_option(c("-n", "--nCores"),
-              action = "store", default = 1,
-              help = "Number of cores to use [default %default]"
-  ),
   make_option(c("-K", "--Kvalue"),
               action = "store", default = 10,
               help = "The value of K [default %default]"
