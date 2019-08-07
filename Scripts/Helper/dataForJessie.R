@@ -7,7 +7,7 @@ library(readr)
 
 datasets <- c("SMARTer_cells_MOp", "SMARTer_nuclei_MOp",
               "10x_cells_MOp", "10x_nuclei_MOp")
-# datasets <- c("SMARTer_cells_MOp",  "SMARTer_nuclei_MOp", )
+datasets <- c("SMARTer_cells_MOp",  "SMARTer_nuclei_MOp")
 types <- function(dataset) {
   if (str_detect(dataset, "SMART")) return("Smart-Seq")
   if (str_detect(dataset, "10x")) return("10X")
@@ -25,7 +25,7 @@ for (dataset in datasets) {
   r <- which(colnames(initialMat) == "RsecT")
   if (all.equal(integer(0) ,r) != TRUE) {
     initialMat <- initialMat[, -r]
-    initialMat[,"Rsec"] <- assignRsec(merger) 
+    initialMat[,"Rsec"] <- assignRsec(merger, p = 0) 
   }
   initialMat <- as.matrix(initialMat) 
   cellsConsensus <- Consensus(clusMat = initialMat,
