@@ -14,7 +14,7 @@ option_list <- list(
               action = "store", default = 1,
               help = "Number of cores to use [default %default]"
   ),
-  make_option(c("-K"),
+  make_option(c("-K", "--Kvalue"),
               action = "store", default = 10,
               help = "The value of K [default %default]"
   ),
@@ -32,6 +32,11 @@ if (!is.na(opt$o)) {
   output <- opt$o
 } else {
   stop("Missing o argument\n")
+}
+if (!is.na(opt$K)) {
+  K <- opt$K
+} else {
+  stop("Missing K argument\n")
 }
 
 # Loading the data ----
