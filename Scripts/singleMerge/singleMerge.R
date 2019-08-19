@@ -1,47 +1,91 @@
+# Options for the script ----
+suppressWarnings(library(optparse))
+option_list <- list(
+  make_option(c("-o", "--output"),
+              action = "store", default = NA, type = "character",
+              help = "Where to store the output"
+  ),
+  make_option(c("-l", "--location"),
+              action = "store", default = NA, type = "character",
+              help = "The location of the data"
+  )
+)
+
+opt <- parse_args(OptionParser(option_list = option_list))
+
+if (!is.na(opt$l)) {
+  loc <- opt$l
+  cat("The selected dataset is located at", loc)
+} else {
+  stop("Missing l argument")
+}
+
+if (!is.na(opt$o)) {
+  output <- opt$o
+} else {
+  stop("Missing o argument")
+}
+# Loading files ---- 
+library(vctrs)
 library(SummarizedExperiment)
 library(parallel)
 library(matrixStats)
 library(mclust)
-library(tidyverse)
+library(stringr)
+library(tidyr)
+library(dplyr)
+library(purrr)
+.libPaths("/accounts/projects/epurdom/singlecell/R/x86_64-pc-linux-gnu-library/3.5")
 library(clusterExperiment)
+library(monocle)
 
-loc <- "/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp"
+# Load sc3 clustering results
+sc3 <- readRDS(paste0(loc, "_sc3.rds"))
+k <- names(metadata(sc3)$sc3$consensus)
+sc3 <- colData(sc3)[, paste0("sc3_", k, "_clusters")] %>% as.numeric()
+rm(k)
+
+# Load monocle and allen clustering results
+Monocle <- readRDS(paste0(loc, "_monocle.rds"))
+Names <- colnames(Monocle)
+Monocle <- pData(Monocle)$Cluster %>% as.numeric()
+
+# Load RSEC results
 Rsec <- readRDS(paste0(loc, "_RSEC.rds"))
-Rsec <- assignUnassigned(Rsec, clusterLabel = "allAssigned")
-Rsec <- makeDendrogram(Rsec, whichCluster = "allAssigned")
+Rsec <- assignUnassigned(Rsec, clusterLabel = "Rsec")
+
+# Load all seurat results and keep one of them
+seurat <- readRDS(paste0(loc, "_seurat.rds"))
+source("/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/Scripts/Smart-Seq/8-helper.R")
+
+seurat_p <- "1.6,50"
+
+seurat <- seurat[, seurat_p] %>% as.numeric()
+
+for (clustering in c("sc3", "Monocle", "seurat")) {
+  Rsec <- addClusterings(Rsec, get(clustering), clusterLabels = clustering)
+}
+
+# Doing the merges
 cutoffs <- seq(from = .05, to = 1, by = .05)
-names(cutoffs) <- cutoffs
-res_nuclei <- map_df(cutoffs,
-                     function(i){
-                 Rsec2 <- mergeClusters(Rsec,
-                                        mergeMethod = "adjP",
-                                        plotInfo = "adjP",
-                                        cutoff = i,
-                                        clusterLabel = "Clusters",
-                                        plot = F,
-                                        DEMethod = "limma")  
-                 
-                 return(Rsec2@clusterMatrix[,"Clusters"])  
-  })
+res <- list()
+for (clustering in c("sc3", "Monocle", "Seurat", "Rsec")) {
+  print(clustering)
+  Rsec2 <- makeDendrogram(Rsec, whichCluster = clustering)
+  names(cutoffs) <- paste(clustering, cutoffs, sep = "_")
+  res[[clustering]] <- map_df(cutoffs,
+                function(i){
+                  print(paste0("...", i))
+                  Rsec2 <- mergeClusters(Rsec2,
+                                         mergeMethod = "adjP",
+                                         plotInfo = "adjP",
+                                         cutoff = i,
+                                         clusterLabel = "Clusters",
+                                         plot = F,
+                                         DEMethod = "limma")  
+                  return(Rsec2@clusterMatrix[,"Clusters"])  
+                })
+}
 
-loc <- "/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp"
-Rsec <- readRDS(paste0(loc, "_RSEC.rds"))
-Rsec <- assignUnassigned(Rsec, clusterLabel = "allAssigned")
-Rsec <- makeDendrogram(Rsec, whichCluster = "allAssigned")
-res_cells <- map_df(cutoffs,
-               function(i){
-                 Rsec2 <- mergeClusters(Rsec,
-                                        mergeMethod = "adjP",
-                                        plotInfo = "adjP",
-                                        cutoff = i,
-                                        clusterLabel = "Clusters",
-                                        plot = F,
-                                        DEMethod = "limma")  
-                 
-              return(Rsec2@clusterMatrix[,"Clusters"])
-               })
-
-write_csv(res_cells, 
-          path = "../../data/Smart-Seq/SMARTer_cells_MOp_Rsec_single_merge.csv")
-write_csv(res_nuclei,
-          path = "../../data/Smart-Seq/SMARTer_nuclei_MOp_Rsec_single_merge.csv")
+res <- do.call('cbind', res)
+write_csv(res, path = output)
