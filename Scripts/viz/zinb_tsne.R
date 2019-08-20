@@ -36,7 +36,7 @@ if (!is.na(opt$K)) {
 }
 
 # Loading the data ----
-library(clusterExperiment)
+library(SingleCellExperiment)
 library(stringr)
 library(dplyr)
 library(BiocParallel)
