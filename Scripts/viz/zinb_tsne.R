@@ -36,11 +36,13 @@ if (!is.na(opt$K)) {
 }
 
 # Loading the data ----
-library(SingleCellExperiment)
 library(stringr)
+library(vctrs)
 library(dplyr)
 library(BiocParallel)
 library(Rtsne)
+.libPaths("/accounts/projects/epurdom/singlecell/R/x86_64-pc-linux-gnu-library/3.5")
+library(SingleCellExperiment)
 library(zinbwave)
 library(matrixStats)
 library(ggplot2)
