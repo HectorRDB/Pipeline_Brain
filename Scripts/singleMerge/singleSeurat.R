@@ -35,16 +35,13 @@ library(SummarizedExperiment)
 
 sce <- readRDS(file = loc)
 
-clusterMatrixs <- list()
 # Setup ----
-sSeurat <- CreateSeuratObject(raw.data = assays(sce)$counts, project = 'allen40K')
+sSeurat <- CreateSeuratObject(counts = assays(sce)$counts, project = 'allen40K')
 sSeurat <- NormalizeData(object = sSeurat, normalization.method = "LogNormalize")
-sSeurat <- FindVariableGenes(object = sSeurat, mean.function = ExpMean,
-                             dispersion.function = LogVMR, do.plot = T)
-sSeurat <- ScaleData(object = sSeurat, vars.to.regress = "nUMI")
-sSeurat <- RunPCA(object = sSeurat, pc.genes = sSeurat@var.genes, 
-                  do.print = TRUE, pcs.compute = 50, pcs.print = 1:5,
-                  genes.print = 5)
+sSeurat <- FindVariableFeatures(object = sSeurat, mean.function = ExpMean,
+                                dispersion.function = LogVMR, do.plot = T)
+sSeurat <- ScaleData(object = sSeurat, vars.to.regress = "nCount_RNA")
+sSeurat <- RunPCA(object = sSeurat, ndims.print = 1, pcs.compute = 50)
   
 # Run clustering ----
 clusterMatrix <- NULL
@@ -52,11 +49,9 @@ for (RESOLUTION in seq(from = 0.3, to = 1.7, by = .1)) {
   print(RESOLUTION)
   for (K.PARAM in c(30, 50, 100)) {
     print(paste0("...", K.PARAM))
-    sSeurat_star <- FindClusters(object = sSeurat, reduction.type = "pca",
-                                 dims.use = 1:50, resolution = RESOLUTION,
-                                 print.output = 0, k.param = K.PARAM,
-                                 save.SNN = TRUE)
-    clusterMatrix <- cbind(clusterMatrix, sSeurat_star@ident)
+    sSeurat_star <- FindNeighbors(sSeurat, dims = 1:K.PARAM)
+    sSeurat_star <- FindClusters(sSeurat_star, resolution = RESOLUTION)
+    clusterMatrix <- cbind(clusterMatrix, Idents(sSeurat_star))
     colnames(clusterMatrix)[ncol(clusterMatrix)] <- paste(RESOLUTION, K.PARAM,
                                                           sep = ",")
   }
