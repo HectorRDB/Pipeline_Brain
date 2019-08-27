@@ -32,8 +32,6 @@ if (!is.na(opt$o)) {
 }
 
 # Run sc3 per se ----
-# .libPaths("/accounts/projects/epurdom/singlecell/R/x86_64-pc-linux-gnu-library/3.5")
-print(.libPaths())
 library(SC3)
 library(scater)
 library(stringr)
