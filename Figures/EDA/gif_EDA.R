@@ -7,7 +7,8 @@ library(here)
 types <- c("10x_cells", "10x_nuclei", "SMARTer_cells", "SMARTer_nuclei")
 walk(types, function(type){
   files <- list.files(here("Figures", "EDA")) %>%
-    str_subset(pattern = type)
+    str_subset(pattern = type) %>%
+    str_subset(pattern = "gif", negate = TRUE)
   map(files, function(file){
     K <- str_extract(file, "..\\.png$") %>% str_remove("\\.png$")
     image_read(here("Figures", "EDA", file)) %>%
