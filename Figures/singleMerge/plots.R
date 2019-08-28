@@ -10,10 +10,10 @@ singleMerge <- read.table(here("Replicability", "singleMerge", "smart",
          level = if_else(nchar(level) == 1, paste0(level, "0"), level),
          level = as.numeric(level),
          clustering_method = str_remove(clustering_method, "\\..+$"),
-         clustering_method = if_else(clustering_method == "seurat" ,"Seurat",
-                                     clustering_method),
-         merging_type = "single") %>%
-  filter(clustering_method != "Rsec")
+         clustering_method = case_when(clustering_method == "seurat" ~ "Seurat",
+                                       clustering_method == "Rsec" ~ "RSEC",
+                                       TRUE ~ clustering_method),
+         merging_type = "hierarchical")
 
 # Load and clean the results from ARI mergings
 toRank <- function(i) {
@@ -32,12 +32,12 @@ ARIMerge <- read.table(here("Replicability", "smart",
          level = str_remove(level, "^\\."),
          level = toRank(level),
          clustering_method = str_remove(clustering_method, "\\..+$"),
-         merging_type = "ARI_Merge") %>%
+         merging_type = "ARI") %>%
   filter(clustering_method != "Consensus")
 
 Init <- ARIMerge %>%
   filter(level == 1) %>%
-  mutate(merging_type = "single",
+  mutate(merging_type = "hierarchical",
          level = 0)
   
 
@@ -51,8 +51,14 @@ ggplot(df, aes(x = (replicable_clusters + non_replicable_clusters) / 2,
                linetype = merging_type,
                group = interaction(clustering_method, merging_type),
                label = level)) +
-  geom_path() +
-  geom_text() +
+  geom_path(size = 3) +
+  # geom_text() +
   my_theme() +
-  scale_color_brewer(type = "qual")
+  scale_color_brewer(type = "qual") +
+  labs(x = "# of clusters", y = "Replicability", col = "Clustering\nmethod",
+       linetype = "Type of\nmerging") +
+  theme(axis.title = element_text(size = 20),
+        axis.text = element_text(size = 15),
+        legend.title = element_text(size = 20),
+        legend.text = element_text(size = 15)) 
 ggsave(filename = here("Figures", "singleMerge", "singleMergeVersusARIMerge.pdf"))
