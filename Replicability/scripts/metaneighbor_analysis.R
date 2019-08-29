@@ -10,10 +10,10 @@ source("data.R")
 
 
 main = function() {
-    analyze_single_merge()
+    analyze_single_seurat()
 }
 
-analyze_legacy = function(data_path = "../../data", output_dir = "../mn_results") {
+analyze_full_data = function(data_path = "../../data", output_dir = "../mn_results") {
     dataset = load_data()
     labels = load_labels(colnames(dataset), data_path)
     
@@ -99,8 +99,13 @@ export_components = function(component_obj, output_dir) {
 
 analyze_single_merge = function(data_path = "../../data", output_dir = "../mn_results/SingleMerge") {
     dataset = load_smart_data()
-    labels = load_sm_labels(colnames(dataset), data_path)
-    
+    labels = load_single_merge_labels(colnames(dataset), data_path)  
+    analyze_smart(dataset, labels, output_dir)
+}
+
+analyze_single_seurat = function(data_path = "../../data", output_dir = "../mn_results/SingleMethod") {
+    dataset = load_smart_data()
+    labels = load_single_seurat_labels(colnames(dataset), data_path)  
     analyze_smart(dataset, labels, output_dir)
 }
 

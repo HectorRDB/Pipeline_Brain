@@ -8,10 +8,10 @@ source("data.R")
 
 
 main = function() {
-    main_legacy()
+    main_single_seurat()
 }
 
-main_legacy = function(result_path = "../mn_results", output_dir = "..") {
+main_full_data = function(result_path = "../mn_results", output_dir = "..") {
     label_matrix = load_labels(load_qc_cells())
     
     create_summary_figures(label_matrix, file.path(result_path, "smart_tenx"), file.path(output_dir, "smart_tenx"), 4)
@@ -259,9 +259,16 @@ plot_clusters_vs_mapped = function(results) {
             labs(col = "Clustering method", shape = "Consensus level")
 }
                   
-main_single_merge = function(result_path = "../mn_results/SingleMerge", output_dir = "../test") {
-    label_matrix = load_sm_labels(load_qc_cells("qc_cells_smart.txt"))
+main_single_merge = function(result_path = "../mn_results/SingleMerge", output_dir = "../singleMerge") {
+    dataset = load_data()
+    label_matrix = load_single_merge_labels(colnames(dataset))
+    label_matrix = label_matrix[dataset$class_label != "Noise",]
     
+    create_summary_figures(label_matrix, file.path(result_path, "smart"), file.path(output_dir, "smart"), 2)
+}
+                  
+main_single_seurat = function(result_path = "../mn_results/SingleMethod", output_dir = "../singleMethod") {
+    label_matrix = load_single_seurat_labels(load_qc_cells("qc_cells_smart.txt"))
     create_summary_figures(label_matrix, file.path(result_path, "smart"), file.path(output_dir, "smart"), 2)
 }
     
