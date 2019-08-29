@@ -8,7 +8,7 @@ source("data.R")
 
 
 main = function() {
-    main_single_seurat()
+    main_single_method()
 }
 
 main_full_data = function(result_path = "../mn_results", output_dir = "..") {
@@ -267,7 +267,7 @@ main_single_merge = function(result_path = "../mn_results/SingleMerge", output_d
     create_summary_figures(label_matrix, file.path(result_path, "smart"), file.path(output_dir, "smart"), 2)
 }
                   
-main_single_seurat = function(result_path = "../mn_results/SingleMethod", output_dir = "../singleMethod") {
+main_single_method = function(result_path = "../mn_results/SingleMethod", output_dir = "../singleMethod") {
     label_matrix = load_single_seurat_labels(load_qc_cells("qc_cells_smart.txt"))
     create_summary_figures(label_matrix, file.path(result_path, "smart"), file.path(output_dir, "smart"), 2)
 }
