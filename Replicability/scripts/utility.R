@@ -44,23 +44,8 @@ normalize_cols <- function(M, ranked = TRUE) {
   if (ranked) {
     M <- matrixStats::colRanks(M, ties.method = "average", preserveShape = TRUE)
   }
-  return(scale_cols(M))
+  return(scale(M))
 }
-
-Rcpp::cppFunction('NumericMatrix scale_cols(NumericMatrix M) {
-  NumericMatrix result(M.nrow(), M.ncol());
-  for (int j = 0; j < M.ncol(); j++) {
-    double m = 0;
-    for (int i = 0; i < M.nrow(); i++) { m += M(i,j); }
-    m /= M.nrow();
-    for (int i = 0; i < M.nrow(); i++) { result(i,j) = M(i,j) - m; }
-    double s = 0;
-    for (int i = 0; i < M.nrow(); i++) { s += result(i,j) * result(i,j); }
-    s = 1 / sqrt(s);
-    for (int i = 0; i < M.nrow(); i++) { result(i,j) *= s; }
-  }
-  return result;
-}')
 
 get_study_id <- function(cluster_name) {
   return(sapply(strsplit(cluster_name, "|", fixed=TRUE), "[", 1))
