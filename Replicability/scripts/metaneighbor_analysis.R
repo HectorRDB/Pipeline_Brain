@@ -2,15 +2,17 @@
 suppressPackageStartupMessages({
     library(SingleCellExperiment)
     library(tidyverse)
+    library(here)
 })
 
+setwd(here("Replicability", "scripts"))
 source("meta_components.R")
 source("graph_visualization.R")
 source("data.R")
 
 
 main = function() {
-    analyze_single_seurat()
+    analyze_single_methods()
 }
 
 analyze_full_data = function(data_path = "../../data", output_dir = "../mn_results") {
@@ -103,12 +105,21 @@ analyze_single_merge = function(data_path = "../../data", output_dir = "../mn_re
     analyze_smart(dataset, labels, output_dir)
 }
 
-analyze_single_seurat = function(data_path = "../../data", output_dir = "../mn_results/SingleMethod") {
-    dataset = load_smart_data()
-    labels = load_single_seurat_labels(colnames(dataset), data_path)  
+analyze_single_methods <- function(data_path = "../../data",
+                            output_dir = "../mn_results/SingleMethod"){
+    dataset <- load_smart_data()
+    # Seurat
+    labels <- load_single_seurat_labels(colnames(dataset), data_path)
     analyze_smart(dataset, labels, output_dir)
+    # SC3
+    labels <- load_single_sc3_labels(colnames(dataset), data_path)
+    analyze_smart(dataset, labels, output_dir)
+    # Monocle
+    labels <- load_single_monocle_labels(colnames(dataset), data_path)
+    analyze_smart(dataset, labels, output_dir)
+    
 }
 
 if (!interactive()) {
     main()
-}
+   }
