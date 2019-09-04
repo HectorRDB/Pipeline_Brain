@@ -48,6 +48,7 @@ source("/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/Scri
 # Load Data and clean seurat ----
 # Load sc3 clustering results
 sc3 <- readRDS(paste0(loc, "_sc3.rds"))
+Names <- colnames(sc3)
 k <- names(metadata(sc3)$sc3$consensus)
 sc3 <- colData(sc3)[, paste0("sc3_", k, "_clusters")] %>% as.numeric()
 rm(k)

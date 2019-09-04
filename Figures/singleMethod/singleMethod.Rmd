@@ -186,11 +186,11 @@ ggplot(df %>%
 
 ```{r}
 Seurat_k <- Seurat %>%
-  filter((clustering_method == 1.6)# |
+  filter((clustering_method == 1.2)# |
          # (clustering_method < 1.6 & level == 50)
         )
   
-df <- bind_rows(SC3, Monocle, Seurat_k,
+df <- bind_rows(SC3, Monocle %>% filter(level >= 45), Seurat_k,
                 ARIMerge %>% filter(clustering_name != "RSEC"))
 
 ggplot(df %>%
