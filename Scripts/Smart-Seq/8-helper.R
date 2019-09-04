@@ -4,5 +4,5 @@ clusterMatToAri <- function(seurat) {
       adjustedRandIndex(x, y)
     })
   })
-  return(plotARIs(ARI, small = TRUE))
+  return(plotARIs(ARI, small = FALSE))
 }
