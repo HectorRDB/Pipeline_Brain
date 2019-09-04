@@ -1,5 +1,5 @@
 *.Rhistory
-*.RProfile
+*.Rprofile
 Scripts/Exploration/.Rhistory
 data/Smart-Seq/.Rapp.history
 .Rproj.user
