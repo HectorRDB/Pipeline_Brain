@@ -10,11 +10,11 @@ loc="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp_zinbWs.rds"
 out="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp_monocle.rds"
 
 while true; do free -h >> $MEMORYFILE; sleep 15; done & \
-Rscript --vanilla --verbose 6-monocle.R -l $loc -o $out> 6b.out 2>&1
+Rscript --verbose 6-monocle.R -l $loc -o $out> 6b.out 2>&1
 
 MEMORYFILE="6a-memoryLogger.txt"
 loc="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_zinbWs.rds"
 out="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_monocle.rds"
 
 while true; do free -h >> $MEMORYFILE; sleep 15; done & \
-Rscript --vanilla --verbose 6-monocle.R -l $loc -o $out> 6a.out 2>&1
+Rscript --verbose 6-monocle.R -l $loc -o $out> 6a.out 2>&1

@@ -8,3 +8,7 @@
 loc="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_filt.rds"
 out="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_seurat.rds"
 Rscript --vanilla --verbose  5-seurat.R -l $loc -o $out> 5a.out 2>&1
+
+loc="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp_filt.rds"
+out="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp_seurat.rds"
+Rscript --vanilla --verbose  5-seurat.R -l $loc -o $out> 5b.out 2>&1

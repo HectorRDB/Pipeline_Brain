@@ -31,7 +31,7 @@ if (!is.na(opt$o)) {
 library(Seurat)
 library(dplyr)
 library(stringr)
-library(SummarizedExperiment)
+library(SingleCellExperiment)
 
 sce <- readRDS(file = loc)
 
