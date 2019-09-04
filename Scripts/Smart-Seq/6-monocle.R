@@ -47,8 +47,6 @@ sce <- new_cell_data_set(assays(sce)$counts,
                          gene_metadata = fd)
 
 # Pre-process
-DelayedArray:::set_verbose_block_processing(TRUE)
-options(DelayedArray.block.size = 1005)
 sce@reducedDims <- SimpleList("PCA" = zinbW)
 
 print("Doing the reduced dimension")
