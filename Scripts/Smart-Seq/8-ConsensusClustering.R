@@ -56,7 +56,7 @@ rm(k)
 Monocle <- readRDS(paste0(loc, "_monocle.rds"))
 # ggsave(filename = paste0(opt$p, "_monocle_ARI.png"),
 #        plot = clusterMatToAri(Monocle))
-monocle_p <- "k_40"
+monocle_p <- "k_45"
 Monocle <- as.data.frame(Monocle)[, monocle_p] %>% as.numeric()
 
 
@@ -68,9 +68,9 @@ Rsec <- primaryCluster(Rsec) %>% as.numeric()
 
 # Load all seurat results and keep one of them
 seurat <- readRDS(paste0(loc, "_seurat.rds"))
-ggsave(filename = paste0(opt$p, "_seurat_ARI.png"),
-       plot = clusterMatToAri(seurat))
-seurat_p <- "1.6,50"
+# ggsave(filename = paste0(opt$p, "_seurat_ARI.png"),
+#        plot = clusterMatToAri(seurat))
+seurat_p <- "1.2,50"
 seurat <- seurat[, seurat_p] %>% as.numeric()
 
 # Get the final clustering labels
