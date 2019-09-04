@@ -105,12 +105,28 @@ load_single_seurat_labels <- function(cell_names, data_path = "../../data") {
 
 load_single_sc3_labels <- function(cell_names, data_path = "../../data") {
   input_dir <- file.path(data_path, "singleMerge")
+  # Rename cells
+  zeng_smart_cells <- read_single_method(
+    file.path(input_dir, "SMARTer_cells_MOp_singleSC3.csv")) %>%
+    mutate(dataset = "zeng_smart_cells")
+  zeng_smart_cells <- zeng_smart_cells %>%
+    select(.data = ., "dataset", colnames(zeng_smart_cells))
+  k_0 <- max(as.numeric(colnames(zeng_smart_cells)[-(1:2)]))
+  colnames(zeng_smart_cells)[-(1:2)] <- 
+    as.numeric(colnames(zeng_smart_cells)[-(1:2)]) - k_0
+  # Rename nuclei
+  zeng_smart_nuclei <- read_single_method(
+    file.path(input_dir, "SMARTer_nuclei_MOp_singleSC3.csv")) %>%
+    mutate(dataset = "zeng_smart_nuclei")
+  zeng_smart_nuclei <- zeng_smart_nuclei %>%
+    select(.data = ., "dataset", colnames(zeng_smart_nuclei))
+  k_0 <- max(as.numeric(colnames(zeng_smart_nuclei)[-(1:2)]))
+  colnames(zeng_smart_nuclei)[-(1:2)] <- 
+    as.numeric(colnames(zeng_smart_nuclei)[-(1:2)]) - k_0
+  
   result <- bind_rows(
-    zeng_smart_cells = read_single_method(
-        file.path(input_dir, "SMARTer_cells_MOp_singleSC3.csv")),
-    zeng_smart_nuclei = read_single_method(
-        file.path(input_dir, "SMARTer_nuclei_MOp_singleSC3.csv")),
-    .id = "dataset"
+    zeng_smart_cells,
+    zeng_smart_nuclei
   )
 
   # restrict to steps where both datasets have at least 2 clusters
