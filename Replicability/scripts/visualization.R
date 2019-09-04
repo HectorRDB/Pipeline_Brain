@@ -169,11 +169,18 @@ number_mapped_cells <- function(components, cluster_sizes) {
 }
 
 number_outliers <- function(components) {
-  return(sum(get_cell_type(components$outliers) != "-1"))
+  if (is.null(components$outliers)) {
+    return(0)
+  } else {
+    return(sum(get_cell_type(components$outliers) != "-1"))  
+  }
 }
 
 number_unmapped_cells <- function(components, cluster_sizes) {
   unmapped_labels <- components$outliers
+  if (is.null(unmapped_labels)) {
+    return(0)
+  }
   unmapped_labels <- unmapped_labels[get_cell_type(unmapped_labels) != "-1"]
   return(sum(cluster_sizes[unmapped_labels]))
 }
