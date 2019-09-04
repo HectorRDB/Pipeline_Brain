@@ -13,7 +13,7 @@ output:
 library(knitr)
 opts_chunk$set(
   fig.pos = "!h", out.extra = "", warning = F, message = F,
-  fig.width = 5, fig.align = "center", echo = F
+  fig.align = "center", echo = F
 )
 libs <- c("here", "tidyverse", "DailyHRB")
 suppressMessages(
@@ -159,10 +159,33 @@ ggplot(singleMethod,
 ```
 
 # ARI Merging versus singleMerge
+## All points
+
+```{r}
+Seurat <- Seurat %>%
+  mutate(level = as.numeric(level))
+df <- bind_rows(SC3, Monocle, Seurat,
+                ARIMerge %>% filter(clustering_name != "RSEC"))
+
+ggplot(df %>%
+         arrange(clustering_name, level),
+       aes(x = (replicable_clusters + non_replicable_clusters) / 2,
+               y = fraction_replicable_cells,
+               col =  merging_type)) +
+  geom_point() +
+  my_theme() +
+  scale_color_brewer(type = "qual") +
+  labs(x = "# of clusters", y = "Replicability", col = "Type of\nmerging") +
+  theme(axis.title = element_text(size = 20),
+        axis.text = element_text(size = 15),
+        legend.title = element_text(size = 20),
+        legend.text = element_text(size = 15))
+```
+
 ## Varying k for Seurat
+
 ```{r}
 Seurat_k <- Seurat %>%
-  mutate(level = as.numeric(level)) %>%
   filter((clustering_method == 1.6)# |
          # (clustering_method < 1.6 & level == 50)
         )
