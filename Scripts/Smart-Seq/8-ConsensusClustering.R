@@ -14,9 +14,9 @@ option_list <- list(
               action = "store", default = 1, type = "integer",
               help = "Number of cores to use"
   ),
-  make_option(c("-a", "--allen"),
-              action = "store", default = T, type = "logical",
-              help = "Wether to use allen or not"
+  make_option(c("-p", "--plot"),
+              action = "store", default = 1, type = "integer",
+              help = "Where to store the plots"
   )
 )
 
@@ -42,6 +42,8 @@ library(parallel)
 library(matrixStats)
 library(mclust)
 library(tidyverse)
+library(merger)
+source("/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/Scripts/Smart-Seq/8-helper.R")
 
 # Load Data and clean seurat ----
 # Load sc3 clustering results
@@ -52,9 +54,11 @@ rm(k)
 
 # Load monocle and allen clustering results
 Monocle <- readRDS(paste0(loc, "_monocle.rds"))
-Names <- colnames(Monocle)
-allen <- pData(Monocle)$allenClusters %>% as.numeric()
-Monocle <- pData(Monocle)$Cluster %>% as.numeric()
+ggsave(filename = paste0(opt$p, "_monocle_ARI.png"),
+       plot = clusterMatToAri(Monocle))
+monocle_p <- "1.6,50"
+Monocle <- Monocle[, monocle_p] %>% as.numeric()
+
 
 # Load RSEC results
 Rsec <- readRDS(paste0(loc, "_RSEC.rds"))
@@ -64,24 +68,16 @@ Rsec <- primaryCluster(Rsec) %>% as.numeric()
 
 # Load all seurat results and keep one of them
 seurat <- readRDS(paste0(loc, "_seurat.rds"))
-source("/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/Scripts/Smart-Seq/8-helper.R")
-
+ggsave(filename = paste0(opt$p, "_seurat_ARI.png"),
+       plot = clusterMatToAri(seurat))
 seurat_p <- "1.6,50"
-
 seurat <- seurat[, seurat_p] %>% as.numeric()
 
 # Get the final clustering labels
-if (opt$a) {
-  clusMat <- data.frame("sc3" = sc3, "Rsec" = Rsec, "Monocle" = Monocle,
-                        "allen" = allen, "seurat" = seurat)
-  clusMatT <- data.frame("sc3" = sc3, "RsecT" = RsecT, "Monocle" = Monocle,
-                         "allen" = allen, "seurat" = seurat)
-  } else {
-  clusMat <- data.frame("sc3" = sc3, "Rsec" = Rsec, "Monocle" = Monocle,
-                        "seurat" = seurat)
-  clusMatT <- data.frame("sc3" = sc3, "RsecT" = RsecT, "Monocle" = Monocle,
-                         "seurat" = seurat)
-}
+clusMat <- data.frame("sc3" = sc3, "Rsec" = Rsec, "Monocle" = Monocle,
+                      "seurat" = seurat)
+clusMatT <- data.frame("sc3" = sc3, "RsecT" = RsecT, "Monocle" = Monocle,
+                       "seurat" = seurat)
 rownames(clusMat) <- Names  
 
 # Do the consensus clustering ----
@@ -91,5 +87,5 @@ print(system.time(
 ))
 cat("Finished Consensus Merge\n")
 mergers$initalMat <- cbind(mergers$initalMat, clusMatT[,"RsecT"])
-colnames(mergers$initalMat)[5 + opt$a] <- "RsecT"
+colnames(mergers$initalMat)[5] <- "RsecT"
 saveRDS(object = mergers, file = paste0(output, "_mergers.rds"))

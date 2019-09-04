@@ -28,53 +28,43 @@ if (!is.na(opt$o)) {
 }
 
 suppressMessages(library(reticulate))
-suppressMessages(library(monocle))
+suppressMessages(library(monocle3))
 suppressMessages(library(SingleCellExperiment))
 suppressMessages(library(flexclust))
+suppressMessages(library(purrr))
 suppressMessages(library(mcclust))
 suppressMessages(library(zinbwave))
 import("louvain")
 
 # Load data and convert to Delayed Array ----
 sce <- readRDS(file = loc)
-pd <- new("AnnotatedDataFrame", data = as.data.frame(sce@colData))
-fd <- new("AnnotatedDataFrame",
-          data = data.frame(gene_short_name = rownames(assays(sce)$counts)))
+pd <- as.data.frame(sce@colData)
+fd <- data.frame(gene_short_name = rownames(assays(sce)$counts))
 zinbW <- reducedDim(sce, type = reducedDimNames(sce)[3])
 rownames(fd) <- rownames(assays(sce)$counts)
-sce <- newCellDataSet(assays(sce)$counts,
-                      phenoData = pd,
-                      featureData = fd)
+sce <- new_cell_data_set(assays(sce)$counts,
+                         cell_metadata = pd,
+                         gene_metadata = fd)
 
 # Pre-process
 DelayedArray:::set_verbose_block_processing(TRUE)
 options(DelayedArray.block.size = 1005)
-sce <- estimateSizeFactors(sce)
-sce <- estimateDispersions(sce)
-sce@normalized_data_projection <- zinbW
-sce@assayData$exprs <- sce@auxOrderingData$normalize_expr_data <- t(zinbW[,1:2])
-fd <- new("AnnotatedDataFrame",
-          data = data.frame(gene_short_name = colnames(zinbW)[1:2]))
-rownames(fd) <- colnames(zinbW)[1:2]
-sce@featureData <- fd
+sce@reducedDims <- SimpleList("PCA" = zinbW)
 
 print("Doing the reduced dimension")
-sce <- reduceDimension(sce,
-                       max_components = 2,
-                       reduction_method = 'UMAP',
-                       metric = "correlation",
-                       min_dist = 0.75,
-                       n_neighbors = 50,
-                       verbose = T)
+sce <- reduce_dimension(sce)
 
 # run Monocle ----
 print("Running Monocle")
-print(system.time(
-  sce <- clusterCells(sce,
-                      method = 'louvain',
-                      res = 1e-2,
-                      louvain_iter = 1,
-                      verbose = T)
-))
+ks <- seq(from = 10, to = 100, by = 5)
+names(ks) <- paste0("k_", ks)
+clusterMatrix <- map_df(ks, function(k){
+  sce2 <- cluster_cells(sce,
+                        k = k,
+                        louvain_iter = 2,
+                        verbose = F)
+  return(sce2@clusters$UMAP$clusters %>% as.numeric())
+})
+rownames(clusterMatrix) <- colnames(sce)
 
-# saveRDS(sce, file = output)
+saveRDS(clusterMatrix, file = output)
