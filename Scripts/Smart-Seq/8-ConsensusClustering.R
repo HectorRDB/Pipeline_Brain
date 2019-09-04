@@ -56,8 +56,8 @@ rm(k)
 Monocle <- readRDS(paste0(loc, "_monocle.rds"))
 # ggsave(filename = paste0(opt$p, "_monocle_ARI.png"),
 #        plot = clusterMatToAri(Monocle))
-monocle_p <- "1.6,50"
-Monocle <- Monocle[, monocle_p] %>% as.numeric()
+monocle_p <- "k_40"
+Monocle <- as.data.frame(Monocle)[, monocle_p] %>% as.numeric()
 
 
 # Load RSEC results

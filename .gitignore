@@ -1,6 +1,4 @@
 *.Rhistory
 *.Rprofile
-Scripts/Exploration/.Rhistory
-data/Smart-Seq/.Rapp.history
 .Rproj.user
 Pipeline_Brain.Rproj
