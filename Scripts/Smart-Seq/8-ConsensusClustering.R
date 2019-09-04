@@ -54,8 +54,8 @@ rm(k)
 
 # Load monocle and allen clustering results
 Monocle <- readRDS(paste0(loc, "_monocle.rds"))
-ggsave(filename = paste0(opt$p, "_monocle_ARI.png"),
-       plot = clusterMatToAri(Monocle))
+# ggsave(filename = paste0(opt$p, "_monocle_ARI.png"),
+#        plot = clusterMatToAri(Monocle))
 monocle_p <- "1.6,50"
 Monocle <- Monocle[, monocle_p] %>% as.numeric()
 

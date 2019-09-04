@@ -40,7 +40,7 @@ sSeurat <- NormalizeData(object = sSeurat, normalization.method = "LogNormalize"
 sSeurat <- FindVariableFeatures(object = sSeurat, mean.function = ExpMean,
                                 dispersion.function = LogVMR, do.plot = T)
 sSeurat <- ScaleData(object = sSeurat, vars.to.regress = "nCount_RNA")
-sSeurat2 <- RunPCA(object = sSeurat, ndims.print = 1, npcs = 100)
+sSeurat <- RunPCA(object = sSeurat, ndims.print = 1, npcs = 100)
 
 # Run clustering ----
 clusterMatrix <- NULL
