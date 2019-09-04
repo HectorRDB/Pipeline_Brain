@@ -330,7 +330,11 @@ main_single_merge <- function(result_path = "../mn_results/SingleMerge",
 
 main_single_method <- function(result_path = "../mn_results/SingleMethod",
                                output_dir = "../singleMethod") {
-  label_matrix <- load_single_seurat_labels(load_qc_cells("qc_cells_smart.txt"))
+  label_matrix <- inner_join(
+    load_single_seurat_labels(load_qc_cells("qc_cells_smart.txt")),
+    load_single_sc3_labels(load_qc_cells("qc_cells_smart.txt"))
+  ) %>%
+    inner_join(load_single_monocle_labels(load_qc_cells("qc_cells_smart.txt")))
   create_summary_figures(label_matrix, file.path(result_path, "smart"),
                          file.path(output_dir, "smart"), 2)
 }
