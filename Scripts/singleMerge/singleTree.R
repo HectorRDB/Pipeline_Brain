@@ -65,7 +65,7 @@ for (clustering in c("sc3", "Monocle", "seurat")) {
 }
 
 # Doing the merges
-cutoffs <- seq(from = .05, to = 1, by = .05)
+cutoffs <- seq(from = 0, to = 1, by = .05)
 res <- list()
 for (clustering in c("sc3", "Monocle", "seurat", "Rsec")) {
   print(clustering)
@@ -74,14 +74,14 @@ for (clustering in c("sc3", "Monocle", "seurat", "Rsec")) {
   res[[clustering]] <- map_df(cutoffs,
                 function(i){
                   print(paste0("...", i))
-                  Rsec2 <- mergeClusters(Rsec2,
+                  Rsec3 <- mergeClusters(Rsec2,
                                          mergeMethod = "adjP",
                                          plotInfo = "adjP",
                                          cutoff = i,
                                          clusterLabel = "Clusters",
                                          plot = F,
-                                         DEMethod = "limma")  
-                  return(Rsec2@clusterMatrix[,"Clusters"])  
+                                         DEMethod = "limma")
+                  return(Rsec3@clusterMatrix[,"Clusters"])  
                 })
 }
 
