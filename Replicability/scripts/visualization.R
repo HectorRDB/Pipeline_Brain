@@ -8,7 +8,7 @@ source("data.R")
 
 
 main <- function() {
-  main_single_method()
+  main_full_data()
 }
 
 main_full_data <- function(result_path = "../mn_results", output_dir = "..") {
