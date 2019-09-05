@@ -161,20 +161,22 @@ ggplot(singleMethod,
 ```
 
 # ARI Merging versus singleMerge
-## All points
+## Varying k for Seurat
 
 ```{r}
-Seurat <- Seurat %>%
-  mutate(level = as.numeric(level))
-df <- bind_rows(SC3, Monocle, Seurat,
+Seurat <- Seurat %>% mutate(level = as.numeric(as.character(level)))
+Seurat_k <- Seurat %>%
+  filter(clustering_method == 1.2)
+  
+df <- bind_rows(SC3, Monocle %>% filter(level >= 45), Seurat_k,
                 ARIMerge %>% filter(clustering_name != "RSEC"))
 
 ggplot(df %>%
          arrange(clustering_name, level),
        aes(x = (replicable_clusters + non_replicable_clusters) / 2,
                y = fraction_replicable_cells,
-               col =  merging_type)) +
-  geom_point() +
+               col = clustering_name, linetype = merging_type)) +
+  geom_path(size = 2) +
   my_theme() +
   scale_color_brewer(type = "qual") +
   labs(x = "# of clusters", y = "Replicability", col = "Type of\nmerging") +
@@ -184,13 +186,11 @@ ggplot(df %>%
         legend.text = element_text(size = 15))
 ```
 
-## Varying k for Seurat
+## Varying RESOLUTION for Seurat
 
 ```{r}
 Seurat_k <- Seurat %>%
-  filter(#(clustering_method == 1.2)
-         (clustering_method <= 1.2 & level == 2)
-        )
+  filter(clustering_method <= 1.2 & level == 50)
   
 df <- bind_rows(SC3, Monocle %>% filter(level >= 45), Seurat_k,
                 ARIMerge %>% filter(clustering_name != "RSEC"))
