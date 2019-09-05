@@ -9,6 +9,8 @@ output:
     toc_float: true
 ---
 
+Rename the param as theta to avoid confusion
+
 ```{r packages, include=F}
 library(knitr)
 opts_chunk$set(

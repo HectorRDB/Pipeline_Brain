@@ -36,7 +36,7 @@ type <- function(dataset) {
 }
 type <- type(params$dataset)
 mergers_no_allen <- readRDS(here("data", type,
-                                 paste0(params$dataset, "_no_allen_mergers.rds")))
+                                 paste0(params$dataset, "_mergers.rds")))
 ```
 
 # EDA

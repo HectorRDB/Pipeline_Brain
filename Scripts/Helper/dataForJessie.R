@@ -18,7 +18,7 @@ for (dataset in datasets) {
   print(dataset)
   type <- types(dataset)
   merger <- readRDS(here("data", types(dataset),
-                         paste0(dataset, "_no_allen_mergers.rds")))
+                         paste0(dataset, "_mergers.rds")))
   
   print("...Initial consensus")
   initialMat <- merger$initalMat
