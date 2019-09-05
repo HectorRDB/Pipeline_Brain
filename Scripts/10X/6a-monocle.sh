@@ -4,6 +4,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
 #SBATCH --nodes=1
+module load intel
 MEMORYFILE="6ab-memoryLogger.txt"
 loc="/scratch/users/singlecell/MiniAtlas/data/rds/10x_cells_MOp"
 out="/scratch/users/singlecell/MiniAtlas/data/rds/10x_cells_MOp_monocle2.rds"

@@ -48,13 +48,13 @@ sSeurat <- RunPCA(object = sSeurat, pc.genes = sSeurat@var.genes,
   
 # Run clustering ----
 clusterMatrix <- NULL
-for (RESOLUTION in c(0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6)) {
+for (RESOLUTION in seq(from = 0.3, to = 1.7, by = .1)) {
+  print(RESOLUTION)
   for (K.PARAM in c(30, 50, 100)) {
-    sSeurat_star <- FindClusters(object = sSeurat, reduction.type = "pca",
-                                 dims.use = 1:50, resolution = RESOLUTION,
-                                 print.output = 0, k.param = K.PARAM,
-                                 save.SNN = TRUE)
-    clusterMatrix <- cbind(clusterMatrix, sSeurat_star@ident)
+    print(paste0("...", K.PARAM))
+    sSeurat_star <- FindNeighbors(sSeurat, dims = 1:K.PARAM)
+    sSeurat_star <- FindClusters(sSeurat_star, resolution = RESOLUTION)
+    clusterMatrix <- cbind(clusterMatrix, Idents(sSeurat_star))
     colnames(clusterMatrix)[ncol(clusterMatrix)] <- paste(RESOLUTION, K.PARAM,
                                                           sep = ",")
   }

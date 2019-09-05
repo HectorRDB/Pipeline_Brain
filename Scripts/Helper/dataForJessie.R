@@ -5,8 +5,8 @@ library(clusterExperiment)
 library(mclust)
 library(readr)
 
-datasets <- c("SMARTer_cells_MOp", "SMARTer_nuclei_MOp",
-              "10x_cells_MOp", "10x_nuclei_MOp")
+# datasets <- c("SMARTer_cells_MOp", "SMARTer_nuclei_MOp",
+#               "10x_cells_MOp", "10x_nuclei_MOp")
 datasets <- c("SMARTer_cells_MOp",  "SMARTer_nuclei_MOp")
 types <- function(dataset) {
   if (str_detect(dataset, "SMART")) return("Smart-Seq")
@@ -86,6 +86,6 @@ for (dataset in datasets) {
     )
   
   write_csv(x = as.data.frame(mat),
-            path = here("data", "ForJessie", paste0(dataset, ".csv")))
+            path = here("data", "ClusterLabels", paste0(dataset, ".csv")))
 }
 

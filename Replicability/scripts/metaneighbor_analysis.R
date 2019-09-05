@@ -11,7 +11,7 @@ source("data.R")
 
 
 main <- function() {
-  analyze_single_methods()
+  analyze_full_data()
 }
 
 analyze_full_data <- function(data_path = "../../data",

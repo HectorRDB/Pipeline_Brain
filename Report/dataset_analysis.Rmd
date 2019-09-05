@@ -46,6 +46,7 @@ We can first visualize the data after dimension reduction with zinbWave. We then
 ```{r t-SNE plots, fig.width=18, fig.height=9}
 plots <- list.files(here("Figures", "EDA"))
 plots <- plots[str_detect(plots, params$dataset)]
+plots <- plots[str_detect(plots, "png")]
 plot.new()
 plot.window(0:1, 0:1)
 rasterImage(readPNG(here("Figures", "EDA", plots[1])), 0, 0, .5, 1)
