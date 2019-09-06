@@ -85,5 +85,6 @@ for (clustering in c("sc3", "Monocle", "seurat", "Rsec")) {
                 })
 }
 
-res <- do.call('cbind', res)
+res <- do.call('cbind', res) %>% as.data.frame()
+res$cells <- colnames(Rsec)
 write_csv(res, path = output)

@@ -64,6 +64,7 @@ load_single_merge_labels <- function(cell_names, data_path = "../../data") {
   methods <- colnames(result)[-1]
   method_name <- stringr::word(methods, 1, sep = stringr::fixed("."))
   method_level <- stringr::word(methods, 3, sep = stringr::fixed("."))
+  method_level[is.na(method_level)] <- "00"
   colnames(result)[-1] <- paste(method_name, method_level, sep = ".")
   result <- add_column(result, cells = cell_names, .after = 1)
 

@@ -33,7 +33,7 @@ singleMethod <- read.table(here("Replicability", "singleMethod", "smart",
     clustering_name = case_when(clustering_name == "seurat" ~ "Seurat",
                                 clustering_name == "Rsec" ~ "RSEC",
                                 TRUE ~ clustering_name),
-    merging_type = "singleMethod")
+    merging_type = "Changing the parameters")
 
 # Load and clean the results from ARI mergings
 toRank <- function(i) {
@@ -161,34 +161,9 @@ ggplot(singleMethod,
 ```
 
 # ARI Merging versus singleMerge
-## Varying k for Seurat
 
 ```{r}
 Seurat <- Seurat %>% mutate(level = as.numeric(as.character(level)))
-Seurat_k <- Seurat %>%
-  filter(clustering_method == 1.2)
-  
-df <- bind_rows(SC3, Monocle %>% filter(level >= 45), Seurat_k,
-                ARIMerge %>% filter(clustering_name != "RSEC"))
-
-ggplot(df %>%
-         arrange(clustering_name, level),
-       aes(x = (replicable_clusters + non_replicable_clusters) / 2,
-               y = fraction_replicable_cells,
-               col = clustering_name, linetype = merging_type)) +
-  geom_path(size = 2) +
-  my_theme() +
-  scale_color_brewer(type = "qual") +
-  labs(x = "# of clusters", y = "Replicability", col = "Type of\nmerging") +
-  theme(axis.title = element_text(size = 20),
-        axis.text = element_text(size = 15),
-        legend.title = element_text(size = 20),
-        legend.text = element_text(size = 15))
-```
-
-## Varying RESOLUTION for Seurat
-
-```{r}
 Seurat_k <- Seurat %>%
   filter(clustering_method <= 1.2 & level == 50)
   
@@ -203,9 +178,11 @@ ggplot(df %>%
   geom_path(size = 2) +
   my_theme() +
   scale_color_brewer(type = "qual") +
-  labs(x = "# of clusters", y = "Replicability", col = "Type of\nmerging") +
+  labs(x = "# of clusters", y = "Replicability", col = "Clustering method",
+       linetype = "Type of merging") +
   theme(axis.title = element_text(size = 20),
         axis.text = element_text(size = 15),
         legend.title = element_text(size = 20),
         legend.text = element_text(size = 15))
+ggsave(here("Figures", "singleMethod", "Overall.pdf"), height = 10.5, width = 20)
 ```

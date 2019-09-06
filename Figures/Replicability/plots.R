@@ -23,7 +23,7 @@ ggplot(rep, aes(x = (replicable_clusters + non_replicable_clusters) / 2,
   geom_point(size = 4, alpha = .8, aes(col = Comparison)) +
   my_theme() +
   labs(x = "Number of clusters", title = "Comparing reproducibility rates",
-       y = "Repplicability")
+       y = "Replicability")
 ggsave(here::here("Figures", "Replicability", "overall.pdf"))
 
 ggplot(rep %>% filter(level == "Initial"),
@@ -32,5 +32,6 @@ ggplot(rep %>% filter(level == "Initial"),
                 shape = clustering_method)) +
   geom_point(size = 4) +
   my_theme() +
-  labs(x = "Number of clusters", title = "Comparing reproducibility rates")
+  labs(x = "Number of clusters", title = "Comparing reproducibility rates",
+       y = "Replicability")
 ggsave(here::here("Figures", "Replicability", "initial.pdf"))

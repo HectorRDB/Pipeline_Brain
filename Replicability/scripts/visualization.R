@@ -327,8 +327,7 @@ plot_clusters_vs_mapped <- function(results) {
 
 main_single_merge <- function(result_path = "../mn_results/SingleMerge",
                               output_dir = "../singleMerge") {
-  dataset <- load_data()
-  label_matrix <- load_single_merge_labels(colnames(dataset))
+  label_matrix <- load_single_merge_labels(load_qc_cells("qc_cells_smart.txt"))
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
 
   create_summary_figures(label_matrix, file.path(result_path, "smart"),
