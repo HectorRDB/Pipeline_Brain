@@ -13,18 +13,24 @@ rep <- lapply(folders, function(type) {
   return(df)
 })
 rep <- do.call("rbind", rep)
+rep <- rep %>%
+  mutate(Comparison = case_when(type == "cells" ~ "Between cell datasets",
+                                type == "nuclei" ~ "Between nuclei datasets",
+                                type == "smart" ~ "Between Smart-Seq datasets",
+                                type == "tenx" ~ "Between 10x datasets"))
 ggplot(rep, aes(x = (replicable_clusters + non_replicable_clusters) / 2,
-                y = fraction_replicable_cells, col = type)) +
-  geom_point(size = 2) +
+                y = fraction_replicable_cells)) +
+  geom_point(size = 4, alpha = .8, aes(col = Comparison)) +
   my_theme() +
-  labs(x = "Number of clusters", title = "Comparing reproducibility rates")
+  labs(x = "Number of clusters", title = "Comparing reproducibility rates",
+       y = "Repplicability")
 ggsave(here::here("Figures", "Replicability", "overall.pdf"))
 
 ggplot(rep %>% filter(level == "Initial"),
        aes(x = (replicable_clusters + non_replicable_clusters) / 2,
-                y = fraction_replicable_cells, col = type,
+                y = fraction_replicable_cells, col = Comparison,
                 shape = clustering_method)) +
-  geom_point(size = 2) +
+  geom_point(size = 4) +
   my_theme() +
   labs(x = "Number of clusters", title = "Comparing reproducibility rates")
 ggsave(here::here("Figures", "Replicability", "initial.pdf"))
