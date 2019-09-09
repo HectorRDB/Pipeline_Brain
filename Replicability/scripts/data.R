@@ -58,16 +58,20 @@ load_single_merge_labels <- function(cell_names, data_path = "../../data") {
   keep <- n_clusters_cells > 1 & n_clusters_nuclei > 1
   keep[1] <- TRUE
   result <- result[, keep]
-
+  result <- result %>% select(dataset, cells, colnames(result))
   # rename columns for compatibility with analysis/visualization modules
   # (format METHOD_NAME.MERGING_STEP)
-  methods <- colnames(result)[-1]
+  methods <- colnames(result)[-(1:2)]
   method_name <- stringr::word(methods, 1, sep = stringr::fixed("."))
   method_level <- stringr::word(methods, 3, sep = stringr::fixed("."))
   method_level[is.na(method_level)] <- "00"
-  colnames(result)[-1] <- paste(method_name, method_level, sep = ".")
-  result <- add_column(result, cells = cell_names, .after = 1)
-
+  colnames(result)[-(1:2)] <- paste(method_name, method_level, sep = ".")
+  # result <- add_column(result, cells = cell_names, .after = 1)
+  
+  # reorder cells to match data
+  row_match <- match(cell_names, result$cells)
+  result <- result[row_match, ]
+  
   return(result)
 }
 
