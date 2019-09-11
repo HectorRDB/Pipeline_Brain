@@ -23,7 +23,7 @@ opts_chunk$set(
   fig.width = 5, fig.align = "center", echo = F
 )
 libs <- c("here", "dplyr", "ggplot2", "tidyr", "stringr", "readr", "cowplot",
-          "clusterExperiment", "mclust", "RColorBrewer", "progress", "merger",
+          "clusterExperiment", "mclust", "RColorBrewer", "progress", "Dune",
           "png")
 suppressMessages(
   suppressWarnings(sapply(libs, require, character.only = TRUE))
@@ -35,7 +35,7 @@ type <- function(dataset) {
   stop("Type unknown")
 }
 type <- type(params$dataset)
-mergers_no_allen <- readRDS(here("data", type,
+mergers_no_allen <- readRDS(here("data", "Dune",
                                  paste0(params$dataset, "_mergers.rds")))
 ```
 
@@ -61,7 +61,8 @@ We have the following workflow
 ```{r workflow, fig.height=6, fig.width=10}
 plot.new()
 plot.window(0:1, 0:1)
-rasterImage(readPNG(here("Figures", "SMART-Seq_workflow.png")), 0, 0, 1, 1)
+rasterImage(readPNG(here("Figures", "workflow", "SMART-Seq_workflow.png")),
+            0, 0, 1, 1)
 ```
 
 In the Seurat clustering, there are two parameters to choose from: the resolution and the k.param (use in a knn step). From the seurat help file, for the resolution parameter: use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities.

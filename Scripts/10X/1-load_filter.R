@@ -49,22 +49,14 @@ allenClusters <- read.csv(paste0(loc, "cluster.membership.csv"),
 meta$allenClusters <- allenClusters$clusters
 
 cat("Preparing the data", "\n")
-
-
 counts[is.na(counts)] <- 0
 counts <- as.matrix(counts)
 filt <- rowSums(counts >= opt$c) >= opt$c
-cat(sum(counts[filt, ]) / sum (counts))
 counts <- counts[filt, ]
 
-cat(mean(filt), "\n")
-cat(sum(filt), "\n")
-
 cat("Saving output to ", output)
-
 sce <- SingleCellExperiment(assays = list(counts = as.matrix(counts),
                                           logcounts = as.matrix(log1p(counts))),
                             colData = meta)
 
 saveRDS(sce, file = output)
-# # in case fails in next steps...
