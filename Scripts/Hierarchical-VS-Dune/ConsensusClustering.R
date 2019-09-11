@@ -67,6 +67,7 @@ library(parallel)
 library(matrixStats)
 library(tidyverse)
 library(Dune)
+library(mclust)
 
 # Load Data ----
 # Load sc3 clustering results
@@ -131,4 +132,35 @@ colnames(mat) <- c("cells",
                    paste(chars, "Final", sep = "-")
 )
 
-write_csv(x = as.data.frame(mat), path = paste0(output, ".csv"))
+write_csv(x = as.data.frame(mat), path = paste0(output, "_Dune_large.csv"))
+# Do hierarchical merging ----
+Rsec <- readRDS(opt$r)
+
+for (clustering in c("sc3", "Monocle", "seurat")) {
+  Rsec <- addClusterings(Rsec, get(clustering), clusterLabels = clustering)
+}
+
+# Doing the merges
+cutoffs <- seq(from = 0, to = 1, by = .05)
+res <- list()
+for (clustering in c("sc3", "Monocle", "seurat")) {
+  print(clustering)
+  Rsec2 <- makeDendrogram(Rsec, whichCluster = clustering)
+  names(cutoffs) <- paste(clustering, cutoffs, sep = "_")
+  res[[clustering]] <- map_df(cutoffs,
+                              function(i){
+                                print(paste0("...", i))
+                                Rsec3 <- mergeClusters(Rsec2,
+                                                       mergeMethod = "adjP",
+                                                       plotInfo = "adjP",
+                                                       cutoff = i,
+                                                       clusterLabel = "Clusters",
+                                                       plot = F,
+                                                       DEMethod = "limma")
+                                return(Rsec3@clusterMatrix[,"Clusters"])  
+                              })
+}
+
+res <- do.call('cbind', res) %>% as.data.frame()
+res$cells <- colnames(Rsec)
+write_csv(res, path = paste0(output, "hierarchical_large.csv"))

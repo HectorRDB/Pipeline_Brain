@@ -141,4 +141,4 @@ colnames(mat) <- c("cells",
                    paste(chars, "Final", sep = "-")
 )
 
-write_csv(x = as.data.frame(mat), path = paste0(output, "_Dune_large.csv"))
+write_csv(x = as.data.frame(mat), path = paste0(output, ".csv"))
