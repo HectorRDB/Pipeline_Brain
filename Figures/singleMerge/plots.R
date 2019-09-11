@@ -36,7 +36,7 @@ ARIMerge <- read.table(here("Replicability", "smart",
   filter(clustering_method != "Consensus")
 
 Init <- ARIMerge %>%
-  filter(level == 1) %>%
+  filter(level == 1, clustering_method != "RSEC") %>%
   mutate(merging_type = "hierarchical",
          level = 0)
   
