@@ -125,7 +125,7 @@ cellsConsensus <- Consensus(clusMat = stopMatrix_90, large = FALSE)
 consensusInt_90 <- cellsConsensus
 
 print("...Full matrix")
-names <- read_csv(here("data", types(dataset),
+names <- read_csv(here("data", "Smart-Seq",
                        paste0(dataset, "_cluster.membership.csv")))
 mat <- cbind(names$X1,
              initialMat, consensusInit,
@@ -133,11 +133,7 @@ mat <- cbind(names$X1,
              stopMatrix_66, consensusInt_66,
              stopMatrix_90, consensusInt_90,
              currentMat, consensusFinal)
-if (type == "Smart-Seq") {
-  chars <- c("sc3", "RSEC", "Monocle", "Seurat", "Consensus")
-} else {
-  chars <- c("sc3", "Monocle", "Seurat", "Consensus")
-}
+chars <- c("sc3", "RSEC", "Monocle", "Seurat", "Consensus")
 
 colnames(mat) <- c("cells",
                    paste(chars, "Initial", sep = "-"), paste(chars, "33", sep = "-"),
@@ -145,4 +141,4 @@ colnames(mat) <- c("cells",
                    paste(chars, "Final", sep = "-")
 )
 
-write_csv(x = as.data.frame(mat), path = paste0(output, ".csv"))
+write_csv(x = as.data.frame(mat), path = paste0(output, "_Dune_large.csv"))

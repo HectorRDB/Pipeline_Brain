@@ -14,9 +14,17 @@ option_list <- list(
               action = "store", default = 1, type = "integer",
               help = "Number of cores to use"
   ),
-  make_option(c("-p", "--plot"),
-              action = "store", default = 1, type = "integer",
-              help = "Where to store the plots"
+  make_option(c("-S", "--SeuratParam"),
+              action = "store", default = NA, type = "character",
+              help = "Parameter to use for Seurat"
+  ),
+  make_option(c("-C", "--C3"),
+              action = "store", default = NA, type = "character",
+              help = "SC3 parameter"
+  ),
+  make_option(c("-m", "--monocle"),
+              action = "store", default = NA, type = "character",
+              help = "Monocle parameter"
   )
 )
 
@@ -36,6 +44,24 @@ if (!is.na(opt$o)) {
   cat("The output will be stored at ", output, "\n")
 }
 
+if (!is.na(opt$C)) {
+  sc3_p <- opt$C
+} else {
+  stop("Missing C argument")
+}
+
+if (!is.na(opt$C)) {
+  seurat_p <- opt$S
+} else {
+  stop("Missing S argument")
+}
+
+if (!is.na(opt$m)) {
+  monocle_p <- opt$m
+} else {
+  stop("Missing m argument")
+}
+
 library(SummarizedExperiment)
 library(parallel)
 library(matrixStats)
@@ -45,23 +71,15 @@ library(Dune)
 # Load Data ----
 # Load sc3 clustering results
 sc3 <- read.csv(paste0(loc, "_SC3.csv"))
-ggsave(filename = paste0(opt$p, "_monocle_ARI.png"),
-       plot = clusterMatToAri(sc3 %>% select(-cells)))
 Names <- sc3$cells
-sc3 <- sc3[,"sc3_0_clusters"]
+sc3 <- sc3[, sc3_p] %>% as.numeric()
 
 # Load Seurat clustering results
 seurat <- read.csv(paste0(loc, "_seurat.csv"))
-ggsave(filename = paste0(opt$p, "_seurat_ARI.png"),
-       plot = clusterMatToAri(seurat %>% select(-cells)))
-seurat_p <- "1.2,50"
 seurat <- seurat[, seurat_p] %>% as.numeric()
 
 # Load Monocle clustering results
 Monocle <- read.csv(paste0(loc, "_Monocle.csv"))
-ggsave(filename = paste0(opt$p, "_monocle_ARI.png"),
-       plot = clusterMatToAri(Monocle %>% select(-cells)))
-monocle_p <- "k_45"
 Monocle <- as.data.frame(Monocle)[, monocle_p] %>% as.numeric()
 
 # Get the final clustering labels
@@ -77,56 +95,35 @@ cat("Finished Consensus Merge\n")
 saveRDS(object = merger, file = paste0(output, "_mergers.rds"))
 
 # Save the matrix with all the consensus steps ----
-print("...Initial consensus")
+print("...Initial")
 initialMat <- merger$initalMat
 initialMat <- as.matrix(initialMat) 
-cellsConsensus <- Consensus(clusMat = initialMat, large = FALSE)
-consensusInit <- cellsConsensus
 
 print("...Final consensus")
 currentMat <- merger$currentMat
 currentMat <- as.matrix(currentMat) 
-
-cellsConsensus <- Consensus(clusMat = currentMat, large = FALSE)
-consensusFinal <- cellsConsensus
 
 print("...Intermediary consensus at 33.3%")
 stopMatrix_33 <- intermediateMat(merger = merger,
                                  p = 1/3)
 stopMatrix_33 <- as.matrix(stopMatrix_33)
 
-cellsConsensus <- Consensus(clusMat = stopMatrix_33, large = FALSE)
-consensusInt_33 <- cellsConsensus
-
 print("...Intermediary consensus at 66.7%")
 stopMatrix_66 <- intermediateMat(merger = merger, p = 2/3)
 stopMatrix_66 <- as.matrix(stopMatrix_66)
-
-cellsConsensus <- Consensus(clusMat = stopMatrix_66, large = FALSE)
-consensusInt_66 <- cellsConsensus
 
 print("...Intermediary consensus at 90%")
 stopMatrix_90 <- intermediateMat(merger = merger, p = .9)
 stopMatrix_90 <- as.matrix(stopMatrix_90)
 
-cellsConsensus <- Consensus(clusMat = stopMatrix_90,
-                            large = (type != "Smart-Seq"))
-consensusInt_90 <- cellsConsensus
-
 print("...Full matrix")
 names <- read_csv(here("data", types(dataset),
                        paste0(dataset, "_cluster.membership.csv")))
 mat <- cbind(names$X1,
-             initialMat, consensusInit,
-             stopMatrix_33, consensusInt_33,
-             stopMatrix_66, consensusInt_66,
-             stopMatrix_90, consensusInt_90,
-             currentMat, consensusFinal)
-if (type == "Smart-Seq") {
-  chars <- c("sc3", "RSEC", "Monocle", "Seurat", "Consensus")
-} else {
-  chars <- c("sc3", "Monocle", "Seurat", "Consensus")
-}
+             initialMat,  stopMatrix_33, stopMatrix_66,  stopMatrix_90,
+             currentMat)
+
+chars <- c("sc3", "Monocle", "Seurat")
 
 colnames(mat) <- c("cells",
                    paste(chars, "Initial", sep = "-"), paste(chars, "33", sep = "-"),

@@ -57,5 +57,5 @@ for (RESOLUTION in seq(from = 0.3, to = 1.7, by = .1)) {
   }
 }
 
-clusterMatrix$cells <- colnames(sSeurat)
+clusterMatrix$cells <- colnames(sce)
 write.csv(clusterMatrix, file = output)
