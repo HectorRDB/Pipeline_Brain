@@ -7,7 +7,11 @@ option_list <- list(
   ),
   make_option(c("-l", "--location"),
               action = "store", default = NA, type = "character",
-              help = "The location of the data"
+              help = "The location of the clustering files"
+  ),
+  make_option(c("-r", "--rsec"),
+              action = "store", default = NA, type = "character",
+              help = "Location of the Rsec object"
   )
 )
 
@@ -26,39 +30,39 @@ if (!is.na(opt$o)) {
   stop("Missing o argument")
 }
 # Loading files ---- 
-library(vctrs)
 library(SummarizedExperiment)
 library(parallel)
 library(matrixStats)
+library(tidyverse)
+library(Dune)
 library(mclust)
-library(stringr)
-library(readr)
-library(tidyr)
-library(dplyr)
-library(purrr)
-.libPaths("/accounts/projects/epurdom/singlecell/R/x86_64-pc-linux-gnu-library/3.5")
 library(clusterExperiment)
-library(monocle)
 
+# Load Data ----
 # Load sc3 clustering results
-sc3 <- readRDS(paste0(loc, "_sc3.rds"))
-k <- names(metadata(sc3)$sc3$consensus)
-sc3 <- colData(sc3)[, paste0("sc3_", k, "_clusters")] %>% as.numeric()
-rm(k)
+sc3 <- read.csv(paste0(loc, "_SC3.csv"))
+ggsave(filename = paste0(opt$p, "_monocle_ARI.png"),
+       plot = clusterMatToAri(sc3 %>% select(-cells)))
+Names <- sc3$cells
+sc3 <- sc3[,"sc3_0_clusters"]
 
-# Load monocle clustering results
-Monocle <- readRDS(paste0(loc, "_monocle.rds"))
+# Load Seurat clustering results
+seurat <- read.csv(paste0(loc, "_seurat.csv"))
+ggsave(filename = paste0(opt$p, "_seurat_ARI.png"),
+       plot = clusterMatToAri(seurat %>% select(-cells)))
+seurat_p <- "1.2,50"
+seurat <- seurat[, seurat_p] %>% as.numeric()
+
+# Load Monocle clustering results
+Monocle <- read.csv(paste0(loc, "_Monocle.csv"))
+ggsave(filename = paste0(opt$p, "_monocle_ARI.png"),
+       plot = clusterMatToAri(Monocle %>% select(-cells)))
 monocle_p <- "k_45"
 Monocle <- as.data.frame(Monocle)[, monocle_p] %>% as.numeric()
 
-# Load RSEC results
-Rsec <- readRDS(paste0(loc, "_RSEC.rds"))
-Rsec <- assignUnassigned(Rsec, clusterLabel = "Rsec")
+# Load RSEC clustering results
+Rsec <- readRDS(opt$r)
 
-# Load all seurat results and keep one of them
-seurat <- readRDS(paste0(loc, "_seurat.rds"))
-seurat_p <- "1.2,50"
-seurat <- seurat[, seurat_p] %>% as.numeric()
 
 for (clustering in c("sc3", "Monocle", "seurat")) {
   Rsec <- addClusterings(Rsec, get(clustering), clusterLabels = clustering)

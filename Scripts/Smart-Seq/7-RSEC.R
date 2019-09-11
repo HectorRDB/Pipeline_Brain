@@ -4,7 +4,11 @@ suppressWarnings(library(optparse))
 option_list <- list(
   make_option(c("-o", "--output"),
               action = "store", default = NA, type = "character",
-              help = "Where to store the output"
+              help = "Where to store the output matrix"
+  ),
+  make_option(c("-s", "--sce"),
+              action = "store", default = NA, type = "character",
+              help = "Where to store the clusterExperiment Object"
   ),
   make_option(c("-l", "--location"),
               action = "store", default = NA, type = "character",
@@ -29,6 +33,12 @@ if (!is.na(opt$o)) {
   output <- opt$o
 } else {
   stop("Missing o argument")
+}
+
+if (!is.na(opt$s)) {
+  clus <- opt$s
+} else {
+  stop("Missing s argument")
 }
 
 library(clusterExperiment)
@@ -57,7 +67,12 @@ print(system.time(
               subsampleArgs = list(resamp.num = 50, clusterFunction = "kmeans"),
               mergeLogFCcutoff = 1, consensusMinSize = 10)
 ))
-pdf(file = paste0(output, "_clusterMany.pdf"))
-plotClusters(sce)
-dev.off()
-saveRDS(sce, file = paste0(output, "_RSEC.rds"))
+
+# Saving objects
+saveRDS(sce, clus)
+
+RsecT <- assignUnassigned(sce, clusterLabel = "Assigned")
+RsecT <- primaryCluster(RsecT) %>% as.numeric()
+Rsec <- primaryCluster(sce) %>% as.numeric()
+write.csv(data.frame("Rsec" = Rsec, "RsecT" = RsecT, cells = colnames(sce)),
+          file = output)

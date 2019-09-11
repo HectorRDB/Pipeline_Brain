@@ -37,14 +37,20 @@ library(scater)
 library(stringr)
 library(SingleCellExperiment)
 
-# Add a normalization step ? 
+
 sce <- readRDS(file = loc)
 
 rowData(sce)$feature_symbol <- rownames(sce)
 sce <- sc3_estimate_k(sce)
 K <- metadata(sce)$sc3$k_estimation
-sce <- sc3(sce, ks = K, svm_max = ncol(sce) + 1, biology = FALSE,
-           n_cores = as.numeric(opt$n))
+ks <- 2:(K + 20)
+names(ks) <- ks - K
+sc3 <- map_df(ks, function(k){
+  SC3 <- sc3(sce, ks = k, svm_max = ncol(sce) + 1, biology = FALSE,
+             n_cores = as.numeric(opt$n))
+  SC3 <- colData(SC3)[, paste0("sc3_", k, "_clusters")] %>% as.numeric()
+  return(SC3)
+})
 
-print(cat("Saving output at ", output))
-saveRDS(sce, file = output)
+sc3$cells <- colnames(sce)
+write.csv(sc3, file = output)

@@ -63,6 +63,7 @@ clusterMatrix <- map_df(ks, function(k){
                         verbose = F)
   return(sce2@clusters$UMAP$clusters %>% as.numeric())
 })
-rownames(clusterMatrix) <- colnames(sce)
 
-saveRDS(clusterMatrix, file = output)
+clusterMatrix$cells <- colnames(sce)
+
+write.csv(clusterMatrix, file = output)

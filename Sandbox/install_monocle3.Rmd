@@ -1,0 +1,45 @@
+---
+author: "Hector Roux de Bézieux"
+date: '`r format(Sys.time(), "%d %B , %Y")`'
+title: "Installing Monocle3 on bridges"
+output: pdf_document
+---
+
+# First Try
+
+We follow along [this page](https://cole-trapnell-lab.github.io/monocle3/monocle3_docs/#installing-monocle-3). Note that all the prerequisite packages listed are already installed. 
+
+No module loaded.
+Just open __R__ and do `devtools::install_github('cole-trapnell-lab/monocle3')`. This fails because some dependencies (`RhpcBLASctl`) couldn't be installed.
+
+# Second try
+
+We try with reinstalling everyting from scratch.
+
+```{bash, eval = F}
+R --vanilla
+```
+
+```{r, eval = F}
+.libPaths("~/rpack_monocle/")
+BiocManager::install(c('BiocGenerics', 'DelayedArray', 'DelayedMatrixStats',
+                       'limma', 'S4Vectors', 'SingleCellExperiment',
+                       'SummarizedExperiment'))
+install.packages("reticulate")
+reticulate::py_install("louvain")
+devtools::install_github('cole-trapnell-lab/monocle3')
+```
+
+# Second try
+
+Drawing on previous experiences, I start with a conda environment!! Let us see if conda is now compatible with newer versions of R...
+
+```{bash, eval = FALSE}
+module load anaconda3
+conda create -n monocle3_env
+source activate monocle3_env
+R --version
+```
+
+This also fails
+We then revert to the old idea. Using the output form zinbWave, send that to the scf cluster and process it there...

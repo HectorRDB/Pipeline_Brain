@@ -35,6 +35,7 @@ library(SingleCellExperiment)
 
 sce <- readRDS(file = loc)
 
+# Setup ----
 sSeurat <- CreateSeuratObject(counts = assays(sce)$counts, project = 'allen40K')
 sSeurat <- NormalizeData(object = sSeurat, normalization.method = "LogNormalize")
 sSeurat <- FindVariableFeatures(object = sSeurat, mean.function = ExpMean,
@@ -56,4 +57,5 @@ for (RESOLUTION in seq(from = 0.3, to = 1.7, by = .1)) {
   }
 }
 
-saveRDS(clusterMatrix, file = output)
+clusterMatrix$cells <- colnames(sSeurat)
+write.csv(clusterMatrix, file = output)
