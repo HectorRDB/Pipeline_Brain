@@ -64,14 +64,8 @@ ggsave(filename = paste0(opt$p, "_monocle_ARI.png"),
 monocle_p <- "k_45"
 Monocle <- as.data.frame(Monocle)[, monocle_p] %>% as.numeric()
 
-# Load RSEC clustering results
-Rsec <- read.csv(paste0(loc, "Rsec.csv"))
-RsecT <- Rsec$RsecT
-Rsec <- Rsec$Rsec
-
 # Get the final clustering labels
-clusMat <- data.frame("sc3" = sc3, "Rsec" = Rsec, "Monocle" = Monocle,
-                      "seurat" = seurat)
+clusMat <- data.frame("sc3" = sc3, "Monocle" = Monocle, "seurat" = seurat)
 rownames(clusMat) <- Names  
 
 # Do the consensus clustering ----
@@ -80,17 +74,11 @@ print(system.time(
   merger <- mergeManyPairwise(clusteringMatrix = clusMat, nCores = opt$n)
 ))
 cat("Finished Consensus Merge\n")
-merger$initalMat <- cbind(mergers$initalMat, RsecT)
-colnames(merger$initalMat)[5] <- "RsecT"
 saveRDS(object = merger, file = paste0(output, "_mergers.rds"))
 
 # Save the matrix with all the consensus steps ----
 print("...Initial consensus")
 initialMat <- merger$initalMat
-r <- which(colnames(initialMat) == "RsecT")
-if (all.equal(integer(0) ,r) != TRUE) {
-  initialMat <- initialMat[, -r]
-}
 initialMat <- as.matrix(initialMat) 
 cellsConsensus <- Consensus(clusMat = initialMat, large = FALSE)
 consensusInit <- cellsConsensus
@@ -121,7 +109,8 @@ print("...Intermediary consensus at 90%")
 stopMatrix_90 <- intermediateMat(merger = merger, p = .9)
 stopMatrix_90 <- as.matrix(stopMatrix_90)
 
-cellsConsensus <- Consensus(clusMat = stopMatrix_90, large = FALSE)
+cellsConsensus <- Consensus(clusMat = stopMatrix_90,
+                            large = (type != "Smart-Seq"))
 consensusInt_90 <- cellsConsensus
 
 print("...Full matrix")

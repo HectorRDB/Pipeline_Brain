@@ -34,7 +34,7 @@ if (!is.na(opt$o)) {
 # Run sc3 per se ----
 library(SC3)
 library(scater)
-library(stringr)
+library(tidyverse)
 library(SingleCellExperiment)
 
 
