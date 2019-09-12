@@ -41,7 +41,7 @@ sce <- readRDS(file = loc)
 pd <- data.frame(cells = rownames(sce))
 rownames(pd) <- pd$cells
 fd <- data.frame(gene_short_name = colnames(sce))
-zinbW <- sce[,3]
+zinbW <- sce
 rownames(fd) <- fd$gene_short_name
 sce <- new_cell_data_set(t(sce),
                          cell_metadata = pd,
