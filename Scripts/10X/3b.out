@@ -1,149 +1,0 @@
-running
-  '/opt/packages/R/3.5.1-mkl/lib64/R/bin/R --slave --no-restore --no-save --file=3-sc3.R --args -n 1 -l /pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_filt.rds -o /pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_sc3.rds'
-
-The selected dataset is located at /pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_filt.rdsLoading required package: SingleCellExperiment
-Loading required package: SummarizedExperiment
-Loading required package: GenomicRanges
-Loading required package: stats4
-Loading required package: BiocGenerics
-Loading required package: parallel
-
-Attaching package: ‘BiocGenerics’
-
-The following objects are masked from ‘package:parallel’:
-
-    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-    clusterExport, clusterMap, parApply, parCapply, parLapply,
-    parLapplyLB, parRapply, parSapply, parSapplyLB
-
-The following objects are masked from ‘package:stats’:
-
-    IQR, mad, sd, var, xtabs
-
-The following objects are masked from ‘package:base’:
-
-    anyDuplicated, append, as.data.frame, basename, cbind, colMeans,
-    colnames, colSums, dirname, do.call, duplicated, eval, evalq,
-    Filter, Find, get, grep, grepl, intersect, is.unsorted, lapply,
-    lengths, Map, mapply, match, mget, order, paste, pmax, pmax.int,
-    pmin, pmin.int, Position, rank, rbind, Reduce, rowMeans, rownames,
-    rowSums, sapply, setdiff, sort, table, tapply, union, unique,
-    unsplit, which, which.max, which.min
-
-Loading required package: S4Vectors
-
-Attaching package: ‘S4Vectors’
-
-The following object is masked from ‘package:base’:
-
-    expand.grid
-
-Loading required package: IRanges
-Loading required package: GenomeInfoDb
-Loading required package: Biobase
-Welcome to Bioconductor
-
-    Vignettes contain introductory material; view with
-    'browseVignettes()'. To cite Bioconductor, see
-    'citation("Biobase")', and for packages 'citation("pkgname")'.
-
-Loading required package: DelayedArray
-Loading required package: matrixStats
-
-Attaching package: ‘matrixStats’
-
-The following objects are masked from ‘package:Biobase’:
-
-    anyMissing, rowMedians
-
-Loading required package: BiocParallel
-
-Attaching package: ‘DelayedArray’
-
-The following objects are masked from ‘package:matrixStats’:
-
-    colMaxs, colMins, colRanges, rowMaxs, rowMins, rowRanges
-
-The following objects are masked from ‘package:base’:
-
-    aperm, apply
-
-Loading required package: ggplot2
-
-Attaching package: ‘scater’
-
-The following object is masked from ‘package:S4Vectors’:
-
-    rename
-
-The following object is masked from ‘package:stats’:
-
-    filter
-
-Running the sc3 on a reduced set of  8257 cells
-Setting SC3 parameters...
-Your dataset contains more than 2000 cells. Adjusting the nstart parameter of kmeans to 50 for faster performance...
-Defining training cells for SVM using svm_num_cells parameter...
-Calculating distances between the cells...
-starting worker pid=79072 on localhost:11870 at 14:08:18.352
-Loading required package: SC3
-loaded SC3 and set parent environment
-Loading required package: foreach
-Loading required package: rngtools
-Loading required package: pkgmaker
-Loading required package: registry
-
-Attaching package: ‘pkgmaker’
-
-The following object is masked from ‘package:base’:
-
-    isFALSE
-
-Performing transformations and calculating eigenvectors...
-starting worker pid=81893 on localhost:11870 at 14:17:30.253
-Loading required package: SC3
-loaded SC3 and set parent environment
-Loading required package: foreach
-Loading required package: rngtools
-Loading required package: pkgmaker
-Loading required package: registry
-
-Attaching package: ‘pkgmaker’
-
-The following object is masked from ‘package:base’:
-
-    isFALSE
-
-Performing k-means clustering...
-starting worker pid=84924 on localhost:11870 at 14:27:06.164
-Loading required package: SC3
-loaded SC3 and set parent environment
-Loading required package: foreach
-Loading required package: rngtools
-Loading required package: pkgmaker
-Loading required package: registry
-
-Attaching package: ‘pkgmaker’
-
-The following object is masked from ‘package:base’:
-
-    isFALSE
-
-  |                                                                              |                                                                      |   0%  |                                                                              |=                                                                     |   1%  |                                                                              |=                                                                     |   2%  |                                                                              |==                                                                    |   2%  |                                                                              |==                                                                    |   3%  |                                                                              |===                                                                   |   4%  |                                                                              |===                                                                   |   5%  |                                                                              |====                                                                  |   5%  |                                                                              |====                                                                  |   6%  |                                                                              |=====                                                                 |   7%  |                                                                              |=====                                                                 |   8%  |                                                                              |======                                                                |   8%  |                                                                              |======                                                                |   9%  |                                                                              |=======                                                               |   9%  |                                                                              |=======                                                               |  10%  |                                                                              |========                                                              |  11%  |                                                                              |========                                                              |  12%  |                                                                              |=========                                                             |  12%  |                                                                              |=========                                                             |  13%  |                                                                              |==========                                                            |  14%  |                                                                              |==========                                                            |  15%  |                                                                              |===========                                                           |  15%  |                                                                              |===========                                                           |  16%  |                                                                              |============                                                          |  17%  |                                                                              |============                                                          |  18%  |                                                                              |=============                                                         |  18%  |                                                                              |=============                                                         |  19%  |                                                                              |==============                                                        |  19%  |                                                                              |==============                                                        |  20%  |                                                                              |===============                                                       |  21%  |                                                                              |===============                                                       |  22%  |                                                                              |================                                                      |  22%  |                                                                              |================                                                      |  23%  |                                                                              |=================                                                     |  24%  |                                                                              |=================                                                     |  25%  |                                                                              |==================                                                    |  25%  |                                                                              |==================                                                    |  26%  |                                                                              |===================                                                   |  27%  |                                                                              |===================                                                   |  28%  |                                                                              |====================                                                  |  28%  |                                                                              |====================                                                  |  29%  |                                                                              |=====================                                                 |  29%  |                                                                              |=====================                                                 |  30%  |                                                                              |======================                                                |  31%  |                                                                              |======================                                                |  32%  |                                                                              |=======================                                               |  32%  |                                                                              |=======================                                               |  33%  |                                                                              |========================                                              |  34%  |                                                                              |========================                                              |  35%  |                                                                              |=========================                                             |  35%  |                                                                              |=========================                                             |  36%  |                                                                              |==========================                                            |  36%  |                                                                              |==========================                                            |  37%  |                                                                              |==========================                                            |  38%  |                                                                              |===========================                                           |  38%  |                                                                              |===========================                                           |  39%  |                                                                              |============================                                          |  39%  |                                                                              |============================                                          |  40%  |                                                                              |============================                                          |  41%  |                                                                              |=============================                                         |  41%  |                                                                              |=============================                                         |  42%  |                                                                              |==============================                                        |  42%  |                                                                              |==============================                                        |  43%  |                                                                              |===============================                                       |  44%  |                                                                              |===============================                                       |  45%  |                                                                              |================================                                      |  45%  |                                                                              |================================                                      |  46%  |                                                                              |=================================                                     |  46%  |                                                                              |=================================                                     |  47%  |                                                                              |=================================                                     |  48%  |                                                                              |==================================                                    |  48%  |                                                                              |==================================                                    |  49%  |                                                                              |===================================                                   |  49%  |                                                                              |===================================                                   |  50%  |                                                                              |===================================                                   |  51%  |                                                                              |====================================                                  |  51%  |                                                                              |====================================                                  |  52%  |                                                                              |=====================================                                 |  52%  |                                                                              |=====================================                                 |  53%  |                                                                              |=====================================                                 |  54%  |                                                                              |======================================                                |  54%  |                                                                              |======================================                                |  55%  |                                                                              |=======================================                               |  55%  |                                                                              |=======================================                               |  56%  |                                                                              |========================================                              |  57%  |                                                                              |========================================                              |  58%  |                                                                              |=========================================                             |  58%  |                                                                              |=========================================                             |  59%  |                                                                              |==========================================                            |  59%  |                                                                              |==========================================                            |  60%  |                                                                              |==========================================                            |  61%  |                                                                              |===========================================                           |  61%  |                                                                              |===========================================                           |  62%  |                                                                              |============================================                          |  62%  |                                                                              |============================================                          |  63%  |                                                                              |============================================                          |  64%  |                                                                              |=============================================                         |  64%  |                                                                              |=============================================                         |  65%  |                                                                              |==============================================                        |  65%  |                                                                              |==============================================                        |  66%  |                                                                              |===============================================                       |  67%  |                                                                              |===============================================                       |  68%  |                                                                              |================================================                      |  68%  |                                                                              |================================================                      |  69%  |                                                                              |=================================================                     |  70%  |                                                                              |=================================================                     |  71%  |                                                                              |==================================================                    |  71%  |                                                                              |==================================================                    |  72%  |                                                                              |===================================================                   |  72%  |                                                                              |===================================================                   |  73%  |                                                                              |====================================================                  |  74%  |                                                                              |====================================================                  |  75%  |                                                                              |=====================================================                 |  75%  |                                                                              |=====================================================                 |  76%  |                                                                              |======================================================                |  77%  |                                                                              |======================================================                |  78%  |                                                                              |=======================================================               |  78%  |                                                                              |=======================================================               |  79%  |                                                                              |========================================================              |  80%  |                                                                              |========================================================              |  81%  |                                                                              |=========================================================             |  81%  |                                                                              |=========================================================             |  82%  |                                                                              |==========================================================            |  82%  |                                                                              |==========================================================            |  83%  |                                                                              |===========================================================           |  84%  |                                                                              |===========================================================           |  85%  |                                                                              |============================================================          |  85%  |                                                                              |============================================================          |  86%  |                                                                              |=============================================================         |  87%  |                                                                              |=============================================================         |  88%  |                                                                              |==============================================================        |  88%  |                                                                              |==============================================================        |  89%  |                                                                              |===============================================================       |  90%  |                                                                              |===============================================================       |  91%  |                                                                              |================================================================      |  91%  |                                                                              |================================================================      |  92%  |                                                                              |=================================================================     |  92%  |                                                                              |=================================================================     |  93%  |                                                                              |==================================================================    |  94%  |                                                                              |==================================================================    |  95%  |                                                                              |===================================================================   |  95%  |                                                                              |===================================================================   |  96%  |                                                                              |====================================================================  |  97%  |                                                                              |====================================================================  |  98%  |                                                                              |===================================================================== |  98%  |                                                                              |===================================================================== |  99%  |                                                                              |======================================================================| 100%
-There were 50 or more warnings (use warnings() to see the first 50)
-Calculating consensus matrix...
-starting worker pid=96041 on localhost:11870 at 08:08:05.082
-Loading required package: SC3
-loaded SC3 and set parent environment
-Loading required package: foreach
-Loading required package: rngtools
-Loading required package: pkgmaker
-Loading required package: registry
-
-Attaching package: ‘pkgmaker’
-
-The following object is masked from ‘package:base’:
-
-    isFALSE
-
-Fitting the other cellsSaving output at  /pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_sc3.rdsNULL

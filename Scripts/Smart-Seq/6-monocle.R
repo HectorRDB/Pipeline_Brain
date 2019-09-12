@@ -36,7 +36,7 @@ suppressMessages(library(mcclust))
 suppressMessages(library(zinbwave))
 import("louvain")
 
-# Load data and convert to Delayed Array ----
+# Load data and convert----
 sce <- readRDS(file = loc)
 pd <- as.data.frame(sce@colData)
 fd <- data.frame(gene_short_name = rownames(assays(sce)$counts))

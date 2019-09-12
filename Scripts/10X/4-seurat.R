@@ -37,15 +37,13 @@ sce <- readRDS(file = loc)
 
 clusterMatrixs <- list()
 # Setup ----
-sSeurat <- CreateSeuratObject(raw.data = assays(sce)$counts, project = 'allen40K')
+sSeurat <- CreateSeuratObject(counts = assays(sce)$counts, project = 'allen40K')
 sSeurat <- NormalizeData(object = sSeurat, normalization.method = "LogNormalize")
-sSeurat <- FindVariableGenes(object = sSeurat, mean.function = ExpMean,
-                             dispersion.function = LogVMR, do.plot = T)
-sSeurat <- ScaleData(object = sSeurat, vars.to.regress = "nUMI")
-sSeurat <- RunPCA(object = sSeurat, pc.genes = sSeurat@var.genes, 
-                  do.print = TRUE, pcs.compute = 50, pcs.print = 1:5,
-                  genes.print = 5)
-  
+sSeurat <- FindVariableFeatures(object = sSeurat, mean.function = ExpMean,
+                                dispersion.function = LogVMR, do.plot = T)
+sSeurat <- ScaleData(object = sSeurat, vars.to.regress = "nCount_RNA")
+sSeurat <- RunPCA(object = sSeurat, ndims.print = 1, npcs = 100)
+
 # Run clustering ----
 clusterMatrix <- NULL
 for (RESOLUTION in seq(from = 0.3, to = 1.7, by = .1)) {
@@ -60,4 +58,6 @@ for (RESOLUTION in seq(from = 0.3, to = 1.7, by = .1)) {
   }
 }
 
-saveRDS(clusterMatrix, file = output)
+clusterMatrix <- as.data.frame(clusterMatrix)
+clusterMatrix$cells <- colnames(sce)
+write.csv(clusterMatrix, file = output)

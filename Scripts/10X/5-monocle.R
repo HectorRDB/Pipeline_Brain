@@ -35,7 +35,7 @@ suppressMessages(library(mcclust))
 suppressMessages(library(zinbwave))
 import("louvain")
 
-# Load data and convert to Delayed Array ----
+# Load data and convert----
 sce <- readRDS(file = paste0(loc, "_monocle.rds"))
 zinbW <- readRDS(file = paste0(loc, "_zinb.rds"))
 sce <- newCellDataSet(sce@assayData$exprs,
