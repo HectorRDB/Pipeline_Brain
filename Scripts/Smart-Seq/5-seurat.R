@@ -57,5 +57,6 @@ for (RESOLUTION in seq(from = 0.3, to = 1.7, by = .1)) {
   }
 }
 
+clusterMatrix <- as.data.frame(clusterMatrix)
 clusterMatrix$cells <- colnames(sce)
 write.csv(clusterMatrix, file = output)
