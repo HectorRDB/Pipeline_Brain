@@ -4,7 +4,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
 #SBATCH -p RM
-#SBATCH -t 4-00:00:00
+#SBATCH -t 2-00:00:00
 #SBATCH --nodes=1
 
 module load intel/18.4
