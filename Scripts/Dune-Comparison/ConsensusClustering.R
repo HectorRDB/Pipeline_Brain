@@ -93,7 +93,6 @@ print(system.time(
   merger <- mergeManyPairwise(clusteringMatrix = clusMat, nCores = opt$n)
 ))
 cat("Finished Consensus Merge\n")
-saveRDS(object = merger, file = paste0(output, "_mergers.rds"))
 
 # Save the matrix with all the consensus steps ----
 print("...Initial")
@@ -132,7 +131,7 @@ colnames(mat) <- c("cells",
                    paste(chars, "Final", sep = "-")
 )
 
-write_csv(x = as.data.frame(mat), path = paste0(output, "_Dune_large.csv"))
+write_csv(x = as.data.frame(mat), path = paste0(output, "_Dune.csv"))
 # Do hierarchical merging ----
 Rsec <- readRDS(opt$r)
 
@@ -163,4 +162,4 @@ for (clustering in c("sc3", "Monocle", "seurat")) {
 
 res <- do.call('cbind', res) %>% as.data.frame()
 res$cells <- colnames(Rsec)
-write_csv(res, path = paste0(output, "hierarchical_large.csv"))
+write_csv(res, path = paste0(output, "hierarchical.csv"))
