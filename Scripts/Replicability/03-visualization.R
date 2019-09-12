@@ -1,41 +1,13 @@
+# Packages and helper scripts ----
 suppressPackageStartupMessages({
   library(SingleCellExperiment)
   library(tidyverse)
 })
 
-source("meta_components.R")
-source("data.R")
+source(here("Scripts", "Replicability", "meta_components.R"))
+source(here("Scripts", "Replicability", "01-data.R"))
 
-
-main <- function() {
-  main_full_data()
-}
-
-main_full_data <- function(result_path = "../mn_results", output_dir = "..") {
-  label_matrix <- load_labels(load_qc_cells())
-
-  create_summary_figures(
-    label_matrix, file.path(result_path, "smart_tenx"),
-    file.path(output_dir, "smart_tenx"), 4
-  )
-  create_summary_figures(label_matrix, file.path(result_path, "smart"),
-    file.path(output_dir, "smart"), 2,
-    exclude_rsec = FALSE
-  )
-  create_summary_figures(
-    label_matrix, file.path(result_path, "tenx"),
-    file.path(output_dir, "tenx"), 2
-  )
-  create_summary_figures(
-    label_matrix, file.path(result_path, "cells"),
-    file.path(output_dir, "cells"), 2
-  )
-  create_summary_figures(
-    label_matrix, file.path(result_path, "nuclei"),
-    file.path(output_dir, "nuclei"), 2
-  )
-}
-
+# Helper functions ----
 create_summary_figures <- function(label_matrix, result_path, output_dir,
                                    n_datasets, exclude_rsec = TRUE) {
   # add dataset prefix to labels
@@ -325,8 +297,37 @@ plot_clusters_vs_mapped <- function(results) {
     labs(col = "Clustering method", shape = "Consensus level")
 }
 
-main_single_merge <- function(result_path = "../mn_results/SingleMerge",
-                              output_dir = "../singleMerge") {
+# Main functions ----
+main_full_data <- function(result_path = here("data", "Replicability", "mn_results"),
+                           output_dir = here("data", "Replicability")) {
+  label_matrix <- load_labels(load_qc_cells())
+  
+  create_summary_figures(
+    label_matrix, file.path(result_path, "smart_tenx"),
+    file.path(output_dir, "smart_tenx"), 4
+  )
+  create_summary_figures(label_matrix, file.path(result_path, "smart"),
+                         file.path(output_dir, "smart"), 2,
+                         exclude_rsec = FALSE
+  )
+  create_summary_figures(
+    label_matrix, file.path(result_path, "tenx"),
+    file.path(output_dir, "tenx"), 2
+  )
+  create_summary_figures(
+    label_matrix, file.path(result_path, "cells"),
+    file.path(output_dir, "cells"), 2
+  )
+  create_summary_figures(
+    label_matrix, file.path(result_path, "nuclei"),
+    file.path(output_dir, "nuclei"), 2
+  )
+}
+
+main_single_merge <- function(
+  result_path = here("data", "Replicability", "mn_results", "SingleTree"),
+  output_dir = here("data", "Replicability", "SingleTree")) {
+  
   label_matrix <- load_single_merge_labels(load_qc_cells("qc_cells_smart.txt"))
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
 
@@ -334,8 +335,10 @@ main_single_merge <- function(result_path = "../mn_results/SingleMerge",
                          file.path(output_dir, "smart"), 2)
 }
 
-main_single_method <- function(result_path = "../mn_results/SingleMethod",
-                               output_dir = "../singleMethod") {
+main_single_method <- function(
+  result_path = here("data", "Replicability", "mn_results", "SingleMethod"),
+  output_dir = here("data", "Replicability", "SingleMethod")) {
+  
   label_matrix <- inner_join(
     load_single_seurat_labels(load_qc_cells("qc_cells_smart.txt")),
     load_single_sc3_labels(load_qc_cells("qc_cells_smart.txt"))
@@ -343,6 +346,10 @@ main_single_method <- function(result_path = "../mn_results/SingleMethod",
     inner_join(load_single_monocle_labels(load_qc_cells("qc_cells_smart.txt")))
   create_summary_figures(label_matrix, file.path(result_path, "smart"),
                          file.path(output_dir, "smart"), 2)
+}
+
+main <- function() {
+  main_full_data()
 }
 
 if (!interactive()) {

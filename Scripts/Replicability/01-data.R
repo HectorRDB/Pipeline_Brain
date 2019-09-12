@@ -8,21 +8,21 @@ export_qc_cells <- function(dataset = load_data(), filename = "qc_cells.txt") {
 }
 
 load_data <- function() {
-  readRDS("full_data.rds")
+  readRDS(here("data", "full_data.rds"))
 }
 
-load_qc_cells <- function(filename = "qc_cells.txt") {
+load_qc_cells <- function(filename = here("data", "qc_cells.txt")) {
   scan(filename, "character")
 }
 
 load_smart_data <- function() {
-  result <- readRDS("full_data.rds")
+  result <- readRDS(here("data", "full_data.rds"))
   result <- result[,
                 result$study_id %in% c("zeng_smart_cells", "zeng_smart_nuclei")]
 }
 
-load_labels <- function(cell_names, data_path = "../../data") {
-  input_dir <- file.path(data_path, "ClusterLabels")
+load_labels <- function(cell_names, data_path = here("data")) {
+  input_dir <- file.path(data_path, "Dune")
   label_matrix <- bind_rows(
     zeng_smart_cells = read.csv(file.path(input_dir, "SMARTer_cells_MOp.csv")),
     zeng_smart_nuclei = read.csv(file.path(input_dir, "SMARTer_nuclei_MOp.csv")),
@@ -38,8 +38,8 @@ load_labels <- function(cell_names, data_path = "../../data") {
   return(label_matrix)
 }
 
-load_single_merge_labels <- function(cell_names, data_path = "../../data") {
-  input_dir <- file.path(data_path, "singleMerge")
+load_single_merge_labels <- function(cell_names, data_path = here("data")) {
+  input_dir <- file.path(data_path, "singleTree")
   result <- bind_rows(
     zeng_smart_cells = read.csv(
       file.path(input_dir, "SMARTer_cells_MOp_singleTree.csv")),
@@ -75,13 +75,13 @@ load_single_merge_labels <- function(cell_names, data_path = "../../data") {
   return(result)
 }
 
-load_single_seurat_labels <- function(cell_names, data_path = "../../data") {
-  input_dir <- file.path(data_path, "singleMerge")
+load_single_seurat_labels <- function(cell_names, data_path = here("data")) {
+  input_dir <- file.path(data_path, "singleMethod")
   result <- bind_rows(
     zeng_smart_cells = read_single_method(
-      file.path(input_dir, "SMARTer_cells_MOp_singleSeurat.csv")),
+      file.path(input_dir, "SMARTer_cells_MOp_Seurat.csv")),
     zeng_smart_nuclei = read_single_method(
-      file.path(input_dir, "SMARTer_nuclei_MOp_singleSeurat.csv")),
+      file.path(input_dir, "SMARTer_nuclei_MOp_Seurat.csv")),
     .id = "dataset"
   )
 
@@ -108,11 +108,11 @@ load_single_seurat_labels <- function(cell_names, data_path = "../../data") {
   return(as.data.frame(result))
 }
 
-load_single_sc3_labels <- function(cell_names, data_path = "../../data") {
-  input_dir <- file.path(data_path, "singleMerge")
+load_single_sc3_labels <- function(cell_names, data_path = here("data")) {
+  input_dir <- file.path(data_path, "singleMethod")
   # Rename cells
   zeng_smart_cells <- read_single_method(
-    file.path(input_dir, "SMARTer_cells_MOp_singleSC3.csv")) %>%
+    file.path(input_dir, "SMARTer_cells_MOp_SC3.csv")) %>%
     mutate(dataset = "zeng_smart_cells")
   zeng_smart_cells <- zeng_smart_cells %>%
     select(.data = ., "dataset", colnames(zeng_smart_cells))
@@ -121,7 +121,7 @@ load_single_sc3_labels <- function(cell_names, data_path = "../../data") {
     as.numeric(colnames(zeng_smart_cells)[-(1:2)]) - k_0
   # Rename nuclei
   zeng_smart_nuclei <- read_single_method(
-    file.path(input_dir, "SMARTer_nuclei_MOp_singleSC3.csv")) %>%
+    file.path(input_dir, "SMARTer_nuclei_MOp_SC3.csv")) %>%
     mutate(dataset = "zeng_smart_nuclei")
   zeng_smart_nuclei <- zeng_smart_nuclei %>%
     select(.data = ., "dataset", colnames(zeng_smart_nuclei))
@@ -154,13 +154,13 @@ load_single_sc3_labels <- function(cell_names, data_path = "../../data") {
   return(as.data.frame(result))
 }
 
-load_single_monocle_labels <- function(cell_names, data_path = "../../data") {
-    input_dir <- file.path(data_path, "singleMerge")
+load_single_monocle_labels <- function(cell_names, data_path = here("data")) {
+    input_dir <- file.path(data_path, "singleMethod")
     result <- bind_rows(
         zeng_smart_cells = read_single_method(
-            file.path(input_dir, "SMARTer_cells_MOp_singleMonocle.csv")),
+            file.path(input_dir, "SMARTer_cells_MOp_Monocle.csv")),
         zeng_smart_nuclei = read_single_method(
-            file.path(input_dir, "SMARTer_nuclei_MOp_singleMonocle.csv")),
+            file.path(input_dir, "SMARTer_nuclei_MOp_Monocle.csv")),
         .id = "dataset"
     )
     
@@ -183,14 +183,4 @@ load_single_monocle_labels <- function(cell_names, data_path = "../../data") {
     result <- result[row_match, ]
     
     return(as.data.frame(result))
-}
-
-read_single_method <- function(filename) {
-  result <- read.table(filename, check.names = FALSE)
-  if ("cells" %in% colnames(result)) {
-    result <- as_tibble(result)
-  } else {
-    result <- as_tibble(result, rownames = "cells")  
-  }
-  return(result %>% select(cells, colnames(result)))
 }
