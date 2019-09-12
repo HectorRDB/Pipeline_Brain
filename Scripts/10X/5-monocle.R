@@ -16,7 +16,7 @@ opt <- parse_args(OptionParser(option_list = option_list))
 
 if (!is.na(opt$l)) {
   loc <- opt$l
-  cat("The selected dataset is located at", loc)
+  cat("The selected dataset is located at", loc, "\n")
 } else {
   stop("Missing l argument")
 }
@@ -26,44 +26,46 @@ if (!is.na(opt$o)) {
 } else {
   stop("Missing o argument")
 }
-
+# Load data and convert----
 suppressMessages(library(reticulate))
-suppressMessages(library(monocle))
+suppressMessages(library(monocle3))
 suppressMessages(library(SingleCellExperiment))
 suppressMessages(library(flexclust))
+suppressMessages(library(purrr))
 suppressMessages(library(mcclust))
 suppressMessages(library(zinbwave))
 import("louvain")
 
 # Load data and convert----
-sce <- readRDS(file = paste0(loc, "_monocle.rds"))
-zinbW <- readRDS(file = paste0(loc, "_zinb.rds"))
-sce <- newCellDataSet(sce@assayData$exprs,
-                      phenoData = sce@phenoData,
-                      featureData = sce@featureData)
+sce <- readRDS(file = loc)
+pd <- data.frame(cells = rownames(sce))
+rownames(pd) <- pd$cells
+fd <- data.frame(gene_short_name = colnames(sce))
+zinbW <- sce
+rownames(fd) <- fd$gene_short_name
+sce <- new_cell_data_set(t(sce),
+                         cell_metadata = pd,
+                         gene_metadata = fd)
 
 # Pre-process
-sce@normalized_data_projection <- zinbW
-sce@auxOrderingData$normalize_expr_data <- sce@assayData$exprs
+sce@reducedDims <- SimpleList("PCA" = zinbW)
+
 print("Doing the reduced dimension")
-sce <- reduceDimension(sce,
-                       max_components = 2,
-                       reduction_method = 'UMAP',
-                       metric = "correlation",
-                       min_dist = 0.75,
-                       n_neighbors = 50,
-                       verbose = T)
+sce <- reduce_dimension(sce)
 
 # run Monocle ----
 print("Running Monocle")
-print(system.time(
-  sce <- clusterCells(sce,
-                      method = 'louvain',
-                      res = 1e-3,
-                      louvain_iter = 1,
-                      verbose = T)
-))
-clusters <- pData(sce)$Cluster
-names(clusters) <- colnames(sce)
+ks <- seq(from = 10, to = 100, by = 5)
+names(ks) <- paste0("k_", ks)
+clusterMatrix <- map_df(ks, function(k){
+  print(ks)
+  sce2 <- cluster_cells(sce,
+                        k = k,
+                        louvain_iter = 2,
+                        verbose = F)
+  return(sce2@clusters$UMAP$clusters %>% as.numeric())
+})
 
-saveRDS(clusters, file = output)
+clusterMatrix$cells <- colnames(sce)
+
+write.csv(clusterMatrix, file = output)

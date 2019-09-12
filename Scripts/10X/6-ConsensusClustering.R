@@ -43,7 +43,7 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(stringr)
-library(merger)
+library(Dune)
 
 # Load Data and clean seurat ----
 # Load Monocle clustering results
@@ -53,6 +53,7 @@ Monocle <- readRDS(paste0(loc, "_monocle2.rds"))
 # Load sc3  and allen clustering results
 print("Loading sc3")
 sc3 <- readRDS(paste0(loc, "_sc3.rds"))
+print(colnames(sc3))
 allen <- colData(sc3)[, "allenClusters"]
 Monocle <- Monocle[rownames(colData(sc3))]
 sc3 <- colData(sc3)[, "sc3_100_clusters"]
