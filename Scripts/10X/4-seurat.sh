@@ -9,6 +9,7 @@
 
 module load intel/18.4
 module load hdf5
+module load gcc
 timestamp=$(date +"%m-%d-%H:%M")
 basename=seurat_cells-nuclei_${timestamp}
 MEMORYFILE=${basename}.txt
