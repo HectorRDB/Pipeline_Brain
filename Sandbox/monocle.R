@@ -39,6 +39,7 @@ import("louvain")
 # Load data and convert----
 sce <- readRDS(file = loc)
 pd <- data.frame(cells = rownames(sce))
+rownames(pd) <- pd$cells
 fd <- data.frame(gene_short_name = colnames(sce))
 zinbW <- sce[,3]
 rownames(fd) <- fd$gene_short_name
