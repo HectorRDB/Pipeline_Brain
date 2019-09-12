@@ -7,4 +7,4 @@
 
 loc="/scratch/users/singlecell/MiniAtlas/data/rds/10x_nuclei_MOp_zinb.rds"
 out="/scratch/users/singlecell/MiniAtlas/data/rds/10x_nuclei_MOp_monocle_all.csv"
-Rscript --verbose  6-monocle.R -l $loc -o $out > 6b.out 2>&1
+Rscript --verbose  monocle.R -l $loc -o $out > test.out 2>&1
