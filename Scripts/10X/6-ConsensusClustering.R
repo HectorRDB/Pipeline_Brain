@@ -10,6 +10,10 @@ option_list <- list(
               action = "store", default = NA, type = "character",
               help = "The location of the data"
   ),
+  make_option(c("-p", "--plot"),
+              action = "store", default = NA, type = "character",
+              help = "Where to save the plots"
+  ),
   make_option(c("-n", "--nCores"),
               action = "store", default = 1, type = "integer",
               help = "Number of cores to use"
@@ -80,10 +84,14 @@ sc3 <- sc3[, paste0("sc3_", sc3_p, "_clusters")] %>% as.numeric()
 
 # Load Seurat clustering results
 seurat <- read.csv(paste0(loc, "_seurat.csv"))
+ggsave(filename = paste0(opt$p, "_seurat_ARI.png"),
+       plot = clusterMatToAri(seurat %>% select(-cells)))
 seurat <- seurat[, seurat_p] %>% as.numeric()
 
 # Load Monocle clustering results
 Monocle <- read.csv(paste0(loc, "_Monocle.csv"))
+ggsave(filename = paste0(opt$p, "_monocle_ARI.png"),
+       plot = clusterMatToAri(Monocle %>% select(-cells)))
 Monocle <- as.data.frame(Monocle)[, monocle_p] %>% as.numeric()
 
 # Get the final clustering labels
