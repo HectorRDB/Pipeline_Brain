@@ -43,8 +43,6 @@ print("Dataset of size")
 print(dim(sce))
 
 rowData(sce)$feature_symbol <- rownames(sce)
-# sce <- sc3_estimate_k(sce)
-# K <- metadata(sce)$sc3$k_estimation
 K <- 100
 cat("Running the sc3 on a reduced set of ", round(.1 * ncol(sce)), "cells\n")
 sce <- sc3(sce, ks = K, svm_max = ncol(sce) + 1, biology = FALSE,

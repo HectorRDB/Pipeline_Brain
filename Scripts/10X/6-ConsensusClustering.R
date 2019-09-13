@@ -72,23 +72,19 @@ library(tidyr)
 library(stringr)
 library(Dune)
 
-# Load Monocle clustering results
-print("Loading Monocle")
-Monocle <- readRDS(paste0(loc, "_monocle2.rds"))
-
-# Load sc3  and allen clustering results
+# Load sc3
 print("Loading sc3")
 sc3 <- readRDS(paste0(loc, "_sc3.rds"))
-print(colnames(colData(sc3)))
-allen <- colData(sc3)[, "allenClusters"]
-Monocle <- Monocle[rownames(colData(sc3))]
-sc3 <- colData(sc3)[, "sc3_100_clusters"]
+Names <- colnames(sc3)
+sc3 <- colData(sc3)[, sc3_p] %>% as.numeric()
 
+# Load Seurat clustering results
+seurat <- read.csv(paste0(loc, "_seurat.csv"))
+seurat <- seurat[, seurat_p] %>% as.numeric()
 
-# Load Seurat
-print("Loading Seurat")
-seurat <- readRDS(paste0(loc, "_seurat.rds"))
-seurat <- seurat[, "1.2,30"]
+# Load Monocle clustering results
+Monocle <- read.csv(paste0(loc, "_Monocle.csv"))
+Monocle <- as.data.frame(Monocle)[, monocle_p] %>% as.numeric()
 
 # Get the final clustering labels
   clusMat <- data.frame("sc3" = sc3, "Monocle" = Monocle, "seurat" = seurat)

@@ -36,10 +36,11 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(stringr)
-library(Dune)
 
 # Load Monocle clustering results
 # Load sc3  and allen clustering results
 print("Loading sc3")
 sc3 <- readRDS(paste0(loc, "_sc3.rds"))
-print(colnames(colData(sc3)))
+sc3 <- data.frame("sc3_100_clusters" = colData(sc3)[, "sc3_100_clusters"],
+                  cells = colnames(sc3))
+write.csv(sc3, file = output)
