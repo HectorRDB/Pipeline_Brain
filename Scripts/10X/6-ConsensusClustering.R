@@ -14,9 +14,17 @@ option_list <- list(
               action = "store", default = 1, type = "integer",
               help = "Number of cores to use"
   ),
-  make_option(c("-a", "--allen"),
-              action = "store", default = T, type = "logical",
-              help = "Wether to use allen or not"
+  make_option(c("-S", "--SeuratParam"),
+              action = "store", default = NA, type = "character",
+              help = "Parameter to use for Seurat"
+  ),
+  make_option(c("-C", "--C3"),
+              action = "store", default = NA, type = "character",
+              help = "SC3 parameter"
+  ),
+  make_option(c("-m", "--monocle"),
+              action = "store", default = NA, type = "character",
+              help = "Monocle parameter"
   )
 )
 
@@ -35,6 +43,25 @@ if (!is.na(opt$o)) {
   stop("Missing o argument")
 }
 
+if (!is.na(opt$C)) {
+  sc3_p <- opt$C
+} else {
+  stop("Missing C argument")
+}
+
+if (!is.na(opt$C)) {
+  seurat_p <- opt$S
+} else {
+  stop("Missing S argument")
+}
+
+if (!is.na(opt$m)) {
+  monocle_p <- opt$m
+} else {
+  stop("Missing m argument")
+}
+
+# Load Data----
 library(SummarizedExperiment)
 library(parallel)
 library(matrixStats)
@@ -45,7 +72,6 @@ library(tidyr)
 library(stringr)
 library(Dune)
 
-# Load Data and clean seurat ----
 # Load Monocle clustering results
 print("Loading Monocle")
 Monocle <- readRDS(paste0(loc, "_monocle2.rds"))
@@ -53,7 +79,7 @@ Monocle <- readRDS(paste0(loc, "_monocle2.rds"))
 # Load sc3  and allen clustering results
 print("Loading sc3")
 sc3 <- readRDS(paste0(loc, "_sc3.rds"))
-print(colnames(sc3))
+print(colnames(colData(sc3)))
 allen <- colData(sc3)[, "allenClusters"]
 Monocle <- Monocle[rownames(colData(sc3))]
 sc3 <- colData(sc3)[, "sc3_100_clusters"]
@@ -64,14 +90,8 @@ print("Loading Seurat")
 seurat <- readRDS(paste0(loc, "_seurat.rds"))
 seurat <- seurat[, "1.2,30"]
 
-# Load Allen
 # Get the final clustering labels
-if (opt$a) {
-  clusMat <- data.frame("sc3" = sc3, "Monocle" = Monocle, "allen" = allen,
-                        "seurat" = seurat)
-  } else {
   clusMat <- data.frame("sc3" = sc3, "Monocle" = Monocle, "seurat" = seurat)
-}
 
 
 # Do the consensus clustering ----
