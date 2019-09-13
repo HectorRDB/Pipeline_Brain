@@ -71,16 +71,18 @@ library(mclust)
 
 # Load Data ----
 # Load sc3 clustering results
-sc3 <- read.csv(paste0(loc, "_SC3.csv"))
+sc3 <- read.csv(paste0(loc, "_SC3.csv"))[, -1]
+colnames(sc3) <- str_remove(colnames(sc3), "^X")
 Names <- sc3$cells
 sc3 <- sc3[, sc3_p] %>% as.numeric()
 
 # Load Seurat clustering results
-seurat <- read.csv(paste0(loc, "_seurat.csv"))
+seurat <- read.csv(paste0(loc, "_Seurat.csv"))[, -1]
+colnames(seurat) <- str_remove(colnames(seurat), "^X")
 seurat <- seurat[, seurat_p] %>% as.numeric()
 
 # Load Monocle clustering results
-Monocle <- read.csv(paste0(loc, "_Monocle.csv"))
+Monocle <- read.csv(paste0(loc, "_Monocle.csv"))[, -1]
 Monocle <- as.data.frame(Monocle)[, monocle_p] %>% as.numeric()
 
 # Get the final clustering labels
