@@ -71,7 +71,7 @@ Rsec <- Rsec$Rsec
 
 # Get the final clustering labels
 clusMat <- data.frame("sc3" = sc3, "Rsec" = Rsec, "Monocle" = Monocle,
-                      "seurat" = seurat)
+                      "Seurat" = seurat)
 rownames(clusMat) <- Names  
 
 # Do the consensus clustering ----
@@ -133,7 +133,7 @@ mat <- cbind(names$X1,
              stopMatrix_66, consensusInt_66,
              stopMatrix_90, consensusInt_90,
              currentMat, consensusFinal)
-chars <- c("sc3", "RSEC", "Monocle", "Seurat", "Consensus")
+chars <- c("sc3", "Rsec", "Monocle", "Seurat", "Consensus")
 
 colnames(mat) <- c("cells",
                    paste(chars, "Initial", sep = "-"), paste(chars, "33", sep = "-"),

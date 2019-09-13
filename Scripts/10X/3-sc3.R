@@ -35,20 +35,23 @@ if (!is.na(opt$o)) {
 library(SC3)
 library(scater)
 library(stringr)
+library(purrr)
 library(SingleCellExperiment)
 
 # Add a normalization step ? 
 sce <- readRDS(file = loc)
-print("Dataset of size")
-print(dim(sce))
-
 rowData(sce)$feature_symbol <- rownames(sce)
-K <- 100
+ks <- c(80, 100, 120)
+names(ks) <- ks
 cat("Running the sc3 on a reduced set of ", round(.1 * ncol(sce)), "cells\n")
-sce <- sc3(sce, ks = K, svm_max = ncol(sce) + 1, biology = FALSE,
-           n_cores = as.numeric(opt$n), svm_num_cells = round(.1 * ncol(sce)))
-cat("Fitting the other cells", "\n")
-sce <- sc3_run_svm(sce, ks = K)
 
-print(paste0("Saving output at ", output))
-saveRDS(sce, file = output)
+sc3 <- map_df(ks, function(k){
+  SC3 <- sc3(sce, ks = k, svm_max = ncol(sce) + 1, biology = FALSE,
+             n_cores = as.numeric(opt$n), svm_num_cells = round(.1 * ncol(sce)))
+  SC3 <- sc3_run_svm(sce, ks = k)
+  SC3 <- colData(SC3)[, paste0("sc3_", k, "_clusters")] %>% as.numeric()
+  return(SC3)
+})
+
+sc3$cells <- colnames(sce)
+write.csv(sc3, file = output)

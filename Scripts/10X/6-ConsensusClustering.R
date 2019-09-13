@@ -72,11 +72,11 @@ library(tidyr)
 library(stringr)
 library(Dune)
 
-# Load sc3
+# Load sc3 clustering results
 print("Loading sc3")
-sc3 <- readRDS(paste0(loc, "_sc3.rds"))
-Names <- colnames(sc3)
-sc3 <- colData(sc3)[, sc3_p] %>% as.numeric()
+sc3 <- read.csv(paste0(loc, "_sc3.rds"))
+Names <- sc3$cells
+sc3 <- sc3[, sc3_p] %>% as.numeric()
 
 # Load Seurat clustering results
 seurat <- read.csv(paste0(loc, "_seurat.csv"))
@@ -87,11 +87,64 @@ Monocle <- read.csv(paste0(loc, "_Monocle.csv"))
 Monocle <- as.data.frame(Monocle)[, monocle_p] %>% as.numeric()
 
 # Get the final clustering labels
-  clusMat <- data.frame("sc3" = sc3, "Monocle" = Monocle, "seurat" = seurat)
-
+clusMat <- data.frame("sc3" = sc3, "Monocle" = Monocle, "Seurat" = seurat)
 
 # Do the consensus clustering ----
 print(paste0("Number of cores: ", opt$n))
-mergers <- mergeManyPairwise(clusteringMatrix = clusMat, nCores = opt$n)
+merger <- mergeManyPairwise(clusteringMatrix = clusMat, nCores = opt$n)
 cat("Finished Consensus Merge\n")
-saveRDS(object = mergers, file = paste0(output, "_mergers.rds"))
+saveRDS(object = merger, file = paste0(output, "_mergers.rds"))
+
+# Save the matrix with all the consensus steps ----
+print("...Initial consensus")
+initialMat <- as.matrix(merger$initalMat) 
+cellsConsensus <- Consensus(clusMat = initialMat, large = TRUE)
+consensusInit <- cellsConsensus
+
+print("...Final consensus")
+currentMat <- merger$currentMat
+currentMat <- as.matrix(currentMat) 
+
+cellsConsensus <- Consensus(clusMat = currentMat, large = TRUE)
+consensusFinal <- cellsConsensus
+
+print("...Intermediary consensus at 33.3%")
+stopMatrix_33 <- intermediateMat(merger = merger,
+                                 p = 1/3)
+stopMatrix_33 <- as.matrix(stopMatrix_33)
+
+cellsConsensus <- Consensus(clusMat = stopMatrix_33, large = TRUE)
+consensusInt_33 <- cellsConsensus
+
+print("...Intermediary consensus at 66.7%")
+stopMatrix_66 <- intermediateMat(merger = merger, p = 2/3)
+stopMatrix_66 <- as.matrix(stopMatrix_66)
+
+cellsConsensus <- Consensus(clusMat = stopMatrix_66, large = TRUE)
+consensusInt_66 <- cellsConsensus
+
+print("...Intermediary consensus at 90%")
+stopMatrix_90 <- intermediateMat(merger = merger, p = .9)
+stopMatrix_90 <- as.matrix(stopMatrix_90)
+
+cellsConsensus <- Consensus(clusMat = stopMatrix_90, large = TRUE)
+consensusInt_90 <- cellsConsensus
+
+print("...Full matrix")
+names <- read_csv(here("data", "10X",
+                       paste0(dataset, "_cluster.membership.csv")))
+mat <- cbind(names$X1,
+             initialMat, consensusInit,
+             stopMatrix_33, consensusInt_33,
+             stopMatrix_66, consensusInt_66,
+             stopMatrix_90, consensusInt_90,
+             currentMat, consensusFinal)
+chars <- c("sc3", "Monocle", "Seurat", "Consensus")
+
+colnames(mat) <- c("cells",
+                   paste(chars, "Initial", sep = "-"), paste(chars, "33", sep = "-"),
+                   paste(chars, "66", sep = "-"), paste(chars, "90", sep = "-"),
+                   paste(chars, "Final", sep = "-")
+)
+
+write_csv(x = as.data.frame(mat), path = paste0(output, ".csv"))
