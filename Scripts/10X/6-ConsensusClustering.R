@@ -76,7 +76,7 @@ library(Dune)
 print("Loading sc3")
 sc3 <- read.csv(paste0(loc, "_sc3.rds"))
 Names <- sc3$cells
-sc3 <- sc3[, sc3_p] %>% as.numeric()
+sc3 <- sc3[, paste0("sc3_", sc3_p, "_clusters")] %>% as.numeric()
 
 # Load Seurat clustering results
 seurat <- read.csv(paste0(loc, "_seurat.csv"))
