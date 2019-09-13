@@ -83,14 +83,14 @@ Names <- sc3$cells
 sc3 <- sc3[, paste0("sc3_", sc3_p, "_clusters")] %>% as.numeric()
 
 # Load Seurat clustering results
-seurat <- read.csv(paste0(loc, "_seurat.csv"))
-ggsave(filename = paste0(opt$p, "_seurat_ARI.png"),
+seurat <- read.csv(paste0(loc, "_Seurat.csv"))
+ggsave(filename = paste0(opt$p, "_Seurat_ARI.png"),
        plot = clusterMatToAri(seurat %>% select(-cells)))
 seurat <- seurat[, seurat_p] %>% as.numeric()
 
 # Load Monocle clustering results
 Monocle <- read.csv(paste0(loc, "_Monocle.csv"))
-ggsave(filename = paste0(opt$p, "_monocle_ARI.png"),
+ggsave(filename = paste0(opt$p, "_Monocle_ARI.png"),
        plot = clusterMatToAri(Monocle %>% select(-cells)))
 Monocle <- as.data.frame(Monocle)[, monocle_p] %>% as.numeric()
 

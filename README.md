@@ -8,5 +8,5 @@ The aim of this project is to discover stable clusters shared by all MOp dataset
 + 10x_nuclei_MOp
 
 We follow this workflow for each dataset:
-![](Figures/workflow/SMART-Seq_workflow.png)
+![](Figures/Workflow/Workflow.png)
 

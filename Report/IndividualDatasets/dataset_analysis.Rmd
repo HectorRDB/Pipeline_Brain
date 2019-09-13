@@ -61,7 +61,7 @@ We have the following workflow
 ```{r workflow, fig.height=6, fig.width=10}
 plot.new()
 plot.window(0:1, 0:1)
-rasterImage(readPNG(here("Figures", "workflow", "SMART-Seq_workflow.png")),
+rasterImage(readPNG(here("Figures", "Workflow", "Workflow.png")),
             0, 0, 1, 1)
 ```
 
