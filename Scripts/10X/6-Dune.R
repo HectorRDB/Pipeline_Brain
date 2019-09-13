@@ -77,19 +77,22 @@ library(stringr)
 library(Dune)
 
 # Load sc3 clustering results
-print("Loading sc3")
-sc3 <- read.csv(paste0(loc, "_SC3.csv"))
+print("Loading SC3")
+sc3 <- read.csv(paste0(loc, "_SC3.csv"))[, -1]
 Names <- sc3$cells
 sc3 <- sc3[, paste0("sc3_", sc3_p, "_clusters")] %>% as.numeric()
 
 # Load Seurat clustering results
-seurat <- read.csv(paste0(loc, "_Seurat.csv"))
+print("Loading Seurat")
+seurat <- read.csv(paste0(loc, "_Seurat.csv"))[, -1]
+colnames(seurat) <- str_remove(colnames(seurat), "^X")
 ggsave(filename = paste0(opt$p, "_Seurat_ARI.png"),
        plot = clusterMatToAri(seurat %>% select(-cells)))
 seurat <- seurat[, seurat_p] %>% as.numeric()
 
 # Load Monocle clustering results
-Monocle <- read.csv(paste0(loc, "_Monocle.csv"))
+print("Loading Monocle")
+Monocle <- read.csv(paste0(loc, "_Monocle.csv"))[, -1]
 ggsave(filename = paste0(opt$p, "_Monocle_ARI.png"),
        plot = clusterMatToAri(Monocle %>% select(-cells)))
 Monocle <- as.data.frame(Monocle)[, monocle_p] %>% as.numeric()
