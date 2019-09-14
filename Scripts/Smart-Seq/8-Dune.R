@@ -49,7 +49,7 @@ colnames(sc3) <- str_remove(colnames(sc3), "^X")
 ggsave(filename = paste0(opt$p, "_SC3_ARI.png"),
        plot = clusterMatToAri(sc3 %>% select(-cells)))
 Names <- sc3$cells
-sc3 <- sc3[,"sc3_0_clusters"]
+sc3 <- sc3[,"0"]
 
 # Load Seurat clustering results
 seurat <- read.csv(paste0(loc, "_Seurat.csv"))[, -1]
