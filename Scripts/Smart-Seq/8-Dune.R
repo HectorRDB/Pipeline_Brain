@@ -47,7 +47,7 @@ library(Dune)
 sc3 <- read.csv(paste0(loc, "_SC3.csv"))[, -1]
 colnames(sc3) <- str_remove(colnames(sc3), "^X")
 ggsave(filename = paste0(opt$p, "_SC3_ARI.png"),
-       plot = clusterMatToAri(sc3 %>% select(-cells)))
+       plot = plotARIs(sc3 %>% select(-cells)))
 Names <- sc3$cells
 sc3 <- sc3[,"0"]
 
@@ -55,14 +55,14 @@ sc3 <- sc3[,"0"]
 seurat <- read.csv(paste0(loc, "_Seurat.csv"))[, -1]
 colnames(seurat) <- str_remove(colnames(seurat), "^X")
 ggsave(filename = paste0(opt$p, "_Seurat_ARI.png"),
-       plot = clusterMatToAri(seurat %>% select(-cells)))
+       plot = plotARIs(seurat %>% select(-cells)))
 seurat_p <- "1.2.50"
 seurat <- seurat[, seurat_p] %>% as.numeric()
 
 # Load Monocle clustering results
 Monocle <- read.csv(paste0(loc, "_Monocle.csv"))[, -1]
 ggsave(filename = paste0(opt$p, "_Monocle_ARI.png"),
-       plot = clusterMatToAri(Monocle %>% select(-cells)))
+       plot = plotARIs(Monocle %>% select(-cells)))
 monocle_p <- "k_45"
 Monocle <- as.data.frame(Monocle)[, monocle_p] %>% as.numeric()
 
