@@ -67,7 +67,7 @@ monocle_p <- "k_45"
 Monocle <- as.data.frame(Monocle)[, monocle_p] %>% as.numeric()
 
 # Load RSEC clustering results
-Rsec <- read.csv(paste0(loc, "Rsec.csv"))
+Rsec <- read.csv(paste0(loc, "_Rsec.csv"))
 RsecT <- Rsec$RsecT
 Rsec <- Rsec$Rsec
 
