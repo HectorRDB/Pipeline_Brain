@@ -48,7 +48,7 @@ sc3 <- sc3[,"0"]
 # Load Seurat clustering results
 seurat <- read.csv(paste0(loc, "_Seurat.csv"))[, -1]
 colnames(seurat) <- str_remove(colnames(seurat), "^X")
-seurat_p <- "1.2,50"
+seurat_p <- "1.2.50"
 Seurat <- seurat[, seurat_p] %>% as.numeric()
 
 # Load Monocle clustering results
