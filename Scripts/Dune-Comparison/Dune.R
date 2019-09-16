@@ -25,6 +25,10 @@ option_list <- list(
   make_option(c("-m", "--monocle"),
               action = "store", default = NA, type = "character",
               help = "Monocle parameter"
+  ),
+  make_option(c("-r", "--rsec"),
+              action = "store", default = NA, type = "character",
+              help = "Location of the Rsec object"
   )
 )
 
