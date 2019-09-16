@@ -41,13 +41,17 @@ library(parallel)
 library(matrixStats)
 library(tidyverse)
 library(Dune)
+# loc <- "data/singleMethod/SMARTer_cells_MOp"
+# opt <- list(p = "Figures/Smart-Seq/SMARTer_cells_MOp", n = 1)
+# output <- "data/Dune/SMARTer_cells_MOp"
 
 # Load Data ----
 # Load sc3 clustering results
 sc3 <- read.csv(paste0(loc, "_SC3.csv"))[, -1]
-colnames(sc3) <- str_remove(colnames(sc3), "^X")
+colnames(sc3) <- str_remove(colnames(sc3), "^X") %>% str_replace("\\.", "-")
 ggsave(filename = paste0(opt$p, "_SC3_ARI.png"),
-       plot = plotARIs(sc3 %>% select(-cells)))
+       plot = plotARIs(sc3 %>% select(-cells), values = FALSE,
+                       numericalLabels = TRUE))
 Names <- sc3$cells
 sc3 <- sc3[,"0"]
 
@@ -55,25 +59,19 @@ sc3 <- sc3[,"0"]
 seurat <- read.csv(paste0(loc, "_Seurat.csv"))[, -1]
 colnames(seurat) <- str_remove(colnames(seurat), "^X")
 ggsave(filename = paste0(opt$p, "_Seurat_ARI.png"),
-       plot = plotARIs(seurat %>% select(-cells)))
+       plot = plotARIs(seurat %>% select(-cells), values = FALSE))
 seurat_p <- "1.2.50"
 seurat <- seurat[, seurat_p] %>% as.numeric()
 
 # Load Monocle clustering results
 Monocle <- read.csv(paste0(loc, "_Monocle.csv"))[, -1]
 ggsave(filename = paste0(opt$p, "_Monocle_ARI.png"),
-       plot = plotARIs(Monocle %>% select(-cells)))
+       plot = plotARIs(Monocle %>% select(-cells), values = FALSE))
 monocle_p <- "k_45"
 Monocle <- as.data.frame(Monocle)[, monocle_p] %>% as.numeric()
 
-# Load RSEC clustering results
-Rsec <- read.csv(paste0(loc, "_Rsec.csv"))
-RsecT <- Rsec$RsecT
-Rsec <- Rsec$Rsec
-
 # Get the final clustering labels
-clusMat <- data.frame("sc3" = sc3, "Rsec" = Rsec, "Monocle" = Monocle,
-                      "Seurat" = seurat)
+clusMat <- data.frame("sc3" = sc3, "Monocle" = Monocle, "Seurat" = seurat)
 rownames(clusMat) <- Names  
 
 # Do the consensus clustering ----
@@ -83,18 +81,11 @@ print(system.time(
                  verbose = TRUE)
 ))
 cat("Finished Consensus Merge\n")
-merger$initalMat <- cbind(mergers$initalMat, RsecT)
-colnames(merger$initalMat)[5] <- "RsecT"
 saveRDS(object = merger, file = paste0(output, "_mergers.rds"))
 
 # Save the matrix with all the consensus steps ----
 print("...Initial consensus")
-initialMat <- merger$initalMat
-r <- which(colnames(initialMat) == "RsecT")
-if (all.equal(integer(0) ,r) != TRUE) {
-  initialMat <- initialMat[, -r]
-}
-initialMat <- as.matrix(initialMat) 
+initialMat <- as.matrix(merger$initalMat) 
 cellsConsensus <- Consensus(clusMat = initialMat, large = FALSE)
 consensusInit <- cellsConsensus
 
@@ -136,7 +127,7 @@ mat <- cbind(names$X1,
              stopMatrix_66, consensusInt_66,
              stopMatrix_90, consensusInt_90,
              currentMat, consensusFinal)
-chars <- c("sc3", "Rsec", "Monocle", "Seurat", "Consensus")
+chars <- c("sc3", "Monocle", "Seurat", "Consensus")
 
 colnames(mat) <- c("cells",
                    paste(chars, "Initial", sep = "-"), paste(chars, "33", sep = "-"),
