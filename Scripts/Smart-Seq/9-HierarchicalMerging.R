@@ -67,7 +67,7 @@ for (clustering in c("sc3", "Monocle", "Seurat")) {
 # Doing the merges
 cutoffs <- seq(from = 0, to = 1, by = .05)
 res <- list()
-for (clustering in c("sc3", "Monocle", "seurat")) {
+for (clustering in c("sc3", "Monocle", "Seurat")) {
   print(clustering)
   Rsec2 <- makeDendrogram(Rsec, whichCluster = clustering)
   names(cutoffs) <- paste(clustering, cutoffs, sep = "_")
