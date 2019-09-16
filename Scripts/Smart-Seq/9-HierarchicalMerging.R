@@ -51,7 +51,7 @@ seurat <- read.csv(paste0(loc, "_seurat.csv"))
 ggsave(filename = paste0(opt$p, "_seurat_ARI.png"),
        plot = clusterMatToAri(seurat %>% select(-cells)))
 seurat_p <- "1.2,50"
-seurat <- seurat[, seurat_p] %>% as.numeric()
+Seurat <- seurat[, seurat_p] %>% as.numeric()
 
 # Load Monocle clustering results
 Monocle <- read.csv(paste0(loc, "_Monocle.csv"))
@@ -64,14 +64,14 @@ Monocle <- as.data.frame(Monocle)[, monocle_p] %>% as.numeric()
 Rsec <- readRDS(opt$r)
 
 
-for (clustering in c("sc3", "Monocle", "seurat")) {
+for (clustering in c("sc3", "Monocle", "Seurat")) {
   Rsec <- addClusterings(Rsec, get(clustering), clusterLabels = clustering)
 }
 
 # Doing the merges
 cutoffs <- seq(from = 0, to = 1, by = .05)
 res <- list()
-for (clustering in c("sc3", "Monocle", "seurat", "Rsec")) {
+for (clustering in c("sc3", "Monocle", "seurat")) {
   print(clustering)
   Rsec2 <- makeDendrogram(Rsec, whichCluster = clustering)
   names(cutoffs) <- paste(clustering, cutoffs, sep = "_")
