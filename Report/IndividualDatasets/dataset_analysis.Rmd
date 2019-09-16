@@ -35,7 +35,7 @@ type <- function(dataset) {
   stop("Type unknown")
 }
 type <- type(params$dataset)
-mergers_no_allen <- readRDS(here("data", "Dune",
+mergers <- readRDS(here("data", "Dune",
                                  paste0(params$dataset, "_mergers.rds")))
 ```
 
@@ -78,18 +78,21 @@ In the general case, we perform the ARI merging without the allen labels and we 
 # Reduction in the number of clusters
 
 ```{r Imp no allen}
-plotPrePost(mergers_no_allen)
+plotPrePost(mergers)
 ```
 
 # Improvement in ARI
 
 ```{r ARI imp no allen cell}
-plotARIReduce(mergers_no_allen)
+plot_grid(
+  plotARIs(mergers$initalMat) + ggtitle("Before merging"),
+  plotARIs(mergers$currentMat) + ggtitle("After merging")
+)
 ```
 
 
 ```{r ARI trend, fig.width=9}
-ARItrend(merger = mergers_no_allen)
+ARItrend(merger = mergers)
 ```
 
 # Comparison with Allen subclass
@@ -106,7 +109,7 @@ clusters <- read.csv(here("data", type,
 allen_clusters <- full_join(allen_clusters, clusters)
 rm(clusters)
 
-apply(mergers_no_allen$currentMat, 2, function(x) {
+apply(mergers$currentMat, 2, function(x) {
     inds <- x != -1
     xa <- x[inds]
     y <- allen_clusters$subclass_label[inds]
@@ -118,10 +121,10 @@ apply(mergers_no_allen$currentMat, 2, function(x) {
 ## After a last consensus step
 
 ```{r final consensus}
-clusters <- mergers_no_allen$currentMat
+clusters <- mergers$currentMat
 r <- which(colnames(clusters) == "RsecT")
 if (all.equal(integer(0) ,r) != TRUE) {
-  clusters[,"Rsec"] <- assignRsec(mergers_no_allen) 
+  clusters[,"Rsec"] <- assignRsec(mergers) 
 }
 clusters <- as.matrix(clusters) 
 
@@ -141,11 +144,11 @@ rm(clusters, cellsConsensus, consensus)
 ## Stopping during the merging
 
 ```{r consensus with intermediate}
-midMat <- intermediateMat(merger = mergers_no_allen,
+midMat <- intermediateMat(merger = mergers,
                           p = .9)
 r <- which(colnames(midMat) == "RsecT")
 if (all.equal(integer(0) ,r) != TRUE) {
-  midMat[,"Rsec"] <- assignRsec(mergers_no_allen, p = .9)
+  midMat[,"Rsec"] <- assignRsec(mergers, p = .9)
 }
 midMat <- as.matrix(midMat)
 
@@ -162,22 +165,6 @@ title("Consensus Merging when stopping early")
 rm(cellsConsensus, consensus, midMat)
 ```
 
-```{r plot, eval = FALSE}
-ImpARI <- ARItrendAllen(merger = mergers_no_allen,
-                        allen1 = allen_clusters$cluster_label,
-                        allen2 = allen_clusters$subclass_label,
-                        verbose = TRUE)
-
-ggplot(data.frame(step = 0:nrow(mergers_no_allen$merges),
-                  subclassAllen = ImpARI[, 2],
-                  clusterAllen = ImpARI[, 1]) %>%
-         gather(key = "type", value = "ImpARI", -step),
-       aes(x = step, y = ImpARI)) +
-  geom_line(aes(col = type)) +
-  scale_y_continuous(limits = c(0, 1))
-```
-
-We can see that the ARI may not be the best metric for that comparison.
 # Seurat ARI Param
 
 ```{r seurat param}

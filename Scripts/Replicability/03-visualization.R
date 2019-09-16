@@ -338,7 +338,7 @@ main_single_merge <- function(
 main_single_method <- function(
   result_path = here("data", "Replicability", "mn_results", "SingleMethod"),
   output_dir = here("data", "Replicability", "SingleMethod")) {
-  
+  # Smart-Seq (i.e 3 methods)
   label_matrix <- inner_join(
     load_single_seurat_labels(load_qc_cells("qc_cells_smart.txt")),
     load_single_sc3_labels(load_qc_cells("qc_cells_smart.txt"))
@@ -346,10 +346,27 @@ main_single_method <- function(
     inner_join(load_single_monocle_labels(load_qc_cells("qc_cells_smart.txt")))
   create_summary_figures(label_matrix, file.path(result_path, "smart"),
                          file.path(output_dir, "smart"), 2)
+  # smart-Seq and tenx, two methods
+  label_matrix <- inner_join(
+    load_seurat_all_labels(load_qc_cells()),
+    load_monocle_all_labels(load_qc_cells())
+  )
+  
+  create_summary_figures(
+    label_matrix, file.path(result_path, "smart_tenx"),
+    file.path(output_dir, "smart_tenx"), 4
+  )
 }
 
 main <- function() {
-  main_full_data()
+  main_single_method()
+  main_single_merge()
+  result_path = here("data", "Replicability", "mn_results")
+  output_dir = here("data", "Replicability")
+  label_matrix <- load_labels(load_qc_cells())
+  create_summary_figures(label_matrix, file.path(result_path, "smart"),
+                           file.path(output_dir, "smart"), 2,
+                           exclude_rsec = FALSE)
 }
 
 if (!interactive()) {

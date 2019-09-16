@@ -1,4 +1,4 @@
-source(here("Scripts", "Replicability", "utility.R", local = TRUE))
+source(here("Scripts", "Replicability", "utility.R"))
 source(here("Scripts", "Replicability", "graph_visualization.R"))
 
 analyze_components <- function(dataset, labels, output_prefix,
