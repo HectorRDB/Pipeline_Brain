@@ -81,22 +81,22 @@ Names <- sc3$cells
 sc3 <- sc3[, sc3_p] %>% as.numeric()
 
 # Load Seurat clustering results
-seurat <- read.csv(paste0(loc, "_Seurat.csv"))[, -1]
-colnames(seurat) <- str_remove(colnames(seurat), "^X")
-seurat <- seurat[, seurat_p] %>% as.numeric()
+Seurat <- read.csv(paste0(loc, "_Seurat.csv"))[, -1]
+colnames(Seurat) <- str_remove(colnames(Seurat), "^X")
+Seurat <- Seurat[, seurat_p] %>% as.numeric()
 
 # Load Monocle clustering results
 Monocle <- read.csv(paste0(loc, "_Monocle.csv"))[, -1]
 Monocle <- as.data.frame(Monocle)[, monocle_p] %>% as.numeric()
 
 # Get the final clustering labels
-clusMat <- data.frame("sc3" = sc3, "Monocle" = Monocle, "seurat" = seurat)
+clusMat <- data.frame("sc3" = sc3, "Monocle" = Monocle, "Seurat" = Seurat)
 rownames(clusMat) <- Names  
 
 # Do the consensus clustering ----
 print(paste0("Number of cores: ", opt$n))
 print(system.time(
-  merger <- mergeManyPairwise(clusteringMatrix = clusMat, nCores = opt$n)
+  merger <- Dune(clusteringMatrix = clusMat, nCores = opt$n)
 ))
 cat("Finished Consensus Merge\n")
 
@@ -123,9 +123,7 @@ stopMatrix_90 <- intermediateMat(merger = merger, p = .9)
 stopMatrix_90 <- as.matrix(stopMatrix_90)
 
 print("...Full matrix")
-names <- read_csv(here("data", types(dataset),
-                       paste0(dataset, "_cluster.membership.csv")))
-mat <- cbind(names$X1,
+mat <- cbind(Names,
              initialMat,  stopMatrix_33, stopMatrix_66,  stopMatrix_90,
              currentMat)
 
@@ -141,14 +139,14 @@ write_csv(x = as.data.frame(mat), path = paste0(output, "_Dune.csv"))
 # Do hierarchical merging ----
 Rsec <- readRDS(opt$r)
 
-for (clustering in c("sc3", "Monocle", "seurat")) {
+for (clustering in c("sc3", "Monocle", "Seurat")) {
   Rsec <- addClusterings(Rsec, get(clustering), clusterLabels = clustering)
 }
 
 # Doing the merges
 cutoffs <- seq(from = 0, to = 1, by = .05)
 res <- list()
-for (clustering in c("sc3", "Monocle", "seurat")) {
+for (clustering in c("sc3", "Monocle", "Seurat")) {
   print(clustering)
   Rsec2 <- makeDendrogram(Rsec, whichCluster = clustering)
   names(cutoffs) <- paste(clustering, cutoffs, sep = "_")
@@ -168,4 +166,4 @@ for (clustering in c("sc3", "Monocle", "seurat")) {
 
 res <- do.call('cbind', res) %>% as.data.frame()
 res$cells <- colnames(Rsec)
-write_csv(res, path = paste0(output, "hierarchical.csv"))
+write_csv(res, path = paste0(output, "_hierarchical.csv"))
