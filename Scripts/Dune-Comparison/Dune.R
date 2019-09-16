@@ -96,7 +96,7 @@ rownames(clusMat) <- Names
 # Do the consensus clustering ----
 print(paste0("Number of cores: ", opt$n))
 print(system.time(
-  merger <- Dune(clusteringMatrix = clusMat, nCores = opt$n)
+  merger <- Dune(clusMat = clusMat, nCores = opt$n)
 ))
 cat("Finished Consensus Merge\n")
 
