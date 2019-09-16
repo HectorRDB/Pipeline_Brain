@@ -9,10 +9,10 @@
 loc="/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/data/singleMethod/SMARTer_cells_MOp"
 rsec="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_cells_MOp_Rsec.rds"
 out="/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/data/singleMerge/SMARTer_cells_MOp_singleTree.csv"
-Rscript --vanilla --verbose 9-HierarchicalMerging.R -l $loc -o $out -r $rsec > 9a.out 2>&1
+Rscript --verbose 9-HierarchicalMerging.R -l $loc -o $out -r $rsec > 9a.out 2>&1
 
 # nuclei
 loc="/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/data/singleMethod/SMARTer_nuclei_MOp"
 rsec="/scratch/users/singlecell/MiniAtlas/data/rds/SMARTer_nuclei_MOp_Rsec.rds"
 out="/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/data/singleMerge/SMARTer_nuclei_MOp_singleTree.csv"
-Rscript --vanilla --verbose 9-HierarchicalMerging.R -l $loc -o $out -r $rsec > 9b.out 2>&1
+Rscript --verbose 9-HierarchicalMerging.R -l $loc -o $out -r $rsec > 9b.out 2>&1
