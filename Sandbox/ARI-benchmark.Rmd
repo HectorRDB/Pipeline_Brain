@@ -1,0 +1,61 @@
+---
+title: "ARI benchmark"
+author: "Hector Roux de Bézieux"
+date: '`r format(Sys.time(), "%d %B , %Y")`'
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+---
+
+```{r packages, include=F}
+library(knitr)
+opts_chunk$set(
+  fig.pos = "!h", out.extra = "", warning = F, message = F
+)
+libs <- c("here", "Dune", "mclust", "microbenchmark")
+suppressMessages(
+  suppressWarnings(sapply(libs, require, character.only = TRUE))
+)
+rm(libs)
+```
+
+# Data
+
+We use the nuclei dataset from Dune:
+
+```{r}
+data("nuclei", package = "Dune")
+```
+
+# ARI function
+
+This ARI function is exactly the same as the one from `mclust`. We jsut break it into two parts for analysis: computing the confusion matrix, and then computing the ARI on the matrix.
+```{r}
+confusionMatrix <- function(x, y) {
+    x <- as.vector(x)
+    y <- as.vector(y)
+    if (length(x) != length(y)) 
+        stop("arguments must be vectors of the same length")
+    tab <- table(x, y)
+    return(tab)
+}
+
+computeARI <- function(tab) {
+  if (all(dim(tab) == c(1, 1))) return(1)
+  a <- sum(choose(tab, 2))
+  b <- sum(choose(rowSums(tab), 2)) - a
+  c <- sum(choose(colSums(tab), 2)) - a
+  d <- choose(sum(tab), 2) - a - b - c
+  ARI <- (a - (a + b) * (a + c)/(a + b + c + d)) /
+    ((a + b + a + c)/2 - (a + b) * (a + c)/(a + b + c + d))
+  return(ARI)
+}
+
+x <- nuclei$SC3
+y <- nuclei$Monocle
+tab <- confusionMatrix(x, y)
+
+bench <- microbenchmark(confusionMatrix(x, y), computeARI(tab), times = 200)
+knitr::kable(summary(bench))
+```
