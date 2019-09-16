@@ -69,6 +69,7 @@ if (!is.na(opt$m)) {
 library(SummarizedExperiment)
 library(parallel)
 library(matrixStats)
+library(clusterExperiment)
 library(tidyverse)
 library(Dune)
 library(mclust)
