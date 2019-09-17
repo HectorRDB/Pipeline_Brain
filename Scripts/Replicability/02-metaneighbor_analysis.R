@@ -60,8 +60,6 @@ export_components <- function(component_obj, output_dir) {
   dev.off()
 }
 
-# Main functions ----
-## Dune ----
 analyze_smart_tenx <- function(dataset, label_matrix, output_dir) {
   compute_replicability(dataset, label_matrix,
                         file.path(output_dir, "smart_tenx"))
@@ -91,6 +89,8 @@ analyze_nuclei <- function(dataset, label_matrix, output_dir) {
                         file.path(output_dir, "nuclei"))
 }
 
+# Main functions ----
+## Dune ----
 analyze_full_data <- function(data_path = here("data"),
                               output_dir = here("data", "Replicability",
                                                 "mn_results")) {
@@ -154,11 +154,8 @@ analyze_single_methods_10x <- function(data_path = here("data"),
 main <- function() {
   analyze_single_methods()
   analyze_single_methods_10x()
-  data_path <- here("data")
-  output_dir <- here("data", "Replicability", "mn_results")
-  dataset <- load_data()
-  labels <- load_labels(colnames(dataset), data_path)
-  analyze_smart(dataset, labels, output_dir)
+  analyze_all_single_merge()
+  analyze_full_data()
 }
 
 if (!interactive()) {
