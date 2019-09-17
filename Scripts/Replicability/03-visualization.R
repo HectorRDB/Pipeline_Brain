@@ -311,9 +311,7 @@ main_full_data <- function(
     label_matrix, file.path(result_path, "smart_tenx"),
     file.path(output_dir, "smart_tenx"), 4
   )
-  create_summary_figures(label_matrix, file.path(result_path, "smart"),
-                         file.path(output_dir, "smart"), 2
-  )
+  
   create_summary_figures(
     label_matrix, file.path(result_path, "tenx"),
     file.path(output_dir, "tenx"), 2
