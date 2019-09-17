@@ -305,13 +305,13 @@ main_full_data <- function(
   result_path = here("data", "Replicability", "mn_results", "Dune"),
   output_dir = here("data", "Replicability", "Dune")) 
   {
+  
   label_matrix <- load_labels(load_qc_cells())
   
   create_summary_figures(
     label_matrix, file.path(result_path, "smart_tenx"),
     file.path(output_dir, "smart_tenx"), 4
   )
-  
   create_summary_figures(
     label_matrix, file.path(result_path, "tenx"),
     file.path(output_dir, "tenx"), 2
@@ -330,6 +330,9 @@ main_all_Dunes <- function(
   result_path = here("data", "Replicability", "mn_results", "Dune_Smart"),
   output_dir = here("data", "Replicability", "Dune_Smart")) 
   {
+  
+  dataset <- load_smart_data()
+  
   # Dune normal
   label_matrix <- load_Dune_labels(load_qc_cells(here("data", "qc_cells_smart.txt")))
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
@@ -359,6 +362,9 @@ main_single_merge <- function(
   result_path = here("data", "Replicability", "mn_results", "SingleTree"),
   output_dir = here("data", "Replicability", "SingleTree")) 
   {
+  
+  dataset <- load_smart_data()
+  
   # Normal hierarchical
   label_matrix <- load_single_merge_labels(load_qc_cells(here("data", "qc_cells_smart.txt")))
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
@@ -386,21 +392,27 @@ main_single_merge <- function(
 
 main_single_method_all <- function(
   result_path = here("data", "Replicability", "mn_results", "SingleMethod"),
-  output_dir = here("data", "Replicability", "SingleMethod")) {
+  output_dir = here("data", "Replicability", "SingleMethod")) 
+  {
+  
+  dataset <- load_smart_data()
+  
   # Smart-Seq only (3 methods)
   label_matrix <- inner_join(
     load_single_seurat_labels(load_qc_cells(here("data", "qc_cells_smart.txt"))),
     load_single_sc3_labels(load_qc_cells(here("data", "qc_cells_smart.txt")))
   ) %>%
-    inner_join(load_single_monocle_labels(load_qc_cells(here("data", "qc_cells_smart.txt"))))
+    inner_join(load_single_monocle_labels(
+      load_qc_cells(here("data", "qc_cells_smart.txt"))))
+  label_matrix <- label_matrix[dataset$class_label != "Noise", ]
   create_summary_figures(label_matrix, file.path(result_path, "smart"),
                          file.path(output_dir, "smart"), 2)
+  
   # Smart-Seq and 10x (2 methods)
   label_matrix <- inner_join(
     load_seurat_all_labels(load_qc_cells()),
     load_monocle_all_labels(load_qc_cells())
   )
-  
   create_summary_figures(
     label_matrix, file.path(result_path, "smart_tenx"),
     file.path(output_dir, "smart_tenx"), 4
