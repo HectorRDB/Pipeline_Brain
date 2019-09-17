@@ -9,7 +9,9 @@ source(here("Scripts", "Replicability", "01-data.R"))
 
 # Helper functions ----
 create_summary_figures <- function(label_matrix, result_path, output_dir,
-                                   n_datasets, exclude_rsec = TRUE) {
+                                   n_datasets) {
+  # Create output dir if necessary
+  if (!file.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
   # add dataset prefix to labels
   label_matrix <- label_matrix %>%
     mutate_at(vars(-dataset, -cells), function(c) paste(label_matrix$dataset, c, sep = "|")) %>%
@@ -19,10 +21,10 @@ create_summary_figures <- function(label_matrix, result_path, output_dir,
   results <- stats$results
   score <- stats$score
 
-  if (exclude_rsec) {
-    score <- score %>% filter(!startsWith(as.character(clustering_method), "RSEC"))
-    results <- results %>% filter(!startsWith(as.character(clustering_method), "RSEC"))
-  }
+  # if (exclude_rsec) {
+  #   score <- score %>% filter(!startsWith(as.character(clustering_method), "RSEC"))
+  #   results <- results %>% filter(!startsWith(as.character(clustering_method), "RSEC"))
+  # }
 
   write.table(results, file.path(output_dir, "consensus_cluster_replicability.txt"))
 
@@ -177,7 +179,7 @@ plot_fraction_mapped <- function(results) {
                       group = clustering_name, col = clustering_name)) +
     geom_line() +
     geom_point() +
-    theme_bw() +
+    theme_classic() +
     theme(legend.position = "top", axis.ticks.x = element_blank(),
           axis.text.x = element_blank()) +
     xlab("Merging step") +
@@ -190,7 +192,7 @@ plot_number_mapped <- function(results, n_datasets) {
                       group = clustering_name, col = clustering_name)) +
     geom_line() +
     geom_point() +
-    theme_bw() +
+    theme_classic() +
     theme(legend.position = "top", axis.ticks.x = element_blank(),
           axis.text.x = element_blank()) +
     xlab("Merging step") +
@@ -205,7 +207,7 @@ plot_mapped_cells <- function(results) {
   )) +
     geom_line() +
     geom_point() +
-    theme_bw() +
+    theme_classic() +
     theme(legend.position = "top", axis.ticks.x = element_blank(), 
           axis.text.x = element_blank()) +
     xlab("Merging step") +
@@ -220,7 +222,7 @@ plot_number_total <- function(results, n_datasets) {
   )) +
     geom_line() +
     geom_point() +
-    theme_bw() +
+    theme_classic() +
     theme(legend.position = "top", axis.ticks.x = element_blank(),
           axis.text.x = element_blank()) +
     xlab("Merging step") +
@@ -240,7 +242,7 @@ plot_mapped_cells_2 <- function(results) {
       aes(label = clustering_name),
       nudge_x = -0.31
     ) +
-    theme_bw() +
+    theme_classic() +
     theme(legend.position = "top", axis.ticks.x = element_blank(),
           axis.text.x = element_blank()) +
     xlab("Merging step") +
@@ -260,7 +262,7 @@ plot_number_total_2 <- function(results, n_datasets) {
       aes(label = clustering_name),
       nudge_x = -0.31
     ) +
-    theme_bw() +
+    theme_classic() +
     theme(
       legend.position = "top", axis.ticks.x = element_blank(),
       axis.text.x = element_blank(),
@@ -273,7 +275,7 @@ plot_number_total_2 <- function(results, n_datasets) {
 plot_mapping_quality <- function(score) {
   ggplot(score, aes(x = level, y = score, fill = clustering_name)) +
     geom_boxplot() +
-    theme_bw() +
+    theme_classic() +
     xlab("Consensus level") +
     ylab("Mapping quality (average AUROC)")
 }
@@ -290,7 +292,7 @@ plot_clusters_vs_mapped <- function(results) {
     )) +
     geom_path() +
     geom_point(size = 2) +
-    theme_bw() +
+    theme_classic() +
     # theme(legend.position = "top") +
     xlab("Total number of clusters") +
     ylab("Fraction of cells in a replicable cluster") +
@@ -299,7 +301,7 @@ plot_clusters_vs_mapped <- function(results) {
 
 # Main functions ----
 main_full_data <- function(result_path = here("data", "Replicability", "mn_results"),
-                           output_dir = here("data", "Replicability")) {
+                           output_dir = here("data", "Replicability", "Dune")) {
   label_matrix <- load_labels(load_qc_cells())
   
   create_summary_figures(
@@ -307,8 +309,7 @@ main_full_data <- function(result_path = here("data", "Replicability", "mn_resul
     file.path(output_dir, "smart_tenx"), 4
   )
   create_summary_figures(label_matrix, file.path(result_path, "smart"),
-                         file.path(output_dir, "smart"), 2,
-                         exclude_rsec = FALSE
+                         file.path(output_dir, "smart"), 2
   )
   create_summary_figures(
     label_matrix, file.path(result_path, "tenx"),
@@ -324,21 +325,56 @@ main_full_data <- function(result_path = here("data", "Replicability", "mn_resul
   )
 }
 
+main_all_Dunes <- function(result_path = here("data", "Replicability", "mn_results"),
+                           output_dir = here("data", "Replicability", "Dune_Smart")) {
+  # Dune normal
+  label_matrix <- load_Dune_labels(load_qc_cells("qc_cells_smart.txt"))
+  label_matrix <- label_matrix[dataset$class_label != "Noise", ]
+  create_summary_figures(label_matrix, file.path(result_path, "smart"),
+                         file.path(output_dir, "Normal"), 2
+  )
+  # Dune large 2
+  label_matrix <- load_Dune_labels(load_qc_cells("qc_cells_smart.txt"),
+                                   size = "large2")
+  label_matrix <- label_matrix[dataset$class_label != "Noise", ]
+  create_summary_figures(label_matrix, file.path(result_path, "smart"),
+                         file.path(output_dir, "Large2"), 2
+  )
+  # Dune large 3
+  label_matrix <- load_Dune_labels(load_qc_cells("qc_cells_smart.txt"),
+                                   size = "large3")
+  label_matrix <- label_matrix[dataset$class_label != "Noise", ]
+  create_summary_figures(label_matrix, file.path(result_path, "smart"),
+                         file.path(output_dir, "Large3"), 2
+  )
+}
+
 main_single_merge <- function(
   result_path = here("data", "Replicability", "mn_results", "SingleTree"),
   output_dir = here("data", "Replicability", "SingleTree")) {
-  
+  # Normal hierarchical
   label_matrix <- load_single_merge_labels(load_qc_cells("qc_cells_smart.txt"))
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
-
   create_summary_figures(label_matrix, file.path(result_path, "smart"),
-                         file.path(output_dir, "smart"), 2)
+                         file.path(output_dir, "Normal"), 2)
+  # Hierarchical large 2
+  label_matrix <- load_single_merge_labels(load_qc_cells("qc_cells_smart.txt"),
+                                           size = "_large2")
+  label_matrix <- label_matrix[dataset$class_label != "Noise", ]
+  create_summary_figures(label_matrix, file.path(result_path, "smart"),
+                         file.path(output_dir, "Large2"), 2)
+  # Hierarchical large 3
+  label_matrix <- load_single_merge_labels(load_qc_cells("qc_cells_smart.txt"),
+                                           size = "_large3")
+  label_matrix <- label_matrix[dataset$class_label != "Noise", ]
+  create_summary_figures(label_matrix, file.path(result_path, "smart"),
+                         file.path(output_dir, "Large2"), 2)
 }
 
-main_single_method <- function(
+main_single_method_all <- function(
   result_path = here("data", "Replicability", "mn_results", "SingleMethod"),
   output_dir = here("data", "Replicability", "SingleMethod")) {
-  # Smart-Seq (i.e 3 methods)
+  # Smart-Seq only (3 methods)
   label_matrix <- inner_join(
     load_single_seurat_labels(load_qc_cells("qc_cells_smart.txt")),
     load_single_sc3_labels(load_qc_cells("qc_cells_smart.txt"))
@@ -346,7 +382,7 @@ main_single_method <- function(
     inner_join(load_single_monocle_labels(load_qc_cells("qc_cells_smart.txt")))
   create_summary_figures(label_matrix, file.path(result_path, "smart"),
                          file.path(output_dir, "smart"), 2)
-  # smart-Seq and tenx, two methods
+  # Smart-Seq and 10x (2 methods)
   label_matrix <- inner_join(
     load_seurat_all_labels(load_qc_cells()),
     load_monocle_all_labels(load_qc_cells())
@@ -356,17 +392,25 @@ main_single_method <- function(
     label_matrix, file.path(result_path, "smart_tenx"),
     file.path(output_dir, "smart_tenx"), 4
   )
+  create_summary_figures(
+    label_matrix, file.path(result_path, "tenx"),
+    file.path(output_dir, "tenx"), 2
+  )
+  create_summary_figures(
+    label_matrix, file.path(result_path, "cells"),
+    file.path(output_dir, "cells"), 2
+  )
+  create_summary_figures(
+    label_matrix, file.path(result_path, "nuclei"),
+    file.path(output_dir, "nuclei"), 2
+  )
 }
 
 main <- function() {
-  main_single_method()
+  main_full_data
+  main_all_Dunes()
+  main_single_method_all()
   main_single_merge()
-  result_path = here("data", "Replicability", "mn_results")
-  output_dir = here("data", "Replicability")
-  label_matrix <- load_labels(load_qc_cells())
-  create_summary_figures(label_matrix, file.path(result_path, "smart"),
-                           file.path(output_dir, "smart"), 2,
-                           exclude_rsec = FALSE)
 }
 
 if (!interactive()) {
