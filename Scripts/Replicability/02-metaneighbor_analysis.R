@@ -11,6 +11,7 @@ source(here("Scripts", "Replicability", "01-data.R"))
 
 # Helper functions ---- 
 compute_replicability <- function(dataset, label_matrix, output_dir) {
+  if (!file.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
   label_matrix <- dplyr::select(label_matrix, -dataset, -cells)
   label_sets <- colnames(label_matrix)
   
@@ -93,7 +94,7 @@ analyze_nuclei <- function(dataset, label_matrix, output_dir) {
 ## Dune ----
 analyze_full_data <- function(data_path = here("data"),
                               output_dir = here("data", "Replicability",
-                                                "mn_results")) {
+                                                "mn_results", "Dune")) {
   dataset <- load_data()
   labels <- load_labels(colnames(dataset), data_path)
 
@@ -105,41 +106,42 @@ analyze_full_data <- function(data_path = here("data"),
 
 analyze_all_Dunes <- function(data_path = here("data"),
                               output_dir = here("data", "Replicability",
-                                                "mn_results")) {
+                                                "mn_results", "Dune_Smart")) {
   dataset <- load_smart_data()
   # Dune normal
   labels <- load_Dune_labels(colnames(dataset), data_path)
-  analyze_smart(dataset, labels, output_dir)
+  analyze_smart(dataset, labels, paste0(output_dir, "/Normal"))
   # Dune large2
   labels <- load_Dune_labels(colnames(dataset), data_path, size = "large2")
-  analyze_smart(dataset, labels, output_dir)
+  analyze_smart(dataset, labels, paste0(output_dir, "/large2"))
   # Dune large3
   labels <- load_Dune_labels(colnames(dataset), data_path, size = "large3")
-  analyze_smart(dataset, labels, output_dir)
+  analyze_smart(dataset, labels, paste0(output_dir, "/large3"))
 }
 
 ## Hierarchical ----
 analyze_all_single_merge <- function(data_path = here("data"),
                                  output_dir = here("data", "Replicability",
-                                                   "mn_results")) {
+                                                   "mn_results", "singleTree")) {
   dataset <- load_smart_data()
   # Normal single Merge
   labels <- load_single_merge_labels(colnames(dataset), data_path)
-  analyze_smart(dataset, labels, output_dir)
+  analyze_smart(dataset, labels, paste0(output_dir, "/Normal"))
   # Comparison 2
   labels <- load_single_merge_labels(colnames(dataset), data_path,
                                      size = "_large2")
-  analyze_smart(dataset, labels, output_dir)
+  analyze_smart(dataset, labels, paste0(output_dir, "/large2"))
   # Comparison 3
   labels <- load_single_merge_labels(colnames(dataset), data_path,
                                      size = "_large3")
-  analyze_smart(dataset, labels, output_dir)
+  analyze_smart(dataset, labels, paste0(output_dir, "/large3"))
 }
 
 ## single Method ----
-analyze_single_methods_smart <- function(data_path = here("data"),
-                                   output_dir = here("data", "Replicability",
-                                                     "mn_results")) {
+analyze_single_methods_smart <- function(
+  data_path = here("data"),
+  output_dir = here("data", "Replicability", "mn_results", "SingleMethod")) 
+  {
   dataset <- load_smart_data()
   # Seurat
   labels <- load_single_seurat_labels(colnames(dataset), data_path)
@@ -152,9 +154,10 @@ analyze_single_methods_smart <- function(data_path = here("data"),
   analyze_smart(dataset, labels, output_dir)
 }
 
-analyze_single_methods_all <- function(data_path = here("data"),
-                                       output_dir = here("data", "Replicability",
-                                                         "mn_results")) {
+analyze_single_methods_all <- function(
+  data_path = here("data"),
+  output_dir = here("data", "Replicability", "mn_results", "SingleMethod")) 
+  {
   dataset <- load_data()
   # Seurat
   labels <- load_seurat_all_labels(colnames(dataset), data_path)
