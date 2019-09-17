@@ -2,6 +2,7 @@
 suppressPackageStartupMessages({
   library(SingleCellExperiment)
   library(tidyverse)
+  library(here)
 })
 
 source(here("Scripts", "Replicability", "meta_components.R"))
