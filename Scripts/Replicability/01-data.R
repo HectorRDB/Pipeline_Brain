@@ -40,6 +40,33 @@ load_labels <- function(cell_names, data_path = here("data")) {
   return(label_matrix)
 }
 
+load_Dune_labels <- function(cell_names, data_path = here("data"),
+                             size = "normal") {
+  if (size == "normal") {
+    input_dir <- file.path(data_path, "Dune")
+    label_matrix <- bind_rows(
+      zeng_smart_cells = read.csv(file.path(input_dir, "SMARTer_cells_MOp.csv")),
+      zeng_smart_nuclei = read.csv(file.path(input_dir, "SMARTer_nuclei_MOp.csv")),
+      .id = "dataset"
+    ) 
+  } else {
+    input_dir <- file.path(data_path, "singleTree")
+    label_matrix <- bind_rows(
+      zeng_smart_cells = read.csv(
+        file.path(input_dir, paste0("SMARTer_cells_MOp_", size, "_Dune.csv"))),
+      zeng_smart_nuclei = read.csv(
+        file.path(input_dir, paste0("SMARTer_nuclei_MOp_", size, "_Dune.csv"))),
+      .id = "dataset"
+    ) 
+  }
+  
+  # reorder cells to match data
+  row_match <- match(cell_names, label_matrix$cells)
+  label_matrix <- label_matrix[row_match, ]
+  
+  return(label_matrix)
+}
+
 # Load hierarchical ----
 
 load_single_merge_labels <- function(cell_names, data_path = here("data"),

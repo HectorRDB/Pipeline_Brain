@@ -98,10 +98,24 @@ analyze_full_data <- function(data_path = here("data"),
   labels <- load_labels(colnames(dataset), data_path)
 
   analyze_smart_tenx(dataset, labels, output_dir)
-  analyze_smart(dataset, labels, output_dir)
   analyze_tenx(dataset, labels, output_dir)
   analyze_cells(dataset, labels, output_dir)
   analyze_nuclei(dataset, labels, output_dir)
+}
+
+analyze_all_Dunes <- function(data_path = here("data"),
+                              output_dir = here("data", "Replicability",
+                                                "mn_results")) {
+  dataset <- load_smart_data()
+  # Dune normal
+  labels <- load_Dune_labels(colnames(dataset), data_path)
+  analyze_smart(dataset, labels, output_dir)
+  # Dune large2
+  labels <- load_Dune_labels(colnames(dataset), data_path, size = "large2")
+  analyze_smart(dataset, labels, output_dir)
+  # Dune large3
+  labels <- load_Dune_labels(colnames(dataset), data_path, size = "large3")
+  analyze_smart(dataset, labels, output_dir)
 }
 
 ## Hierarchical ----
@@ -123,7 +137,7 @@ analyze_all_single_merge <- function(data_path = here("data"),
 }
 
 ## single Method ----
-analyze_single_methods <- function(data_path = here("data"),
+analyze_single_methods_smart <- function(data_path = here("data"),
                                    output_dir = here("data", "Replicability",
                                                      "mn_results")) {
   dataset <- load_smart_data()
@@ -138,22 +152,28 @@ analyze_single_methods <- function(data_path = here("data"),
   analyze_smart(dataset, labels, output_dir)
 }
 
-analyze_single_methods_10x <- function(data_path = here("data"),
+analyze_single_methods_all <- function(data_path = here("data"),
                                        output_dir = here("data", "Replicability",
                                                          "mn_results")) {
   dataset <- load_data()
   # Seurat
   labels <- load_seurat_all_labels(colnames(dataset), data_path)
   analyze_smart_tenx(dataset, labels, output_dir)
+  analyze_tenx(dataset, labels, output_dir)
+  analyze_cells(dataset, labels, output_dir)
+  analyze_nuclei(dataset, labels, output_dir)
   # Monocle
   labels <- load_monocle_all_labels(colnames(dataset), data_path)
   analyze_smart_tenx(dataset, labels, output_dir)
+  analyze_tenx(dataset, labels, output_dir)
+  analyze_cells(dataset, labels, output_dir)
+  analyze_nuclei(dataset, labels, output_dir)
 }
 
 ## To run ----
 main <- function() {
-  analyze_single_methods()
-  analyze_single_methods_10x()
+  analyze_single_methods_smart()
+  analyze_single_methods_all()
   analyze_all_single_merge()
   analyze_full_data()
 }
