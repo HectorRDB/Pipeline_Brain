@@ -124,7 +124,7 @@ stopMatrix_90 <- intermediateMat(merger = merger, p = .9)
 stopMatrix_90 <- as.matrix(stopMatrix_90)
 
 print("...Full matrix")
-mat <- cbind(Names,
+mat <- cbind(as.character(Names),
              initialMat,  stopMatrix_33, stopMatrix_66,  stopMatrix_90,
              currentMat)
 

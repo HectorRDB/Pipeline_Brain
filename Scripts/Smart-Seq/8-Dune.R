@@ -119,7 +119,7 @@ cellsConsensus <- Consensus(clusMat = stopMatrix_90, large = FALSE)
 consensusInt_90 <- cellsConsensus
 
 print("...Full matrix")
-mat <- cbind(Names,
+mat <- cbind(as.character(Names),
              initialMat, consensusInit,
              stopMatrix_33, consensusInt_33,
              stopMatrix_66, consensusInt_66,
