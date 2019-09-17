@@ -300,8 +300,10 @@ plot_clusters_vs_mapped <- function(results) {
 }
 
 # Main functions ----
-main_full_data <- function(result_path = here("data", "Replicability", "mn_results"),
-                           output_dir = here("data", "Replicability", "Dune")) {
+main_full_data <- function(
+  result_path = here("data", "Replicability", "mn_results", "Dune"),
+  output_dir = here("data", "Replicability", "Dune")) 
+  {
   label_matrix <- load_labels(load_qc_cells())
   
   create_summary_figures(
@@ -325,50 +327,62 @@ main_full_data <- function(result_path = here("data", "Replicability", "mn_resul
   )
 }
 
-main_all_Dunes <- function(result_path = here("data", "Replicability", "mn_results"),
-                           output_dir = here("data", "Replicability", "Dune_Smart")) {
+main_all_Dunes <- function(
+  result_path = here("data", "Replicability", "mn_results", "Dune_Smart"),
+  output_dir = here("data", "Replicability", "Dune_Smart")) 
+  {
   # Dune normal
   label_matrix <- load_Dune_labels(load_qc_cells("qc_cells_smart.txt"))
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
-  create_summary_figures(label_matrix, file.path(result_path, "smart"),
+  create_summary_figures(label_matrix,
+                         file.path(result_path, "Normal", "smart"),
                          file.path(output_dir, "Normal"), 2
   )
   # Dune large 2
   label_matrix <- load_Dune_labels(load_qc_cells("qc_cells_smart.txt"),
                                    size = "large2")
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
-  create_summary_figures(label_matrix, file.path(result_path, "smart"),
+  create_summary_figures(label_matrix,
+                         file.path(result_path, "Large2", "smart"),
                          file.path(output_dir, "Large2"), 2
   )
   # Dune large 3
   label_matrix <- load_Dune_labels(load_qc_cells("qc_cells_smart.txt"),
                                    size = "large3")
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
-  create_summary_figures(label_matrix, file.path(result_path, "smart"),
+  create_summary_figures(label_matrix,
+                         file.path(result_path, "Large3", "smart"),
                          file.path(output_dir, "Large3"), 2
   )
 }
 
 main_single_merge <- function(
   result_path = here("data", "Replicability", "mn_results", "SingleTree"),
-  output_dir = here("data", "Replicability", "SingleTree")) {
+  output_dir = here("data", "Replicability", "SingleTree")) 
+  {
   # Normal hierarchical
   label_matrix <- load_single_merge_labels(load_qc_cells("qc_cells_smart.txt"))
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
-  create_summary_figures(label_matrix, file.path(result_path, "smart"),
-                         file.path(output_dir, "Normal"), 2)
+  create_summary_figures(label_matrix,
+                         file.path(result_path, "Normal", "smart"),
+                         file.path(output_dir, "Normal"), 2
+  )
   # Hierarchical large 2
   label_matrix <- load_single_merge_labels(load_qc_cells("qc_cells_smart.txt"),
                                            size = "_large2")
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
-  create_summary_figures(label_matrix, file.path(result_path, "smart"),
-                         file.path(output_dir, "Large2"), 2)
+  create_summary_figures(label_matrix,
+                         file.path(result_path, "Large2", "smart"),
+                         file.path(output_dir, "Large2"), 2
+  )
   # Hierarchical large 3
   label_matrix <- load_single_merge_labels(load_qc_cells("qc_cells_smart.txt"),
                                            size = "_large3")
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
-  create_summary_figures(label_matrix, file.path(result_path, "smart"),
-                         file.path(output_dir, "Large2"), 2)
+  create_summary_figures(label_matrix,
+                         file.path(result_path, "Large3", "smart"),
+                         file.path(output_dir, "Large3"), 2
+  )
 }
 
 main_single_method_all <- function(
@@ -407,9 +421,13 @@ main_single_method_all <- function(
 }
 
 main <- function() {
-  main_full_data
+  print("full data")
+  main_full_data()
+  print("all Dunes")
   main_all_Dunes()
+  print("single method")
   main_single_method_all()
+  print("single merges")
   main_single_merge()
 }
 
