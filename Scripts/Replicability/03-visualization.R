@@ -305,7 +305,7 @@ main_full_data <- function(
   result_path = here("data", "Replicability", "mn_results", "Dune"),
   output_dir = here("data", "Replicability", "Dune")) 
   {
-  
+    
   label_matrix <- load_labels(load_qc_cells())
   
   create_summary_figures(
@@ -345,7 +345,7 @@ main_all_Dunes <- function(
                                    size = "large2")
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
   create_summary_figures(label_matrix,
-                         file.path(result_path, "Large2", "smart"),
+                         file.path(result_path, "large2", "smart"),
                          file.path(output_dir, "Large2"), 2
   )
   # Dune large 3
@@ -353,13 +353,13 @@ main_all_Dunes <- function(
                                    size = "large3")
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
   create_summary_figures(label_matrix,
-                         file.path(result_path, "Large3", "smart"),
+                         file.path(result_path, "large3", "smart"),
                          file.path(output_dir, "Large3"), 2
   )
 }
 
 main_single_merge <- function(
-  result_path = here("data", "Replicability", "mn_results", "SingleTree"),
+  result_path = here("data", "Replicability", "mn_results", "singleTree"),
   output_dir = here("data", "Replicability", "SingleTree")) 
   {
   
@@ -377,7 +377,7 @@ main_single_merge <- function(
                                            size = "_large2")
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
   create_summary_figures(label_matrix,
-                         file.path(result_path, "Large2", "smart"),
+                         file.path(result_path, "large2", "smart"),
                          file.path(output_dir, "Large2"), 2
   )
   # Hierarchical large 3
@@ -385,7 +385,7 @@ main_single_merge <- function(
                                            size = "_large3")
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
   create_summary_figures(label_matrix,
-                         file.path(result_path, "Large3", "smart"),
+                         file.path(result_path, "large3", "smart"),
                          file.path(output_dir, "Large3"), 2
   )
 }
