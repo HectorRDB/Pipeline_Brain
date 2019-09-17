@@ -31,7 +31,7 @@ load_labels <- function(cell_names, data_path = here("data")) {
     zeng_10x_cells = read.csv(file.path(input_dir, "10x_cells_MOp.csv")),
     zeng_10x_nuclei = read.csv(file.path(input_dir, "10x_nuclei_MOp.csv")),
     .id = "dataset"
-  )
+  ) %>% select(-X)
 
   # reorder cells to match data
   row_match <- match(cell_names, label_matrix$cells)
@@ -48,7 +48,7 @@ load_Dune_labels <- function(cell_names, data_path = here("data"),
       zeng_smart_cells = read.csv(file.path(input_dir, "SMARTer_cells_MOp.csv")),
       zeng_smart_nuclei = read.csv(file.path(input_dir, "SMARTer_nuclei_MOp.csv")),
       .id = "dataset"
-    ) 
+    ) %>% select(-X)
   } else {
     input_dir <- file.path(data_path, "singleTree")
     label_matrix <- bind_rows(
@@ -57,7 +57,7 @@ load_Dune_labels <- function(cell_names, data_path = here("data"),
       zeng_smart_nuclei = read.csv(
         file.path(input_dir, paste0("SMARTer_nuclei_MOp_", size, "_Dune.csv"))),
       .id = "dataset"
-    ) 
+    ) %>% select(-X)
   }
   
   # reorder cells to match data
@@ -75,10 +75,10 @@ load_single_merge_labels <- function(cell_names, data_path = here("data"),
   result <- bind_rows(
     zeng_smart_cells = read.csv(
       file.path(input_dir, 
-                paste0("SMARTer_cells_MOp_", size , "_hierarchical.csv"))),
+                paste0("SMARTer_cells_MOp", size , "_hierarchical.csv"))),
     zeng_smart_nuclei = read.csv(
       file.path(input_dir,
-                paste0("SMARTer_nuclei_MOp_", size , "_hierarchical.csv"))),
+                paste0("SMARTer_nuclei_MOp", size , "_hierarchical.csv"))),
     .id = "dataset"
   )
 

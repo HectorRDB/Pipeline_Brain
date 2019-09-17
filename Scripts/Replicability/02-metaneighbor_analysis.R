@@ -128,11 +128,11 @@ analyze_all_single_merge <- function(data_path = here("data"),
   analyze_smart(dataset, labels, output_dir)
   # Comparison 2
   labels <- load_single_merge_labels(colnames(dataset), data_path,
-                                     size = "large2")
+                                     size = "_large2")
   analyze_smart(dataset, labels, output_dir)
   # Comparison 3
   labels <- load_single_merge_labels(colnames(dataset), data_path,
-                                     size = "large3")
+                                     size = "_large3")
   analyze_smart(dataset, labels, output_dir)
 }
 
