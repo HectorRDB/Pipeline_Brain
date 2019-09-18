@@ -1,5 +1,6 @@
 suppressPackageStartupMessages({
   library(tidyverse)
+  library(here)
 })
 
 
@@ -7,24 +8,31 @@ main <- function() {
   create_replicability_tsnes()
 }
 
-create_replicability_tsnes <- function(result_path = "../mn_results/smart_tenx",
-                                       output_dir = "../tsne", data_path = "../../data") {
+create_replicability_tsnes <- function(
+  result_path = here("data", "Replicability", "mn_results", "Dune", "smart_tenx"),
+  output_dir = here("Figures/tSNE"),
+  tSNE_path = here("data", "tSNE"),
+  data_path = here("data"))
+  {
+  
+  if (!file.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
+  
   labels <- load_labels(data_path)
-  tsne_coord <- load_tsne_coord(labels$cells, data_path)
+  tsne_coord <- load_tsne_coord(labels$cells, tSNE_path)
   replicability_matrix <- compute_replicability_matrix(labels, result_path)
   plot_tsne_each_step(replicability_matrix, tsne_coord, output_dir)
   plot_tsne_global(replicability_matrix, tsne_coord, output_dir)
 }
 
 load_labels <- function(data_path) {
-  data_path <- file.path(data_path, "ClusterLabels")
+  data_path <- file.path(data_path, "Dune")
   label_matrix <- bind_rows(
     zeng_smart_cells = read.csv(file.path(data_path, "SMARTer_cells_MOp.csv")),
     zeng_smart_nuclei = read.csv(file.path(data_path, "SMARTer_nuclei_MOp.csv")),
     zeng_10x_cells = read.csv(file.path(data_path, "10x_cells_MOp.csv")),
     zeng_10x_nuclei = read.csv(file.path(data_path, "10x_nuclei_MOp.csv")),
     .id = "dataset"
-  )
+  ) %>% select(-X)
 
   # add dataset prefix
   label_matrix <- label_matrix %>%
@@ -35,16 +43,16 @@ load_labels <- function(data_path) {
   return(label_matrix)
 }
 
-load_tsne_coord <- function(cell_names, data_path) {
+load_tsne_coord <- function(cell_names, tSNE_path) {
   tsne_coord <- bind_rows(
     zeng_smart_cells = read.csv(
-      file.path(data_path, "Smart-Seq/SMARTer_cells_MOp_tnse.csv")),
+      file.path(tSNE_path, "SMARTer_cells_MOp_tnse.csv")),
     zeng_smart_nuclei = read.csv(
-      file.path(data_path, "Smart-Seq/SMARTer_nuclei_MOp_tnse.csv")),
+      file.path(tSNE_path, "SMARTer_nuclei_MOp_tnse.csv")),
     zeng_10x_cells = read.csv(
-      file.path(data_path, "10X/10x_cells_MOp_tnse.csv")),
+      file.path(tSNE_path, "10x_cells_MOp_tnse.csv")),
     zeng_10x_nuclei = read.csv(
-      file.path(data_path, "10X/10x_nuclei_MOp_tnse.csv")),
+      file.path(tSNE_path, "10x_nuclei_MOp_tnse.csv")),
     .id = "dataset"
   )
 
@@ -54,10 +62,10 @@ load_tsne_coord <- function(cell_names, data_path) {
   return(tsne_coord)
 }
 
-compute_replicability_matrix <- function(label_matrix, output_dir) {
-  labels <- get_method_labels(output_dir)
+compute_replicability_matrix <- function(label_matrix, result_path) {
+  labels <- get_method_labels(result_path)
   is_replicable <- lapply(set_names(labels), function(l) {
-    find_replicable_cluster(file.path(output_dir, l))
+    find_replicable_cluster(file.path(result_path, l))
   }
   )
 
@@ -134,6 +142,7 @@ plot_scores <- function(scores, tsne_coord, dataset_name, merging_step_name,
     geom_point(size = dot_size, alpha = 0.5) +
     xlab("tSNE1") +
     ylab("tSNE2") +
+    theme_classic() +
     ggtitle(paste0(dataset_name, " (merging step: ", merging_step_name, ")"))
 }
 
