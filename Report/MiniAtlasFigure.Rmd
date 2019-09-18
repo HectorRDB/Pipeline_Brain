@@ -1,0 +1,122 @@
+---
+title: "Plots for the Mini Atlas Paper"
+author: "Hector Roux de Bézieux"
+date: '`r format(Sys.time(), "%d %B , %Y")`'
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: true
+---
+
+Rename the param as theta to avoid confusion
+
+```{r packages, include=F}
+library(knitr)
+opts_chunk$set(
+  fig.pos = "!h", out.extra = "", warning = F, message = F,
+  fig.align = "center", echo = F
+)
+libs <- c("here", "tidyverse", "DailyHRB")
+suppressMessages(
+  suppressWarnings(sapply(libs, require, character.only = TRUE))
+)
+rm(libs)
+```
+
+# Old Figure
+
+```{r}
+isPareto <- function(x, df) {
+  fraction <-  as.numeric(x[7])
+  nb  <- as.numeric(x[10])
+  return(
+    !any(df$fraction_replicable_cells > fraction &
+        df$nb_clusters > nb
+    )
+  )
+}
+toRank <- function(i) {
+  case_when(
+    i == "Initial" ~ 1,
+    i == 33 ~ 2,
+    i == 66 ~ 3,
+    i == 90 ~ 4,
+    i == "Final" ~ 5
+  )
+}
+df <- read.table(here("data", "Replicability", "Dune", "smart_tenx",
+                      "consensus_cluster_replicability.txt"),
+                 stringsAsFactors = FALSE)
+df <- df %>% mutate(nb_clusters = replicable_clusters + non_replicable_clusters) %>%
+  filter(clustering_name != "Consensus" | level == "Final")
+df$isPareto <- apply(as.matrix(df), 1, isPareto, df = df)
+df$isPareto <- as.character(df$isPareto)
+df$level <- lapply(df$level, toRank) %>% unlist()
+df$level <- as.numeric(df$level)
+df <- df %>% arrange(level)
+ggplot(df, aes(x = nb_clusters / 4,
+               y = fraction_replicable_cells)) +
+  geom_text(aes(color = isPareto,
+                 alpha = isPareto,
+                 label = level),
+             size = 5) +
+  theme_classic() +
+  geom_path(aes(group = clustering_name),
+            alpha = .1, arrow = arrow(angle = 10,
+                                      length = unit(0.15, "in"))) +
+  labs(x = "Resolution",
+       y = "Replicability",
+       col = "Pareto equilibrium\npoint") +
+  scale_color_manual(values = c("grey", "red")) +
+  scale_alpha_manual(values = c(.5, 1)) +
+  geom_text(data = df %>% filter(level == 1 | clustering_name == "Consensus"),
+                  aes(label = clustering_name,
+                      y = fraction_replicable_cells - .03),
+                  alpha = .5, size = 3) +
+  guides(alpha = FALSE)
+```
+
+# New (and current figure)
+
+```{r}
+folders <- c("cells", "nuclei", "tenx", "smart")
+rep <- lapply(folders, function(type) {
+  if (type == "smart") {
+    df <- read.table(here::here("data", "Replicability", "Dune_Smart", "Normal",
+                              "consensus_cluster_replicability.txt"))  
+  } else {
+    df <- read.table(here::here("data", "Replicability", "Dune", type,
+                              "consensus_cluster_replicability.txt"))  
+  }
+  df <- df %>% 
+    # filter(level == "Initial") %>%
+    mutate(type = type,
+           clustering_method = str_remove(clustering_method, "\\..+"))
+  return(df)
+})
+
+rep <- rep %>% 
+  bind_rows() %>%
+  mutate(Comparison = case_when(type == "cells" ~ "Between cell datasets",
+                                type == "nuclei" ~ "Between nuclei datasets",
+                                type == "smart" ~ "Between Smart-Seq datasets",
+                                type == "tenx" ~ "Between 10x datasets"))
+ggplot(rep, aes(x = (replicable_clusters + non_replicable_clusters) / 2,
+                y = fraction_replicable_cells)) +
+  geom_point(size = 4, alpha = .8, aes(col = Comparison)) +
+  my_theme() +
+  labs(x = "Number of clusters", title = "Comparing reproducibility rates",
+       y = "Replicability")
+ggsave(here::here("Figures", "MiniAtlas", "overall.pdf"))
+
+ggplot(rep %>% filter(level == "Initial"),
+       aes(x = (replicable_clusters + non_replicable_clusters) / 2,
+                y = fraction_replicable_cells, col = Comparison,
+                shape = clustering_method)) +
+  geom_point(size = 4) +
+  my_theme() +
+  labs(x = "Number of clusters", title = "Comparing reproducibility rates",
+       y = "Replicability")
+ggsave(here::here("Figures", "MiniAtlas", "initial.pdf"))
+```

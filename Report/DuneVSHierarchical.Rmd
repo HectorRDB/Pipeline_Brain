@@ -26,7 +26,7 @@ rm(libs)
 
 
 ```{r laod data}
-singleMethod <- read.table(here("Replicability", "singleMethod", "smart",
+singleMethod <- read.table(here("data", "Replicability", "singleMethod", "smart",
                                "consensus_cluster_replicability.txt")) %>%
   mutate(
     clustering_name = as.character(clustering_name),
@@ -34,30 +34,6 @@ singleMethod <- read.table(here("Replicability", "singleMethod", "smart",
                                 clustering_name == "Rsec" ~ "RSEC",
                                 TRUE ~ clustering_name),
     merging_type = "Changing the parameters")
-
-# Load and clean the results from ARI mergings
-toRank <- function(i) {
-  case_when(
-    i == "Initial" ~ 1,
-    i == 33 ~ 2,
-    i == 66 ~ 3,
-    i == 90 ~ 4,
-    i == "Final" ~ 5
-  )
-}
-
-ARIMerge <- read.table(here("Replicability", "smart",
-                               "consensus_cluster_replicability.txt")) %>%
-  mutate(
-    level = str_extract(clustering_method, "\\..+$"),
-    level = str_remove(level, "^\\."),
-    level = toRank(level),
-    clustering_method = str_remove(clustering_method, "\\..+$"),
-    clustering_name = as.character(clustering_name),
-    clustering_name = case_when(clustering_name == "sc3" ~ "SC3",
-                                TRUE ~ clustering_name),
-    merging_type = "ARI") %>%
-  filter(clustering_method != "Consensus")
 ```
 
 # Single Methods
@@ -84,7 +60,7 @@ ggplot(Seurat %>% arrange(level),
   geom_path(aes(group = factor(clustering_method))) +
   my_theme() +
   scale_y_continuous(limits = c(0, 1)) +
-  labs(x = "# of clusters", y = "Replicability", col = "resolution",
+  labs(x = "Resolution", y = "Replicability", col = "resolution",
        shape = "k param", title = "Seurat, varying the k parameter")
 ```
 
@@ -100,7 +76,7 @@ ggplot(Seurat %>% arrange(clustering_method),
   geom_path(aes(group = factor(level))) +
   my_theme() +
   scale_y_continuous(limits = c(0, 1)) +
-  labs(x = "# of clusters", y = "Replicability", col = "k param",
+  labs(x = "Resolution", y = "Replicability", col = "k param",
        title = "Seurat, varying the resolution parameter")
 ```
 
@@ -121,7 +97,7 @@ ggplot(SC3 %>% arrange(level),
   geom_point() +
   my_theme() +
   scale_y_continuous(limits = c(0, 1)) +
-  labs(x = "# of clusters", y = "Replicability", col = "K",
+  labs(x = "Resolution", y = "Replicability", col = "K",
        title = "SC3, varying the k parameter")
 ```
 
@@ -141,7 +117,7 @@ ggplot(Monocle %>% arrange(level),
   geom_point() +
   my_theme() +
   scale_y_continuous(limits = c(0, 1)) +
-  labs(x = "# of clusters", y = "Replicability", col = "K",
+  labs(x = "Resolution", y = "Replicability", col = "K",
        title = "Monocle, varying the k parameter")
 ```
   
@@ -156,7 +132,7 @@ ggplot(singleMethod,
   geom_point() +
   my_theme() +
   scale_y_continuous(limits = c(0, 1)) +
-  labs(x = "# of clusters", y = "Replicability", col = "Clustering Method",
+  labs(x = "Resolution", y = "Replicability", col = "Clustering Method",
        title = "All three methods together")
 ```
 
@@ -178,11 +154,10 @@ ggplot(df %>%
   geom_path(size = 2) +
   my_theme() +
   scale_color_brewer(type = "qual") +
-  labs(x = "# of clusters", y = "Replicability", col = "Clustering method",
+  labs(x = "Resolution", y = "Replicability", col = "Clustering method",
        linetype = "Type of merging") +
   theme(axis.title = element_text(size = 20),
         axis.text = element_text(size = 15),
         legend.title = element_text(size = 20),
         legend.text = element_text(size = 15))
-ggsave(here("Figures", "singleMethod", "Overall.pdf"), height = 10.5, width = 20)
 ```
