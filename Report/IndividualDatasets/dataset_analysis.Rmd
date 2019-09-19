@@ -85,7 +85,7 @@ plotPrePost(mergers)
 
 ```{r ARI imp no allen cell}
 plot_grid(
-  plotARIs(mergers$initalMat) + ggtitle("Before merging"),
+  plotARIs(mergers$initialMat) + ggtitle("Before merging"),
   plotARIs(mergers$currentMat) + ggtitle("After merging")
 )
 ```

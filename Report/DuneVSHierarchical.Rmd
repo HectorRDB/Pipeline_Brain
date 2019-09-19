@@ -127,9 +127,9 @@ df <- bind_rows(A = load_single_method("Normal"),
 df <- df %>% 
   filter(nb_clusters > 15) %>%
   group_by(Run, Method, clustering_method) %>%
-  mutate(nb_clusters = first(nb_clusters) - nb_clusters,
+  dplyr::mutate(nb_clusters = dplyr::first(nb_clusters) - nb_clusters,
          fraction_replicable_cells = fraction_replicable_cells - 
-           first(fraction_replicable_cells))
+           dplyr::first(fraction_replicable_cells))
 ggplot(df,
        aes(x = nb_clusters / 2,
                   y = fraction_replicable_cells,
