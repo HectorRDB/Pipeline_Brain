@@ -21,13 +21,13 @@ echo "Nuclei dataset"
 loc="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_zinb.rds"
 out="/home/hectorrb/Pipeline_Brain/data/tSNE/10x_nuclei_MOp_tnse.csv"
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
-      Rscript --no-save --verbose  zinb_tsne.R -l $loc -o $out -K 20 > nuclei.out 2>&1
+      Rscript --no-save --verbose  01-zinb_tsne.R -l $loc -o $out -K 20 > nuclei.out 2>&1
 
 echo "Cells dataset"
 loc="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_cells_MOp_zinb.rds"
 out="/home/hectorrb/Pipeline_Brain/data/tSNE/10x_cells_MOp_tnse.csv"
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
-      Rscript --no-save --verbose  zinb_tsne.R -l $loc -o $out -K 30 > cells.out 2>&1
+      Rscript --no-save --verbose  01-zinb_tsne.R -l $loc -o $out -K 30 > cells.out 2>&1
 
 logStorage=/pylon5/ib5phhp/shared/improved-happiness/xsede/xsedelogs
 cp $MEMORYFILE ${logStorage}/$MEMORYFILE

@@ -12,6 +12,3 @@ while true; do free -h >> $MEMORYFILE; sleep 30 ; done & \
 
 while true; do free -h >> $MEMORYFILE; sleep 30 ; done & \
   R CMD BATCH --no-save 03-visualization.R visualization.Rout
-
-while true; do free -h >> $MEMORYFILE; sleep 30 ; done & \
-  R CMD BATCH --no-save 04-tsne_visualization.R tsne_visualization.Rout
