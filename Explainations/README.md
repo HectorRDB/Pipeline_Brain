@@ -11,4 +11,4 @@ The scripts to generate the datasets in
 
 You can now generate the reports in the [Report/](Report/) folder. The [dataset_analysis.Rmd](Report/IndividualDatasets/dataset_analysis.Rmd) file can be run on all four datasets. The [DuneVSHierarchical.Rmd](Report/IndividualDatasets/DuneVSHierarchical.Rmd), [singleMethod.Rmd](Report/IndividualDatasets/singleMethod.Rmd) and [MiniAtlasFigure.Rmd](Report/IndividualDatasets/MiniAtlasFigure.Rmd) files generate the figures.  
 
-More details on workflow can be found in the powerpoint presentation [Workflow.pptx](Explainations/Workflow.pptx) and a list of all the data generated and how to generate it can be found in [generateDatasets.csv](Explainations/generateDatasets.csv). 
+More details on workflow can be found in the powerpoint presentation [Workflow](/Explainations/Workflow.pptx) and a list of all the data generated and how to generate it can be found in [generateDatasets](/Explainations/generateDatasets.csv). 
