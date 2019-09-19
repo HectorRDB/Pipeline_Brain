@@ -45,6 +45,7 @@ toRank <- function(i) {
     i == "Final" ~ 5
   )
 }
+
 df <- read.table(here("data", "Replicability", "Dune", "smart_tenx",
                       "consensus_cluster_replicability.txt"),
                  stringsAsFactors = FALSE)
