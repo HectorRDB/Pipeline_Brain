@@ -133,14 +133,12 @@ df <- df %>%
 ggplot(df,
        aes(x = nb_clusters / 2,
                   y = fraction_replicable_cells,
-                  linetype = Method,
                   col = interaction(clustering_method, Run),
                   label = level)) +
     geom_path(size = 1.8) +
     my_theme() +
-    scale_linetype_manual(values = linetypes) +
-    labs(x = "Resolution",
-         y = "Replicability",
+    labs(x = "Relative Coarseness",
+         y = "Relative Replicability",
          col = "Clustering\nmethod",
          linetype = "Method of\nmerging") +
   facet_wrap(~Method) +
