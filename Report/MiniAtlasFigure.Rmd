@@ -107,7 +107,8 @@ ggplot(rep, aes(x = (replicable_clusters + non_replicable_clusters) / 2,
                 y = fraction_replicable_cells)) +
   geom_point(size = 4, alpha = .8, aes(col = Comparison)) +
   my_theme() +
-  labs(x = "Number of clusters", title = "Comparing reproducibility rates",
+  labs(x = "Resolution",
+       title = "Quantifying the trade-off between replicability and resolution",
        y = "Replicability")
 ggsave(here::here("Figures", "MiniAtlas", "overall.pdf"))
 
@@ -117,7 +118,7 @@ ggplot(rep %>% filter(level == "Initial"),
                 shape = clustering_method)) +
   geom_point(size = 4) +
   my_theme() +
-  labs(x = "Number of clusters", title = "Comparing reproducibility rates",
+  labs(x = "Resolution", title = "Quantifying the trade-off between replicability and resolution",
        y = "Replicability")
 ggsave(here::here("Figures", "MiniAtlas", "initial.pdf"))
 ```

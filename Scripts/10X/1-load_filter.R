@@ -39,14 +39,21 @@ library(SingleCellExperiment)
 # Load data per se ----
 
 cat("Loading the data", "\n")
-counts <- Read10X_h5(paste0(loc, "umi_counts.h5"))
-
-colnames(counts) <- str_replace_all(colnames(counts), "\\.", "-")
-meta <- read.csv(paste0(loc, "sample_metadata.csv"),
-                 header = T, row.names = 1)
-allenClusters <- read.csv(paste0(loc, "cluster.membership.csv"),
-                          header = T, col.names = c("sample", "clusters"))
-meta$allenClusters <- allenClusters$clusters
+if (str_detect(loc, "MOp")) {
+  print("This is an Allen dataset")
+  counts <- Read10X_h5(paste0(loc, "umi_counts.h5"))
+  
+  colnames(counts) <- str_replace_all(colnames(counts), "\\.", "-")
+  meta <- read.csv(paste0(loc, "sample_metadata.csv"),
+                   header = T, row.names = 1)
+  allenClusters <- read.csv(paste0(loc, "cluster.membership.csv"),
+                            header = T, col.names = c("sample", "clusters"))
+  meta$allenClusters <- allenClusters$clusters
+} else {
+  print("This is a dataset from someone else, assuming a csv input file")
+  counts <- read.csv(loc)
+  meta <- data.frame(cells = colnames(counts))
+}
 
 cat("Preparing the data", "\n")
 counts[is.na(counts)] <- 0
