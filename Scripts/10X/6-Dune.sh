@@ -10,7 +10,7 @@
 module load intel/18.4
 module load hdf5
 module load gcc
-timestamp=$(date +"%m-%d-%H:%M")
+timestamp=$(date +"%Y%m%d-%H%M%S")
 basename=10x-consensus_cells-nuclei_${timestamp}
 MEMORYFILE=${basename}.txt
 

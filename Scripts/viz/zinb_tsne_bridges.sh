@@ -8,7 +8,7 @@
 #SBATCH --nodes=1
 
 module load gcc
-timestamp=$(date +"%m-%d-%H:%M")
+timestamp=$(date +"%Y%m%d-%H%M%S")
 basename=zinb-tsne_cells-nuclei_${timestamp}
 MEMORYFILE=${basename}.txt
 
