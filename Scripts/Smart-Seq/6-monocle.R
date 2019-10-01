@@ -54,7 +54,7 @@ sce <- reduce_dimension(sce)
 
 # run Monocle ----
 print("Running Monocle")
-ks <- c(1:9, seq(from = 10, to = 100, by = 5))
+ks <- c(2:9, seq(from = 10, to = 100, by = 5))
 names(ks) <- paste0("k_", ks)
 clusterMatrix <- map_df(ks, function(k){
   sce2 <- cluster_cells(sce,
