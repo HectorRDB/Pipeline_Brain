@@ -58,6 +58,7 @@ if (str_detect(loc, "MOp")) {
 cat("Preparing the data", "\n")
 counts[is.na(counts)] <- 0
 counts <- as.matrix(counts)
+print(dim(counts))
 filt <- rowSums(counts >= opt$c) >= opt$c
 print(sum(filt))
 print(sum(counts[filt, ]) / sum(count))
