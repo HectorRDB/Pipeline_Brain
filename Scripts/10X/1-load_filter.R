@@ -59,6 +59,8 @@ cat("Preparing the data", "\n")
 counts[is.na(counts)] <- 0
 counts <- as.matrix(counts)
 print(dim(counts))
+print(counts[1:10, 1:10])
+print(quantile(counts, p = (0:10)/10))
 filt <- rowSums(counts >= opt$c) >= opt$c
 print(sum(filt))
 print(sum(counts[filt, ]) / sum(count))
