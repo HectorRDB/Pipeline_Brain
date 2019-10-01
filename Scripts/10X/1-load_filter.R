@@ -63,7 +63,7 @@ print(counts[1:10, 1:10])
 print(quantile(counts, p = (0:10)/10))
 filt <- rowSums(counts >= opt$c) >= opt$c
 print(sum(filt))
-print(sum(counts[filt, ]) / sum(count))
+print(sum(counts[filt, ]) / sum(counts))
 counts <- counts[filt, ]
 
 cat("Saving output to ", output)
