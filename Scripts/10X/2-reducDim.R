@@ -31,7 +31,7 @@ option_list <- list(
           help = "Location of the visual output. Default to [default %default], no output"
   ),
   make_option(c("-c", "--cluster"),
-              action = "store", default = NA, type = "character",
+              action = "store", default = NULL, type = "character",
               help = "Location of the cluster file. Default to [default %default]"
   )
 )
@@ -81,9 +81,13 @@ ind <- vars > sort(vars,decreasing = TRUE)[1000]
 whichGenes <- rownames(sce)[ind]
 sceVar <- sce[ind,]
 
-clusters <- read.csv(opt$c, header = T)
-cols <- clusters$cluster_color %>% as.character()
-names(cols) <- clusters$cluster_id %>% as.character()
+if (!is.null(opt$c)) {
+  clusters <- read.csv(opt$c, header = T)
+  cols <- clusters$cluster_color %>% as.character()
+  names(cols) <- clusters$cluster_id %>% as.character()
+} else {
+  cols <- 1
+}
 
 zinbWs <- lapply(zinbDims, function(zinbDim) {
   cat("Running with K = ", zinbDim, " on the filtered data\n")
@@ -101,8 +105,14 @@ for (i in 1:length(zinbWs)) {
   if (!is.na(opt$p)) {
     print("....t-SNE")
     TNSE <- Rtsne(zinbW, initial_dims = min(50, zinbDims[i]))
-    df <- data.frame(x = TNSE$Y[, 1], y = TNSE$Y[, 2],
-                     cols = as.factor(colData(sce)$allenClusters))
+    if (!is.null(opt$c)) {
+      df <- data.frame(x = TNSE$Y[, 1], y = TNSE$Y[, 2],
+                       cols = as.factor(colData(sce)$allenClusters))  
+    } else {
+      df <- data.frame(x = TNSE$Y[, 1], y = TNSE$Y[, 2],
+                       cols = 1)  
+    }
+    
     p <- ggplot(df, aes(x = x, y = y, col = cols)) +
       geom_point(size = .1, alpha = .1) +
       theme_classic() +

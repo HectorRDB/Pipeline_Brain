@@ -18,9 +18,9 @@ TIMELAPSES=30
 echo $TIMELAPSES >> $MEMORYFILE
 
 module load gcc/8.2.0
-loc="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_filt.rds"
-out="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_nuclei_MOp_norm.rds"
-plot="/home/hectorrb/Pipeline_Brain/Figures/EDA/10x_nuclei_Mop_tsne"
+loc="/pylon5/ib5phhp/hectorrb/Regev/count_matrix_filt.rds"
+out="/pylon5/ib5phhp/hectorrb/Regev/count_matrix_norm.rds"
+plot="/home/hectorrb/Pipeline_Brain/Figures/EDA/Regev_tsne"
 cluster="/pylon5/ib5phhp/hectorrb/10x_nuclei_MOp/cluster.annotation.csv"
 
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
