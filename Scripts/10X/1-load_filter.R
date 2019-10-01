@@ -51,7 +51,7 @@ if (str_detect(loc, "MOp")) {
   meta$allenClusters <- allenClusters$clusters
 } else {
   print("This is a dataset from someone else, assuming a csv input file")
-  counts <- read.csv(loc)
+  counts <- read.csv(loc, row.names = 1)
   meta <- data.frame(cells = colnames(counts))
 }
 
