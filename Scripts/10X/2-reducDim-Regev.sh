@@ -21,10 +21,9 @@ module load gcc/8.2.0
 loc="/pylon5/ib5phhp/hectorrb/Regev/count_matrix_filt.rds"
 out="/pylon5/ib5phhp/hectorrb/Regev/count_matrix_norm.rds"
 plot="/home/hectorrb/Pipeline_Brain/Figures/EDA/Regev_tsne"
-cluster="/pylon5/ib5phhp/hectorrb/10x_nuclei_MOp/cluster.annotation.csv"
 
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
-  2-reducDim.R -l $loc -o $out -p $plot -n 20 -d 5 -c $cluster > Regev.out 2>&1
+  Rscript --no-save --verbose 2-reducDim.R -l $loc -o $out -p $plot -n 20 -d 3 > Regev.out 2>&1
 
 
 logStorage=/pylon5/ib5phhp/shared/improved-happiness/xsede/xsedelogs
