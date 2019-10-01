@@ -45,7 +45,7 @@ sSeurat <- RunPCA(object = sSeurat, ndims.print = 1, npcs = 100)
 
 # Run clustering ----
 clusterMatrix <- NULL
-for (RESOLUTION in seq(from = 0.3, to = 1.7, by = .1)) {
+for (RESOLUTION in seq(from = 0.3, to = 2.5, by = .1)) {
   print(RESOLUTION)
   for (K.PARAM in c(30, 50, 100)) {
     print(paste0("...", K.PARAM))

@@ -55,7 +55,7 @@ sce <- reduce_dimension(sce)
 
 # run Monocle ----
 print("Running Monocle")
-ks <- seq(from = 10, to = 100, by = 5)
+ks <- seq(from = 10, to = 200, by = 5)
 names(ks) <- paste0("k_", ks)
 clusterMatrix <- map_df(ks, function(k){
   print(ks)
