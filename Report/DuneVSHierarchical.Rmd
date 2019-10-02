@@ -117,24 +117,23 @@ plotComp(method = "large3")
 
 # All together
 
-We 
-
 ```{r}
 df <- bind_rows(A = load_single_method("Normal"),
                 B = load_single_method("large2"),
                 C = load_single_method("large3"),
                 .id = "Run")
 df <- df %>% 
-  filter(nb_clusters > 15) %>%
   group_by(Run, Method, clustering_method) %>%
   dplyr::mutate(nb_clusters = dplyr::first(nb_clusters) - nb_clusters,
          fraction_replicable_cells = fraction_replicable_cells - 
-           dplyr::first(fraction_replicable_cells))
+           dplyr::first(fraction_replicable_cells)) %>%
+  filter(nb_clusters < 40)
 ggplot(df,
        aes(x = nb_clusters / 2,
-                  y = fraction_replicable_cells,
-                  col = interaction(clustering_method, Run),
-                  label = level)) +
+           y = fraction_replicable_cells,
+           group = interaction(clustering_method, Run),
+           col = Run,
+           label = level)) +
     geom_path(size = 1.8) +
     my_theme() +
     labs(x = "Relative Coarseness",
