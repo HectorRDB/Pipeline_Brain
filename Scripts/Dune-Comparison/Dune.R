@@ -167,4 +167,31 @@ for (clustering in c("sc3", "Monocle", "Seurat")) {
 
 res <- do.call('cbind', res) %>% as.data.frame()
 res$cells <- colnames(Rsec)
-write_csv(res, path = paste0(output, "_hierarchical.csv"))
+write_csv(res, path = paste0(output, "_hierarchical_DE.csv"))
+
+# Do hierarchical merging with cutting the tree ----
+Rsec <- readRDS(opt$r)
+
+for (clustering in c("sc3", "Monocle", "Seurat")) {
+  Rsec <- addClusterings(Rsec, get(clustering), clusterLabels = clustering)
+}
+
+# Doing the merges
+n <- n_distinct(primaryCluster(Rsec))
+cutoffs <- 10:n
+res <- list()
+for (clustering in c("sc3", "Monocle", "Seurat")) {
+  print(clustering)
+  Rsec2 <- makeDendrogram(Rsec, whichCluster = clustering)
+  Tree <- as.hclust(convertToDendrogram(Rsec2))
+  names(cutoffs) <- paste(clustering, cutoffs, sep = "_")
+  res[[clustering]] <- map_df(cutoffs,
+                              function(cutoff){
+                                print(paste0("...", cutoff))
+                                return(cutree(Tree, k = cutoff))
+                              })
+}
+
+res <- do.call('cbind', res) %>% as.data.frame()
+res$cells <- colnames(Rsec)
+write_csv(res, path = paste0(output, "_hierarchical_Dist.csv"))
