@@ -86,7 +86,8 @@ if (!is.null(opt$c)) {
   cols <- clusters$cluster_color %>% as.character()
   names(cols) <- clusters$cluster_id %>% as.character()
 } else {
-  cols <- 1
+  cols <- "1"
+  names(cols) <- cols
 }
 
 zinbWs <- lapply(zinbDims, function(zinbDim) {
@@ -102,25 +103,31 @@ for (i in 1:length(zinbWs)) {
   print(type)
   print("....Saving data")
   reducedDim(sce, type = type) <- zinbW <- reducedDim(zinbWs[[i]])
-  if (!is.na(opt$p)) {
+}
+saveRDS(sce, file = output_r)
+
+
+if (!is.na(opt$p)) {
+  for (i in 1:length(zinbWs)) {
+    type <- paste0("zinb-K", zinbDims[i])
+    print(type)
     print("....t-SNE")
     TNSE <- Rtsne(zinbW, initial_dims = min(50, zinbDims[i]))
     if (!is.null(opt$c)) {
       df <- data.frame(x = TNSE$Y[, 1], y = TNSE$Y[, 2],
-                       cols = as.factor(colData(sce)$allenClusters))  
-    } else {
-      df <- data.frame(x = TNSE$Y[, 1], y = TNSE$Y[, 2],
-                       cols = 1)  
-    }
-    
+                         cols = as.factor(colData(sce)$allenClusters))  
+      } else {
+        df <- data.frame(x = TNSE$Y[, 1], y = TNSE$Y[, 2],
+                         cols = "1")  
+      }
+      
     p <- ggplot(df, aes(x = x, y = y, col = cols)) +
       geom_point(size = .1, alpha = .1) +
       theme_classic() +
       scale_color_manual(values = cols, breaks = names(cols)) +
       labs(x = "dim1", y = "dim2") +
       guides(color = FALSE)
-    ggsave(paste0(opt$p, "_K_", zinbDims[i], ".png"), p)
     print("....Saving plot")
+    ggsave(paste0(opt$p, "_K_", zinbDims[i], ".png"), p)
   }
 }
-saveRDS(sce, file = output_r)
