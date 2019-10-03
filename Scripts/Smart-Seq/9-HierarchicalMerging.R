@@ -97,12 +97,12 @@ for (clustering in c("sc3", "Monocle", "Seurat")) {
 }
 
 # Doing the merges
-n <- n_distinct(primaryCluster(Rsec))
-cutoffs <- 10:n
 res <- list()
 for (clustering in c("sc3", "Monocle", "Seurat")) {
   print(clustering)
   Rsec2 <- makeDendrogram(Rsec, whichCluster = clustering)
+  n <- n_distinct(get(clustering))
+  cutoffs <- 10:n
   Tree <- as.hclust(convertToDendrogram(Rsec2))
   names(cutoffs) <- paste(clustering, cutoffs, sep = "_")
   res[[clustering]] <- map_df(cutoffs,
