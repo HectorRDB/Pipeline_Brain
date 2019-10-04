@@ -70,15 +70,17 @@ load_Dune_labels <- function(cell_names, data_path = here("data"),
 # Load hierarchical ----
 
 load_single_merge_labels <- function(cell_names, data_path = here("data"),
-                                     size = "") {
+                                     size = "", type = "DE") {
   input_dir <- file.path(data_path, "singleTree")
   result <- bind_rows(
     zeng_smart_cells = read.csv(
       file.path(input_dir, 
-                paste0("SMARTer_cells_MOp", size , "_hierarchical.csv"))),
+                paste0("SMARTer_cells_MOp", size , "_hierarchical_", type,
+                       ".csv"))),
     zeng_smart_nuclei = read.csv(
       file.path(input_dir,
-                paste0("SMARTer_nuclei_MOp", size , "_hierarchical.csv"))),
+                paste0("SMARTer_nuclei_MOp", size , "_hierarchical_", type,
+                       ".csv"))),
     .id = "dataset"
   )
 
