@@ -139,15 +139,15 @@ analyze_all_single_merge <- function(data_path = here("data"),
   # Dist
   ## Normal single Merge
   labels <- load_single_merge_labels(colnames(dataset), data_path, type = "Dist")
-  analyze_smart(dataset, labels, paste0(output_dir, "/Normal_DE"))
+  analyze_smart(dataset, labels, paste0(output_dir, "/Normal_Dist"))
   ## Comparison 2
   labels <- load_single_merge_labels(colnames(dataset), data_path,
                                      size = "_large2", type = "Dist")
-  analyze_smart(dataset, labels, paste0(output_dir, "/Large2_DE"))
+  analyze_smart(dataset, labels, paste0(output_dir, "/Large2_Dist"))
   ## Comparison 3
   labels <- load_single_merge_labels(colnames(dataset), data_path,
                                      size = "_large3", type = "Dist")
-  analyze_smart(dataset, labels, paste0(output_dir, "/Large3_DE"))
+  analyze_smart(dataset, labels, paste0(output_dir, "/Large3_Dist"))
 }
 
 ## single Method ----
@@ -189,15 +189,15 @@ analyze_single_methods_all <- function(
 ## To run ----
 main <- function() {
   print("single Method smart")
-  analyze_single_methods_smart()
+  # analyze_single_methods_smart()
   print("single Method all")
-  analyze_single_methods_all()
+  # analyze_single_methods_all()
   print("single merge")
   analyze_all_single_merge()
   print("single All Dunes")
-  analyze_all_Dunes()
+  # analyze_all_Dunes()
   print("single full data")
-  analyze_full_data()
+  # analyze_full_data()
 }
 
 if (!interactive()) {
