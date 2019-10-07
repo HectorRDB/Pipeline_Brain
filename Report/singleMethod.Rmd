@@ -198,7 +198,8 @@ ggplot(SC3 %>% arrange(level),
 
 ```{r Monocle}
 Monocle <- read_single_method(Method = "Monocle") %>% 
-  mutate(level = str_remove(level, "^k_") %>% as.numeric())
+  mutate(level = str_remove(level, "^k_") %>% as.numeric()) %>%
+  filter(level >= 10)
 ggplot(Monocle %>% arrange(level),
        aes(
          x = (replicable_clusters + non_replicable_clusters) / 2,

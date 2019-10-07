@@ -37,8 +37,8 @@ toRank <- function(i) {
   )
 }
 
-load_Dune <- function(method) {
-  df <- read.table(here("data", "Replicability", "Dune_Smart", method,
+load_Dune <- function(comp) {
+  df <- read.table(here("data", "Replicability", "Dune_Smart", comp,
                         "consensus_cluster_replicability.txt"))
   df <- df %>% filter(!str_detect(clustering_method, "Consensus")) %>%
     mutate(nb_clusters = replicable_clusters + non_replicable_clusters)
@@ -47,8 +47,9 @@ load_Dune <- function(method) {
   return(df)
 }
 
-load_tree <- function(method) {
-  df <- read.table(here("data", "Replicability", "SingleTree", method,
+load_DE_tree <- function(comp) {
+  df <- read.table(here("data", "Replicability", "SingleTree",
+                        paste0(comp, "_DE"),
                         "consensus_cluster_replicability.txt"))
   df <- df %>% filter(!str_detect(clustering_method, "Consensus")) %>%
     mutate(nb_clusters = replicable_clusters + non_replicable_clusters,
@@ -58,17 +59,30 @@ load_tree <- function(method) {
   return(df)
 }
 
-load_single_method <- function(method) {
-  df <- bind_rows("Dune" = load_Dune(method = method),
-                  Hierarchical = load_tree(method = method),
+load_Dist_tree <- function(comp) {
+  df <- read.table(here("data", "Replicability", "SingleTree",
+                        paste0(comp, "_Dist"),
+                        "consensus_cluster_replicability.txt"))
+  df <- df %>% filter(!str_detect(clustering_method, "Consensus")) %>%
+    mutate(nb_clusters = replicable_clusters + non_replicable_clusters,
+           level = str_remove(clustering_method, "^.*\\."),
+           level = if_else(nchar(level) == 1, paste0(level, "0"), level),
+           level = as.numeric(level))
+  return(df)
+}
+
+load_single_method <- function(comp) {
+  df <- bind_rows("Dune" = load_Dune(comp = comp),
+                  "Hierarchical_DE" = load_DE_tree(comp = comp),
+                  "Hierarchical_Dist" = load_Dist_tree(comp = comp),
                   .id = "Method") %>%
     arrange(level) %>%
     mutate(clustering_method = str_remove_all(clustering_method, "\\..*$"))
   return(df)
 }
 
-plotComp <- function(method) {
-  df <- load_single_method(method = method)
+plotComp <- function(comp) {
+  df <- load_single_method(comp = comp)
   linetypes <- c("solid", "dotted")
   names(linetypes) <- c("Dune", "Hierarchical")
 
@@ -100,19 +114,19 @@ plotComp <- function(method) {
 ## Scenario A
 
 ```{r}
-plotComp(method = "Normal")
+plotComp(comp = "Normal")
 ```
 
 ## Scenario B
 
 ```{r}
-plotComp(method = "large2")
+plotComp(comp = "large2")
 ```
 
 ## Scenario C
 
 ```{r}
-plotComp(method = "large3")
+plotComp(comp = "large3")
 ```
 
 # All together
