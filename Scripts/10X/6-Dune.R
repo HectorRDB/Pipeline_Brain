@@ -80,6 +80,7 @@ library(Dune)
 # Load sc3 clustering results
 print("Loading SC3")
 sc3 <- read.csv(paste0(loc, "_SC3.csv"))[, -1]
+colnames(sc3) <- str_remove(colnames(sc3), "^X")
 Names <- sc3$cells
 sc3 <- sc3[, sc3_p] %>% as.numeric()
 
