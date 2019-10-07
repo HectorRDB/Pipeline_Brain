@@ -371,7 +371,7 @@ main_single_merge <- function(
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
   create_summary_figures(label_matrix,
                          file.path(result_path, "Normal_DE", "smart"),
-                         file.path(output_dir, "Normal"), 2
+                         file.path(output_dir, "Normal_DE"), 2
   )
   ## Hierarchical large 2
   label_matrix <- load_single_merge_labels(load_qc_cells(here("data", "qc_cells_smart.txt")),
@@ -379,7 +379,7 @@ main_single_merge <- function(
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
   create_summary_figures(label_matrix,
                          file.path(result_path, "Large2_DE", "smart"),
-                         file.path(output_dir, "Large2"), 2
+                         file.path(output_dir, "Large2_DE"), 2
   )
   ## Hierarchical large 3
   label_matrix <- load_single_merge_labels(load_qc_cells(here("data", "qc_cells_smart.txt")),
@@ -387,31 +387,32 @@ main_single_merge <- function(
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
   create_summary_figures(label_matrix,
                          file.path(result_path, "Large3_DE", "smart"),
-                         file.path(output_dir, "Large3"), 2
+                         file.path(output_dir, "Large3_DE"), 2
   )
-  # DE
+  # Dist
   ## Normal hierarchical
-  label_matrix <- load_single_merge_labels(load_qc_cells(here("data", "qc_cells_smart.txt")))
+  label_matrix <- load_single_merge_labels(load_qc_cells(here("data", "qc_cells_smart.txt")),
+                                           type = "Dist")
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
   create_summary_figures(label_matrix,
-                         file.path(result_path, "Normal_DE", "smart"),
-                         file.path(output_dir, "Normal"), 2
+                         file.path(result_path, "Normal_Dist", "smart"),
+                         file.path(output_dir, "Normal_Dist"), 2
   )
   ## Hierarchical large 2
   label_matrix <- load_single_merge_labels(load_qc_cells(here("data", "qc_cells_smart.txt")),
-                                           size = "_large2")
+                                           size = "_large2", type = "Dist")
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
   create_summary_figures(label_matrix,
-                         file.path(result_path, "Large2_DE", "smart"),
-                         file.path(output_dir, "Large2"), 2
+                         file.path(result_path, "Large2_Dist", "smart"),
+                         file.path(output_dir, "Large2_Dist"), 2
   )
   ## Hierarchical large 3
   label_matrix <- load_single_merge_labels(load_qc_cells(here("data", "qc_cells_smart.txt")),
-                                           size = "_large3")
+                                           size = "_large3", type = "Dist")
   label_matrix <- label_matrix[dataset$class_label != "Noise", ]
   create_summary_figures(label_matrix,
-                         file.path(result_path, "Large3_DE", "smart"),
-                         file.path(output_dir, "Large3"), 2
+                         file.path(result_path, "Large3_Dist", "smart"),
+                         file.path(output_dir, "Large3_Dist"), 2
   )
 }
 
