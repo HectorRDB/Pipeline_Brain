@@ -2,7 +2,7 @@
 #SBATCH --mail-user=hector.rouxdebezieux@berkeley.edu
 #SBATCH --mail-type=ALL
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=10
+#SBATCH --cpus-per-task=1
 #SBATCH -p LM
 #SBATCH --mem=500GB
 #SBATCH -t 7-00:00:00
@@ -19,7 +19,7 @@ MEMORYFILE=${basename}.txt
 NAME=Hector
 echo $NAME > $MEMORYFILE
 # Replace with your own variables. This is cpus-per-tasks partition mem
-echo 5 LM 500GB >> $MEMORYFILE
+echo 1 LM 500GB >> $MEMORYFILE
 TIMELAPSES=30
 echo $TIMELAPSES >> $MEMORYFILE
 
@@ -27,7 +27,7 @@ loc="/pylon5/ib5phhp/hectorrb/Regev/count_matrix_filt.rds"
 out="/home/hectorrb/Pipeline_Brain/data/singleMethod/Regev_SC3.csv"
 
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & Rscript \
-  --no-save --verbose  3-sc3.R -n 5 -l $loc -o $out> Regev-sc3.out 2>&1
+  --no-save --verbose  3-sc3.R -n 1 -l $loc -o $out> Regev-sc3.out 2>&1
 
 logStorage=/pylon5/ib5phhp/shared/improved-happiness/xsedelogs
 cp $MEMORYFILE ${logStorage}/$MEMORYFILE

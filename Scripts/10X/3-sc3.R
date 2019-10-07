@@ -48,7 +48,7 @@ cat("Running the sc3 on a reduced set of ", round(.1 * ncol(sce)), "cells\n")
 sc3 <- map_df(ks, function(k){
   SC3 <- sc3(sce, ks = k, svm_max = ncol(sce) + 1, biology = FALSE,
              n_cores = as.numeric(opt$n), svm_num_cells = round(.1 * ncol(sce)))
-  SC3 <- sc3_run_svm(sce, ks = k)
+  SC3 <- sc3_run_svm(SC3, ks = k)
   SC3 <- colData(SC3)[, paste0("sc3_", k, "_clusters")] %>% as.numeric()
   return(SC3)
 })
