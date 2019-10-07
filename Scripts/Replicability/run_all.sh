@@ -7,8 +7,8 @@
 
 MEMORYFILE=replicability.txt
 
-while true; do free -h >> $MEMORYFILE; sleep 30 ; done & \
-  R CMD BATCH --no-save 02-metaneighbor_analysis.R metaneighbor_analysis.Rout
+# while true; do free -h >> $MEMORYFILE; sleep 30 ; done & \
+#   R CMD BATCH --no-save 02-metaneighbor_analysis.R metaneighbor_analysis.Rout
 
 while true; do free -h >> $MEMORYFILE; sleep 30 ; done & \
   R CMD BATCH --no-save 03-visualization.R visualization.Rout

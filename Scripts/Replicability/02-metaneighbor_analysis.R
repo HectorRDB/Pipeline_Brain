@@ -121,20 +121,33 @@ analyze_all_Dunes <- function(data_path = here("data"),
 
 ## Hierarchical ----
 analyze_all_single_merge <- function(data_path = here("data"),
-                                 output_dir = here("data", "Replicability",
-                                                   "mn_results", "singleTree")) {
+                                     output_dir = here("data", "Replicability",
+                                                       "mn_results", "singleTree")) {
   dataset <- load_smart_data()
-  # Normal single Merge
+  # DE
+  ## Normal single Merge
   labels <- load_single_merge_labels(colnames(dataset), data_path)
-  analyze_smart(dataset, labels, paste0(output_dir, "/Normal"))
-  # Comparison 2
+  analyze_smart(dataset, labels, paste0(output_dir, "/Normal_DE"))
+  ## Comparison 2
   labels <- load_single_merge_labels(colnames(dataset), data_path,
                                      size = "_large2")
-  analyze_smart(dataset, labels, paste0(output_dir, "/large2"))
-  # Comparison 3
+  analyze_smart(dataset, labels, paste0(output_dir, "/Large2_DE"))
+  ## Comparison 3
   labels <- load_single_merge_labels(colnames(dataset), data_path,
                                      size = "_large3")
-  analyze_smart(dataset, labels, paste0(output_dir, "/large3"))
+  analyze_smart(dataset, labels, paste0(output_dir, "/Large3_DE"))
+  # Dist
+  ## Normal single Merge
+  labels <- load_single_merge_labels(colnames(dataset), data_path, type = "Dist")
+  analyze_smart(dataset, labels, paste0(output_dir, "/Normal_DE"))
+  ## Comparison 2
+  labels <- load_single_merge_labels(colnames(dataset), data_path,
+                                     size = "_large2", type = "Dist")
+  analyze_smart(dataset, labels, paste0(output_dir, "/Large2_DE"))
+  ## Comparison 3
+  labels <- load_single_merge_labels(colnames(dataset), data_path,
+                                     size = "_large3", type = "Dist")
+  analyze_smart(dataset, labels, paste0(output_dir, "/Large3_DE"))
 }
 
 ## single Method ----

@@ -48,7 +48,7 @@ load_Dune_labels <- function(cell_names, data_path = here("data"),
       zeng_smart_cells = read.csv(file.path(input_dir, "SMARTer_cells_MOp.csv")),
       zeng_smart_nuclei = read.csv(file.path(input_dir, "SMARTer_nuclei_MOp.csv")),
       .id = "dataset"
-    ) %>% select(-X)
+    )
   } else {
     input_dir <- file.path(data_path, "singleTree")
     label_matrix <- bind_rows(
@@ -57,9 +57,12 @@ load_Dune_labels <- function(cell_names, data_path = here("data"),
       zeng_smart_nuclei = read.csv(
         file.path(input_dir, paste0("SMARTer_nuclei_MOp_", size, "_Dune.csv"))),
       .id = "dataset"
-    ) %>% select(-X)
+    )
   }
   
+  if ("X" %in% colnames(label_matrix)) {
+    label_matrix <- label_matrix %>% select(-X)
+  }
   # reorder cells to match data
   row_match <- match(cell_names, label_matrix$cells)
   label_matrix <- label_matrix[row_match, ]
@@ -70,19 +73,19 @@ load_Dune_labels <- function(cell_names, data_path = here("data"),
 # Load hierarchical ----
 
 load_single_merge_labels <- function(cell_names, data_path = here("data"),
-                                     size = "") {
+                                     size = "", type = "DE") {
   input_dir <- file.path(data_path, "singleTree")
   result <- bind_rows(
     zeng_smart_cells = read.csv(
       file.path(input_dir, 
-                paste0("SMARTer_cells_MOp", size , "_hierarchical.csv"))),
+                paste0("SMARTer_cells_MOp", size , "_hierarchical_", type,
+                       ".csv"))),
     zeng_smart_nuclei = read.csv(
       file.path(input_dir,
-                paste0("SMARTer_nuclei_MOp", size , "_hierarchical.csv"))),
+                paste0("SMARTer_nuclei_MOp", size , "_hierarchical_", type,
+                       ".csv"))),
     .id = "dataset"
   )
-
-  # NOTE: no cell ids, we assume that the order of cells is same as data
 
   # restrict to steps where both datasets have at least 2 clusters
   n_clusters_cells <- apply(result[result$dataset == "zeng_smart_cells", ], 2,
@@ -96,12 +99,15 @@ load_single_merge_labels <- function(cell_names, data_path = here("data"),
   # rename columns for compatibility with analysis/visualization modules
   # (format METHOD_NAME.MERGING_STEP)
   methods <- colnames(result)[-(1:2)]
-  method_name <- stringr::word(methods, 1, sep = stringr::fixed("."))
-  method_level <- stringr::word(methods, 3, sep = stringr::fixed("."))
-  method_level[is.na(method_level)] <- "00"
-  colnames(result)[-(1:2)] <- paste(method_name, method_level, sep = ".")
-  # result <- add_column(result, cells = cell_names, .after = 1)
-  
+  if (type == "DE") {
+    method_name <- stringr::word(methods, 1, sep = stringr::fixed("."))
+    method_level <- stringr::word(methods, 3, sep = stringr::fixed("."))
+    method_level[is.na(method_level)] <- "00"
+    colnames(result)[-(1:2)] <- paste(method_name, method_level, sep = ".")  
+  } else {
+    methods <- stringr::word(methods, 2, sep = stringr::fixed("."))
+    colnames(result)[-(1:2)] <- methods
+  }
   # reorder cells to match data
   row_match <- match(cell_names, result$cells)
   result <- result[row_match, ]
