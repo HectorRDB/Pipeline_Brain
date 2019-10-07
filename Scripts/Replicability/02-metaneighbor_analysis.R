@@ -189,9 +189,9 @@ analyze_single_methods_all <- function(
 ## To run ----
 main <- function() {
   print("single Method smart")
-  analyze_single_methods_smart()
+  # analyze_single_methods_smart()
   print("single Method all")
-  analyze_single_methods_all()
+  # analyze_single_methods_all()
   print("single merge")
   analyze_all_single_merge()
   print("single All Dunes")
