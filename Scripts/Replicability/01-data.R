@@ -102,7 +102,8 @@ load_single_merge_labels <- function(cell_names, data_path = here("data"),
     method_level[is.na(method_level)] <- "00"
     colnames(result)[-(1:2)] <- paste(method_name, method_level, sep = ".")  
   } else {
-    
+    methods <- stringr::word(methods, 2, sep = stringr::fixed("."))
+    colnames(result)[-(1:2)] <- methods
   }
   # reorder cells to match data
   row_match <- match(cell_names, result$cells)
