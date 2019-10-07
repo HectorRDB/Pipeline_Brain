@@ -121,8 +121,8 @@ analyze_all_Dunes <- function(data_path = here("data"),
 
 ## Hierarchical ----
 analyze_all_single_merge <- function(data_path = here("data"),
-                                 output_dir = here("data", "Replicability",
-                                                   "mn_results", "singleTree")) {
+                                     output_dir = here("data", "Replicability",
+                                                       "mn_results", "singleTree")) {
   dataset <- load_smart_data()
   # DE
   ## Normal single Merge

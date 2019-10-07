@@ -84,8 +84,6 @@ load_single_merge_labels <- function(cell_names, data_path = here("data"),
     .id = "dataset"
   )
 
-  # NOTE: no cell ids, we assume that the order of cells is same as data
-
   # restrict to steps where both datasets have at least 2 clusters
   n_clusters_cells <- apply(result[result$dataset == "zeng_smart_cells", ], 2,
                             function(x) length(table(x)))
@@ -98,12 +96,14 @@ load_single_merge_labels <- function(cell_names, data_path = here("data"),
   # rename columns for compatibility with analysis/visualization modules
   # (format METHOD_NAME.MERGING_STEP)
   methods <- colnames(result)[-(1:2)]
-  method_name <- stringr::word(methods, 1, sep = stringr::fixed("."))
-  method_level <- stringr::word(methods, 3, sep = stringr::fixed("."))
-  method_level[is.na(method_level)] <- "00"
-  colnames(result)[-(1:2)] <- paste(method_name, method_level, sep = ".")
-  # result <- add_column(result, cells = cell_names, .after = 1)
-  
+  if (type == "DE") {
+    method_name <- stringr::word(methods, 1, sep = stringr::fixed("."))
+    method_level <- stringr::word(methods, 3, sep = stringr::fixed("."))
+    method_level[is.na(method_level)] <- "00"
+    colnames(result)[-(1:2)] <- paste(method_name, method_level, sep = ".")  
+  } else {
+    
+  }
   # reorder cells to match data
   row_match <- match(cell_names, result$cells)
   result <- result[row_match, ]
