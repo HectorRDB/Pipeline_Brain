@@ -48,7 +48,7 @@ load_Dune_labels <- function(cell_names, data_path = here("data"),
       zeng_smart_cells = read.csv(file.path(input_dir, "SMARTer_cells_MOp.csv")),
       zeng_smart_nuclei = read.csv(file.path(input_dir, "SMARTer_nuclei_MOp.csv")),
       .id = "dataset"
-    ) %>% select(-X)
+    )
   } else {
     input_dir <- file.path(data_path, "singleTree")
     label_matrix <- bind_rows(
@@ -57,9 +57,12 @@ load_Dune_labels <- function(cell_names, data_path = here("data"),
       zeng_smart_nuclei = read.csv(
         file.path(input_dir, paste0("SMARTer_nuclei_MOp_", size, "_Dune.csv"))),
       .id = "dataset"
-    ) %>% select(-X)
+    )
   }
   
+  if ("X" %in% colnames(label_matrix)) {
+    label_matrix <- label_matrix %>% select(-X)
+  }
   # reorder cells to match data
   row_match <- match(cell_names, label_matrix$cells)
   label_matrix <- label_matrix[row_match, ]
