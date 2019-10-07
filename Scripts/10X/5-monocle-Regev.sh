@@ -7,5 +7,5 @@
 
 # This is not run on bridges but on the scf cluster
 loc="/scratch/users/singlecell/MiniAtlas/data/rds/Regev_zinb.rds"
-out="/home/hectorrb/Pipeline_Brain/data/singleMethod/Regev_Monocle.csv"
-Rscript --verbose  5-monocle.R -l $loc -o $out > 5b.out 2>&1
+out="/accounts/projects/epurdom/singlecell/allen/allen40K/Pipeline_Brain/data/singleMethod/Regev_Monocle.csv"
+Rscript --verbose  5-monocle.R -l $loc -o $out > 5-Regev.out 2>&1

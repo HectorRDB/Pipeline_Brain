@@ -58,7 +58,7 @@ print("Running Monocle")
 ks <- seq(from = 10, to = 150, by = 5)
 names(ks) <- paste0("k_", ks)
 clusterMatrix <- map_df(ks, function(k){
-  print(ks)
+  print(k)
   sce2 <- cluster_cells(sce,
                         k = k,
                         louvain_iter = 2,
