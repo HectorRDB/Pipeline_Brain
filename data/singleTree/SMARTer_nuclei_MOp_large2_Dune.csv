@@ -1,4 +1,4 @@
-cells,sc3.Initial,Monocle.Initial,Seurat.Initial,sc3.33,Monocle.33,Seurat.33,sc3.66,Monocle.66,Seurat.66,sc3.90,Monocle.90,Seurat.90,sc3.Final,Monocle.Final,Seurat.Final
+cells,sc3-Initial,Monocle-Initial,Seurat-Initial,sc3-33,Monocle-33,Seurat-33,sc3-66,Monocle-66,Seurat-66,sc3-90,Monocle-90,Seurat-90,sc3-Final,Monocle-Final,Seurat-Final
 SM-GE653_S113_E1-50,37,27,18,37,27,18,37,27,18,37,27,18,37,27,18
 SM-GE653_S114_E1-50,40,30,7,40,30,7,40,30,7,40,12,7,7,12,7
 SM-GE653_S115_E1-50,27,27,7,27,27,7,27,27,7,26,27,7,26,27,7
