@@ -24,16 +24,16 @@ loc="/home/hectorrb/Pipeline_Brain/data/singleMethod/10x_cells_MOp"
 out="/home/hectorrb/Pipeline_Brain/data/Dune/10x_cells_MOp"
 plot="/home/hectorrb/Pipeline_Brain/Figures/10X/10x_cells_MOp"
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
-      Rscript --verbose  6-Dune.R -n 20 -l $loc -o $out -S "1.2.50" -C "100" \
-          -m "k_45" -p $plot > 6a.out 2>&1
+      Rscript --verbose  6-Dune.R -n 20 -l $loc -o $out -S "1.2.50" \
+      -C "sc3_100_clusters" -m "k_45" -p $plot > 6a.out 2>&1
 
 echo "Nuclei dataset"
 loc="/home/hectorrb/Pipeline_Brain/data/singleMethod/10x_nuclei_MOp"
 out="/home/hectorrb/Pipeline_Brain/data/Dune/10x_nuclei_MOp"
 plot="/home/hectorrb/Pipeline_Brain/Figures/10X/10x_nuclei_MOp"
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
-      Rscript --verbose  6-Dune.R -n 20 -l $loc -o $out -S "1.2.50" -C "100" \
-          -m "k_45" -p $plot > 6b.out 2>&1
+      Rscript --verbose  6-Dune.R -n 20 -l $loc -o $out -S "1.2.50" \
+      -C "sc3_100_clusters" -m "k_45" -p $plot > 6b.out 2>&1
 
 logStorage=/pylon5/ib5phhp/shared/improved-happiness/xsede/xsedelogs
 cp $MEMORYFILE ${logStorage}/$MEMORYFILE
