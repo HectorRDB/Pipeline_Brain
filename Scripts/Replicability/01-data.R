@@ -3,6 +3,11 @@ suppressPackageStartupMessages({
   library(tidyverse)
 })
 
+source("variable_genes.R")
+source("identifier_conversion.R")
+source("datasets.R")
+
+
 # Helper functions ----
 export_qc_cells <- function(dataset = load_data(), filename = "qc_cells.txt") {
   write(colnames(dataset[, dataset$class_label != "Noise"]), filename)
@@ -14,6 +19,11 @@ load_data <- function() {
 
 load_qc_cells <- function(filename = here("data", "qc_cells.txt")) {
   scan(filename, "character")
+}
+
+load_lab_data <- function() {
+  dataset <- readRDS(here("data", "lab_data.rds"))
+  return(dataset)
 }
 
 # Load dune data ----
@@ -310,4 +320,17 @@ load_monocle_all_labels <- function(cell_names, data_path = here("data")) {
   result <- result[row_match, ]
   
   return(as.data.frame(result))
+}
+# Load lab labels ----
+load_Lab_labels <- function(data_path = "data") {
+    input_dir <- file.path(data_path, "Dune")
+    label_matrix <- bind_rows(
+      Zeng = read.csv(file.path(input_dir, "10x_nuclei_MOp.csv")),
+      Regev = read.csv(file.path(input_dir, "Regev.csv")),
+      .id = "dataset"
+    )
+  
+  # reorder cells to match data
+  
+  return(label_matrix)
 }
