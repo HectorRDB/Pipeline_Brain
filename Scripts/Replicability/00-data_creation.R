@@ -33,5 +33,5 @@ create_data = function() {
     hvg = intersect(rownames(dataset), hvg)
     
     rowData(dataset)$is_hvg = rownames(dataset) %in% hvg
-    saveRDS(dataset, "full_data.rds")
+    saveRDS(dataset, here("data", "full_data.rds"))
 }
