@@ -6,14 +6,9 @@ suppressPackageStartupMessages({
     library(readr)
 })
 
-current_dir = getwd()
-common_dir = "~/projects/common/"
-
-setwd(common_dir)
 source("variable_genes.R")
 source("identifier_conversion.R")
 source("datasets.R")
-setwd(current_dir)
 
 create_data = function() {
     dataset = list(
