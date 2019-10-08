@@ -7,7 +7,7 @@ suppressPackageStartupMessages({
 })
 
 source("variable_genes.R")
-source("identifier_conversion.R")
+# source("identifier_conversion.R")
 source("datasets.R")
 
 create_data = function() {
