@@ -1,6 +1,9 @@
 suppressPackageStartupMessages({
     library(SingleCellExperiment)
-    library(tidyverse)
+    library(stringr)
+    library(dplyr)
+    library(tidyr)
+    library(readr)
 })
 
 current_dir = getwd()

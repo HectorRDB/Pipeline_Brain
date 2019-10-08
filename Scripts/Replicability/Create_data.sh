@@ -21,7 +21,7 @@ TIMELAPSES=30
 echo $TIMELAPSES >> $MEMORYFILE
 
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
-  R CMD BATCH --no-save --verbose 00-data_creation.R 00-data_creation.Rout
+  R CMD BATCH --no-save 00-data_creation.R 00-data_creation.Rout
 
 
 logStorage=/pylon5/ib5phhp/shared/improved-happiness/xsede/xsedelogs
