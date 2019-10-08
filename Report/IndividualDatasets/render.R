@@ -26,7 +26,8 @@ if (opt$l) {
 }
 
 rmarkdown::render('dataset_analysis.Rmd',
-                  params = list(dataset = opt$d,
-                                title = paste0('Analysis of the ', opt$d,
+                  params = list(dataset = dataset,
+                                title = paste0('Analysis of the ', dataset,
                                                ' dataset')),
-                  output_file = paste0(opt$d, '_Analysis.html'))
+                  output_file = paste0(dataset, '_Analysis.html'))
+  
