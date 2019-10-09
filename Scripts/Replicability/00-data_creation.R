@@ -38,7 +38,7 @@ create_data = function() {
 create_lab_data <- function() {
     counts_Zeng <- readRDS(here("data", "full_data.rds"))
     counts_Zeng <- counts_Zeng[, counts_Zeng$study_id == "tenx_nuclei"]
-    counts_Zeng <- counts(counts_Zeng)
+    counts_Zeng <- assays(counts_Zeng)[[1]]
     meta <- data.frame(cells = colnames(counts))
     counts_Zeng[is.na(counts_Zeng)] <- 0
     counts_Zeng <- as.matrix(counts_Zeng)
