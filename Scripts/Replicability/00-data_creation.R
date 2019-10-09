@@ -4,6 +4,7 @@ suppressPackageStartupMessages({
     library(dplyr)
     library(tidyr)
     library(readr)
+    library(Seurat)
 })
 
 source("variable_genes.R")
