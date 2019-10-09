@@ -37,23 +37,21 @@ create_data = function() {
 
 create_lab_data <- function() {
     counts_Zeng <- readRDS(here("data", "full_data.rds"))
-    counts_Zeng <- counts_Zeng[, counts_Zeng$study_id == "tenx_nuclei"]
+    counts_Zeng <- counts_Zeng[, counts_Zeng$study_id == "zeng_10x_nuclei"]
     counts_Zeng <- assays(counts_Zeng)[[1]]
-    meta <- data.frame(cells = colnames(counts))
     counts_Zeng[is.na(counts_Zeng)] <- 0
     counts_Zeng <- as.matrix(counts_Zeng)
     
     counts_Regev <- read.csv("/pylon5/ib5phhp/hectorrb/Regev/count_matrix.csv",
                              row.names = 1)
     genes <- intersect(rownames(counts_Regev), rownames(counts_Zeng))
-    print(length(genes) / nrow(counts_Zeng))
+    print(sum(counts_Regev[!rownames(counts_Regev) %in% genes, ])/sum(counts_Regev))
     counts <- cbind(counts_Zeng[genes, ], counts_Regev[genes, ])
     meta <- data.frame(cells = colnames(counts))
     meta$study_id <- c(rep("Zeng", ncol(counts_Zeng)),
                        rep("Regev", ncol(counts_Regev)))
     dataset <- SingleCellExperiment(assays = list(as.matrix(counts)),
                                     colData = meta)
-    print(table(dataset$study_id))
     
     hvg <- variable_genes(dataset)
     hvg <- intersect(rownames(dataset), hvg)
