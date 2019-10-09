@@ -1,5 +1,6 @@
 suppressPackageStartupMessages({
     library(SingleCellExperiment)
+    library(here)
     library(stringr)
     library(dplyr)
     library(tidyr)
@@ -35,8 +36,9 @@ create_data = function() {
 }
 
 create_lab_data <- function() {
-    counts_Zeng <- Read10X_h5("/pylon5/ib5phhp/hectorrb/10x_nuclei_MOp/umi_counts.h5")
-    colnames(counts_Zeng) <- str_replace_all(colnames(counts_Zeng), "\\.", "-")
+    counts_Zeng <- readRDS(here("data", "full_data.rds"))
+    counts_Zeng <- counts_Zeng[, counts_Zeng$study_id == tenx_nuclei]
+    counts_Zeng <- counts(counts_Zeng)
     meta <- data.frame(cells = colnames(counts))
     counts_Zeng[is.na(counts_Zeng)] <- 0
     counts_Zeng <- as.matrix(counts_Zeng)
