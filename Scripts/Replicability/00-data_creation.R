@@ -45,7 +45,7 @@ create_lab_data <- function() {
     
     counts_Regev <- read.csv("/pylon5/ib5phhp/hectorrb/Regev/count_matrix.csv",
                              row.names = 1)
-    genes <- interesct(rownames(counts_Regev), rownames(counts_Zeng))
+    genes <- intersect(rownames(counts_Regev), rownames(counts_Zeng))
     print(length(genes) / nrow(counts_Zeng))
     counts <- cbind(counts_Zeng[genes, ], counts_Regev[genes, ])
     meta <- data.frame(cells = colnames(counts))
