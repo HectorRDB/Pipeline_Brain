@@ -52,7 +52,7 @@ create_lab_data <- function() {
     dataset <- SingleCellExperiment(assays = list(as.matrix(counts)),
                                     colData = meta)
     dataset$study_id <- c(rep("Zeng", ncol(counts_Zeng)),
-                          rep("Regev", col(counts_Regev)))
+                          rep("Regev", ncol(counts_Regev)))
     
     hvg <- variable_genes(dataset)
     hvg <- intersect(rownames(dataset), hvg)
