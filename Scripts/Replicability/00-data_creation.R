@@ -49,10 +49,11 @@ create_lab_data <- function() {
     print(length(genes) / nrow(counts_Zeng))
     counts <- cbind(counts_Zeng[genes, ], counts_Regev[genes, ])
     meta <- data.frame(cells = colnames(counts))
+    meta$study_id <- c(rep("Zeng", ncol(counts_Zeng)),
+                       rep("Regev", ncol(counts_Regev)))
     dataset <- SingleCellExperiment(assays = list(as.matrix(counts)),
                                     colData = meta)
-    dataset$study_id <- c(rep("Zeng", ncol(counts_Zeng)),
-                          rep("Regev", ncol(counts_Regev)))
+    print(table(dataset$study_id))
     
     hvg <- variable_genes(dataset)
     hvg <- intersect(rownames(dataset), hvg)
