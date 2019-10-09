@@ -46,6 +46,7 @@ create_lab_data <- function() {
     counts_Regev <- read.csv("/pylon5/ib5phhp/hectorrb/Regev/count_matrix.csv",
                              row.names = 1)
     genes <- interesct(rownames(counts_Regev), rownames(counts_Zeng))
+    print(length(genes) / nrow(counts_Zeng))
     counts <- cbind(counts_Zeng[genes, ], counts_Regev[genes, ])
     meta <- data.frame(cells = colnames(counts))
     dataset <- SingleCellExperiment(assays = list(as.matrix(counts)),
@@ -54,7 +55,6 @@ create_lab_data <- function() {
                           rep("Regev", col(counts_Regev)))
     
     hvg <- variable_genes(dataset)
-    # hvg <- convert_to_mgi_symbols_from_10x(hvg)
     hvg <- intersect(rownames(dataset), hvg)
     
     rowData(dataset)$is_hvg <- rownames(dataset) %in% hvg
