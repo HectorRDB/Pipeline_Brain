@@ -295,7 +295,7 @@ Seurat <- read_single_method(Method = "Seurat",
 
 ggplot(bind_rows(Monocle, Seurat),
        aes(
-         x = (replicable_clusters + non_replicable_clusters) / 4,
+         x = (replicable_clusters + non_replicable_clusters) / 2,
          y = fraction_replicable_cells,
          col = clustering_name)) +
   geom_point() +
