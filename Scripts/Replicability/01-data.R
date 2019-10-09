@@ -321,7 +321,7 @@ load_monocle_all_labels <- function(cell_names, data_path = here("data")) {
   
   return(as.data.frame(result))
 }
-# Load lab labels ----
+# Load lab comp ----
 load_Lab_labels <- function(data_path = "data") {
     input_dir <- file.path(data_path, "Dune")
     label_matrix <- bind_rows(

@@ -457,15 +457,26 @@ main_single_method_all <- function(
   )
 }
 
+main_lab <- function(
+  result_path = here("data", "Replicability", "mn_results", "Dune", "Lab"),
+  output_dir = here("data", "Replicability", "Dune", "Lab")) 
+{
+  dataset <- load_lab_data()
+  label_matrix <- load_lab_data(here("data"))
+  create_summary_figures(label_matrix, result_path, output_dir, "Normal", 2)
+}
+
 main <- function() {
-  print("full data")
+  # print("full data")
   # main_full_data()
-  print("all Dunes")
+  # print("all Dunes")
   # main_all_Dunes()
-  print("single method")
+  # print("single method")
   # main_single_method_all()
-  print("single merges")
-  main_single_merge()
+  # print("single merges")
+  # main_single_merge()
+  print("lab comp")
+  main_lab()
 }
 
 if (!interactive()) {

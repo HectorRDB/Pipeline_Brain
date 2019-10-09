@@ -188,18 +188,29 @@ analyze_single_methods_all <- function(
   analyze_nuclei(dataset, labels, output_dir)
 }
 
+## Lab ----
+analyze_lab_data <- function(data_path = here("data"),
+                              output_dir = here("data", "Replicability",
+                                                "mn_results", "Dune")) {
+  dataset <- load_lab_data()
+  labels <- load_Lab_labels(data_path)
+  compute_replicability(dataset, label_matrix, file.path(output_dir, "Lab"))
+  
+}
 ## To run ----
 main <- function() {
-  print("single Method smart")
-  analyze_single_methods_smart()
-  print("single Method all")
-  analyze_single_methods_all()
-  print("single merge")
-  analyze_all_single_merge()
-  print("single All Dunes")
-  analyze_all_Dunes()
-  print("single full data")
-  analyze_full_data()
+  # print("single Method smart")
+  # analyze_single_methods_smart()
+  # print("single Method all")
+  # analyze_single_methods_all()
+  # print("single merge")
+  # analyze_all_single_merge()
+  # print("single All Dunes")
+  # analyze_all_Dunes()
+  # print("single full data")
+  # analyze_full_data()
+  print("Analyze lab comp")
+  analyze_lab_data()
 }
 
 if (!interactive()) {
