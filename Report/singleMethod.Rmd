@@ -159,6 +159,12 @@ ggplot(Seurat %>% arrange(level),
   scale_y_continuous(limits = c(0, 1)) +
   labs(x = "Resolution", y = "Replicability", col = "resolution",
        shape = "k param", title = "Seurat, varying the k parameter")
+p <- ggplot(Seurat, aes( y = (replicable_clusters + non_replicable_clusters) / 2,
+                         x = as.numeric(clustering_method), col = level)) +
+  geom_line() +
+  my_theme() +
+  labs(x = "Resolution", y = "Number of clusters", col = "K parameter")
+ggsave(filename = here("Figures", "Paper", "Supp-Seurat-param.pdf"), p)
 ```
 
 ### Varying the resolution
@@ -215,7 +221,7 @@ ggplot(Monocle %>% arrange(level),
 ## All at once
 
 ```{r all}
-ggplot(bind_rows(SC3 %>% select(-level),
+p <- ggplot(bind_rows(SC3 %>% select(-level),
                  Monocle %>% select(-level),
                  Seurat %>% select(-level)),
        aes(
@@ -225,8 +231,9 @@ ggplot(bind_rows(SC3 %>% select(-level),
   geom_point() +
   my_theme() +
   scale_y_continuous(limits = c(0, 1)) +
-  labs(x = "Resolution", y = "Replicability", col = "Clustering Method",
-       title = "All three methods together")
+  labs(x = "Resolution", y = "Replicability", col = "Clustering Method")
+p
+ggsave(filename = here("Figures", "Paper", "tradeOff.pdf"), p)
 ```
 
 # ARI Merging versus singleMerge
@@ -234,6 +241,9 @@ We have three scenarios
 
 ## Scenario A
 ```{r}
+p <- plot_comp(read_all()) +
+  scale_x_continuous(limits = c(10, 30))
+ggsave(filename = here("Figures", "Paper", "A-singleMethod.pdf"), p)
 plot_comp(read_all())
 ```
 
