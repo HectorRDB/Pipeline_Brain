@@ -9,8 +9,8 @@ output:
     code_download: TRUE
     
 params:
-  dataset: "SMARTer_cells_MOp"
-  title: "Analysis of the SMARTer_nuclei_MOp dataset"
+  dataset: "10x_cells_MOp"
+  title: "Analysis of the 10x_cells_MOp dataset"
 ---
 ---
 title: `r params$title`
@@ -31,7 +31,7 @@ suppressMessages(
 rm(libs)
 type <- function(dataset) {
   if (str_detect(dataset, "SMART")) return("Smart-Seq")
-  if (str_detect(dataset, "SMART")) return("10X")
+  if (str_detect(dataset, "10x")) return("10X")
   if (str_detect(dataset, "Regev")) return("Regev")
 }
 type <- type(params$dataset)
@@ -110,7 +110,7 @@ if (!str_detect(params$dataset, "Regev")) {
     arrange(cells)
   rm(clusters)
   
-  final <- map_df(mergers$currentMat[order(rownames(mergers$currentMat)),],
+  final <- map_df(mergers$currentMat[order(rownames(mergers$initialMat)),],
                   adjustedRandIndex, y = allen_clusters$subclass_label) %>%
     pivot_longer(everything(), names_to = "clus_method", values_to = "ARI")
   initial <- map_df(mergers$initialMat[order(rownames(mergers$initialMat)),],
@@ -143,7 +143,9 @@ if (!str_detect(params$dataset, "Regev")) {
     geom_point(
       data = bind_rows("Final" = final, "Initial" = initial, .id = "step"),
       aes(col = step)) +
-    scale_color_brewer(type = "qual")
+    scale_color_brewer(type = "qual") +
+    scale_y_continuous(limits = c(min(initial$ARI, final$ARI, singles$ARI),
+                                  max(initial$ARI, final$ARI, singles$ARI)))
 }
 ```
 
