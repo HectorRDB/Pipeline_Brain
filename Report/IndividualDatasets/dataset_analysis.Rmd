@@ -9,8 +9,8 @@ output:
     code_download: TRUE
     
 params:
-  dataset: "10x_cells_MOp"
-  title: "Analysis of the 10x_cells_MOp dataset"
+  dataset: "SMARTer_nuclei_MOp"
+  title: "Analysis of the SMARTer_nuclei_MOp dataset"
 ---
 ---
 title: `r params$title`
@@ -140,7 +140,7 @@ if (!str_detect(params$dataset, "Regev")) {
   ggplot(singles, aes(x = clus_method, y = ARI)) +
     geom_violin() +
     theme_classic() +
-    geom_point(
+    geom_jitter(width = .01,
       data = bind_rows("Final" = final, "Initial" = initial, .id = "step"),
       aes(col = step)) +
     scale_color_brewer(type = "qual") +
