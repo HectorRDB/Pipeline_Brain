@@ -9,7 +9,7 @@ output:
     code_download: TRUE
     
 params:
-  dataset: "Regev"
+  dataset: "SMARTer_cells_MOp"
   title: "Analysis of the SMARTer_nuclei_MOp dataset"
 ---
 ---
@@ -24,7 +24,7 @@ opts_chunk$set(
 )
 libs <- c("here", "dplyr", "ggplot2", "tidyr", "stringr", "readr", "cowplot",
           "clusterExperiment", "mclust", "RColorBrewer", "progress", "Dune",
-          "png")
+          "png", "purrr")
 suppressMessages(
   suppressWarnings(sapply(libs, require, character.only = TRUE))
 )
@@ -106,16 +106,42 @@ if (!str_detect(params$dataset, "Regev")) {
   clusters <- read.csv(here("data", type,
                             paste0(params$dataset, "_cluster.annotation.csv")),
                        header = T)
-  allen_clusters <- full_join(allen_clusters, clusters)
+  allen_clusters <- full_join(allen_clusters, clusters) %>%
+    arrange(cells)
   rm(clusters)
   
-  apply(mergers$currentMat, 2, function(x) {
-      inds <- x != -1
-      xa <- x[inds]
-      y <- allen_clusters$subclass_label[inds]
-      mclust::adjustedRandIndex(xa, y)
-  }) %>% data.frame(ARI = round(., 2)) %>%
-    select(ARI)
+  final <- map_df(mergers$currentMat, adjustedRandIndex, y = allen_clusters$subclass_label) %>%
+    pivot_longer(everything(), names_to = "clus_method", values_to = "ARI")
+  initial <- map_df(mergers$initialMat, adjustedRandIndex, y = allen_clusters$subclass_label) %>%
+    pivot_longer(everything(), names_to = "clus_method", values_to = "ARI")
+  
+  Monocle <- read.csv(here("data", "SingleMethod", paste0(params$dataset, "_Monocle.csv"))) %>%
+    select(-X)
+  colnames(Monocle) <- paste0("Monocle_", str_remove(colnames(Monocle), "^k_"))
+  colnames(Monocle)[ncol(Monocle)] <- "cells"
+  sc3 <- read.csv(here("data", "SingleMethod", paste0(params$dataset, "_SC3.csv"))) %>%
+    select(-X)
+  colnames(sc3) <- paste0("sc3_",
+                          str_remove(colnames(sc3), "X") %>% str_replace("\\.", "-"))
+  colnames(sc3)[ncol(sc3)] <- "cells"
+  Seurat <- read.csv(here("data", "SingleMethod", paste0(params$dataset, "_Seurat.csv"))) %>%
+    select(-X)
+  colnames(Seurat) <- paste0("Seurat_", str_remove(colnames(Seurat), "^X"))
+  colnames(Seurat)[ncol(Seurat)] <- "cells"
+  
+  singles <- full_join(sc3, Seurat) %>% full_join(Monocle) %>%
+    arrange(cells) %>% select(-cells) %>% as.list() %>%
+    map_df(., adjustedRandIndex, y = allen_clusters$subclass_label) %>%
+    pivot_longer(everything(), names_to = "method", values_to = "ARI") %>%
+    dplyr::mutate(clus_method = word(method, 1, sep = "_"),
+                  level = word(method, 2, sep = "_"))
+  ggplot(singles, aes(x = clus_method, y = ARI)) +
+    geom_violin() +
+    theme_classic() +
+    geom_point(
+      data = bind_rows("Final" = final, "Initial" = initial, .id = "step"),
+      aes(col = step)) +
+    scale_color_brewer(type = "qual")
 }
 ```
 
