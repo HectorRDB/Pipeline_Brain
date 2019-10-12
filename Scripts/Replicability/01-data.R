@@ -3,10 +3,9 @@ suppressPackageStartupMessages({
   library(tidyverse)
 })
 
-source("variable_genes.R")
-source("identifier_conversion.R")
+# source("variable_genes.R")
+# source("identifier_conversion.R")
 source("datasets.R")
-
 
 # Helper functions ----
 export_qc_cells <- function(dataset = load_data(), filename = "qc_cells.txt") {
