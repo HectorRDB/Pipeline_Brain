@@ -104,7 +104,7 @@ for (clustering in c("sc3", "Monocle", "Seurat")) {
   n <- n_distinct(get(clustering))
   cutoffs <- 10:n
   Tree <- as.hclust(convertToDendrogram(Rsec2))
-  names(cutoffs) <- paste(clustering, cutoffs, sep = "_")
+  names(cutoffs) <- paste(clustering, n - cutoffs, sep = "_")
   res[[clustering]] <- map_df(cutoffs,
                               function(cutoff){
                                 print(paste0("...", cutoff))
