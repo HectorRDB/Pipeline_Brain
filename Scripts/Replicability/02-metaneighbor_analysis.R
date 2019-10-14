@@ -193,7 +193,9 @@ analyze_lab_data <- function(data_path = here("data"),
                               output_dir = here("data", "Replicability",
                                                 "mn_results", "Dune")) {
   dataset <- load_lab_data()
+  print("Loaded lab data")
   labels <- load_Lab_labels(data_path)
+  print("Got the labels")
   compute_replicability(dataset, labels, file.path(output_dir, "Lab"))
   
 }
