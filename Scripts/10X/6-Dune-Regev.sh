@@ -24,7 +24,7 @@ loc="/home/hectorrb/Pipeline_Brain/data/singleMethod/Regev"
 out="/home/hectorrb/Pipeline_Brain/data/Dune/Regev"
 plot="/home/hectorrb/Pipeline_Brain/Figures/Regev/Regev"
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
-      Rscript --verbose  6-Dune.R -n 20 -l $loc -o $out -S "1.2.50" -C "80" \
+      Rscript --verbose  6-Dune.R -n 20 -l $loc -o $out -S "1.2.50" -C "100" \
           -m "k_45" -p $plot > 6a.out 2>&1
 
 logStorage=/pylon5/ib5phhp/shared/improved-happiness/xsede/xsedelogs
