@@ -81,7 +81,7 @@ ggplot(df, aes(x = nb_clusters / 4,
 # New (and current figure)
 
 ```{r}
-folders <- c("cells", "nuclei", "tenx", "smart")
+folders <- c("cells", "nuclei", "tenx", "smart", "Lab")
 rep <- lapply(folders, function(type) {
   if (type == "smart") {
     df <- read.table(here::here("data", "Replicability", "Dune_Smart", "Normal",
@@ -99,10 +99,11 @@ rep <- lapply(folders, function(type) {
 
 rep <- rep %>% 
   bind_rows() %>%
-  mutate(Comparison = case_when(type == "cells" ~ "Between cell datasets",
-                                type == "nuclei" ~ "Between nuclei datasets",
+  mutate(Comparison = case_when(type == "cells" ~ "Between Cell datasets",
+                                type == "nuclei" ~ "Between Nuclei datasets",
                                 type == "smart" ~ "Between Smart-Seq datasets",
-                                type == "tenx" ~ "Between 10x datasets"))
+                                type == "tenx" ~ "Between 10x V2 datasets",
+                                type == "Lab" ~ "Between Labs"))
 ggplot(rep, aes(x = (replicable_clusters + non_replicable_clusters) / 2,
                 y = fraction_replicable_cells)) +
   geom_point(size = 4, alpha = .8, aes(col = Comparison)) +
