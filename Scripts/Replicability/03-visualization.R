@@ -462,8 +462,8 @@ main_lab <- function(
   output_dir = here("data", "Replicability", "Dune", "Lab")) 
 {
   dataset <- load_lab_data()
-  label_matrix <- load_lab_data(here("data"))
-  create_summary_figures(label_matrix, result_path, output_dir, "Normal", 2)
+  label_matrix <- load_Lab_labels(here("data"))
+  create_summary_figures(label_matrix, result_path, output_dir, 2)
 }
 
 main <- function() {
