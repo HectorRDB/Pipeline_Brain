@@ -21,6 +21,7 @@ compute_replicability <- function(dataset, label_matrix, output_dir) {
   my_dataset <- dataset[is_hvg, is_not_noise]
   my_labels <- label_matrix[is_not_noise, ]
   for (current_set in label_sets) {
+    print((current_set))
     labels <- my_labels[, current_set]
     is_not_na <- !is.na(labels)
     if (sum(is_not_na) == 0) next
@@ -193,9 +194,10 @@ analyze_lab_data <- function(data_path = here("data"),
                               output_dir = here("data", "Replicability",
                                                 "mn_results", "Dune")) {
   dataset <- load_lab_data()
-  print("Loaded lab data")
   labels <- load_Lab_labels(data_path)
-  print("Got the labels")
+  print(dim(labels))
+  print(colnames(labels))
+  print()
   compute_replicability(dataset, labels, file.path(output_dir, "Lab"))
   
 }
