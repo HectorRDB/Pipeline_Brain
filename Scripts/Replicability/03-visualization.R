@@ -467,14 +467,14 @@ main_lab <- function(
 }
 
 main <- function() {
-  # print("full data")
-  # main_full_data()
-  # print("all Dunes")
-  # main_all_Dunes()
-  # print("single method")
-  # main_single_method_all()
-  # print("single merges")
-  # main_single_merge()
+  print("full data")
+  main_full_data()
+  print("all Dunes")
+  main_all_Dunes()
+  print("single method")
+  main_single_method_all()
+  print("single merges")
+  main_single_merge()
   print("lab comp")
   main_lab()
 }
