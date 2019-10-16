@@ -41,7 +41,8 @@ library(SingleCellExperiment)
 # Add a normalization step ? 
 sce <- readRDS(file = loc)
 rowData(sce)$feature_symbol <- rownames(sce)
-ks <- c(80, 100, 120)
+# ks <- c(80, 100, 120)
+ks <- 80
 names(ks) <- ks
 cat("Running the sc3 on a reduced set of ", round(.1 * ncol(sce)), "cells\n")
 
