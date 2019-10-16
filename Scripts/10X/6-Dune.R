@@ -89,14 +89,14 @@ print("Loading Seurat")
 seurat <- read.csv(paste0(loc, "_Seurat.csv"))[, -1]
 colnames(seurat) <- str_remove(colnames(seurat), "^X")
 ggsave(filename = paste0(opt$p, "_Seurat_ARI.png"),
-       plot = clusterMatToAri(seurat %>% select(-cells)))
+       plot = plotARIs(seurat %>% select(-cells)))
 seurat <- seurat[, seurat_p] %>% as.numeric()
 
 # Load Monocle clustering results
 print("Loading Monocle")
 Monocle <- read.csv(paste0(loc, "_Monocle.csv"))[, -1]
 ggsave(filename = paste0(opt$p, "_Monocle_ARI.png"),
-       plot = clusterMatToAri(Monocle %>% select(-cells)))
+       plot = plotARIs(Monocle %>% select(-cells)))
 Monocle <- as.data.frame(Monocle)[, monocle_p] %>% as.numeric()
 
 # Get the final clustering labels
