@@ -11,7 +11,7 @@ module load intel/18.4
 module load hdf5
 module load gcc
 timestamp=$(date +"%Y%m%d-%H%M%S")
-basename=10x-consensus_cells-nuclei_${timestamp}
+basename=10x-consensus_regev_${timestamp}
 MEMORYFILE=${basename}.txt
 
 echo $NAME > $MEMORYFILE
