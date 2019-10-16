@@ -104,7 +104,7 @@ clusMat <- data.frame("sc3" = sc3, "Monocle" = Monocle, "Seurat" = seurat)
 
 # Do the consensus clustering ----
 print(paste0("Number of cores: ", opt$n))
-merger <- mergeManyPairwise(clusteringMatrix = clusMat, nCores = opt$n)
+merger <- Dune(clusMat = clusMat, nCores = opt$n)
 cat("Finished Consensus Merge\n")
 saveRDS(object = merger, file = paste0(output, "_mergers.rds"))
 
