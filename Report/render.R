@@ -1,3 +1,5 @@
+library(here)
+library(rmarkdown)
 for (dataset in c("SMARTer_cells_MOp", "SMARTer_nuclei_MOp")) {
   rmarkdown::render(here("Report", 'ARI_comp.Rmd'),
                     params = list(dataset = dataset,

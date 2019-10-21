@@ -10,7 +10,7 @@ output:
     code_download: TRUE
     
 params:
-  dataset: SMARTer_cells_MOp 
+  dataset: SMARTer_cells_MOp
   title: "Analysis of the Baron dataset"
 ---
 ---
@@ -21,7 +21,7 @@ title: `r params$title`
 library(knitr)
 opts_chunk$set(
   fig.pos = "!h", out.extra = "", warning = F, message = F,
-  fig.width = 5, fig.align = "center", echo = F
+  fig.align = "center", echo = F
 )
 libs <- c("here", "dplyr", "ggplot2", "tidyr", "stringr", "readr", "cowplot",
           "clusterExperiment", "mclust", "RColorBrewer", "purrr", "Dune",
@@ -206,7 +206,7 @@ plot_all <- function(dataset, comp, ref) {
     Dune <- readRDS(here("data", "Dune",
                         paste0(dataset, "_mergers.rds")))
   } else {
-    dune <- readRDS(here("data", "singleTree",
+    Dune <- readRDS(here("data", "singleTree",
                         paste0(dataset, comp, "_merger.rds")))
   }
   p1 <- plotPrePost(Dune)
