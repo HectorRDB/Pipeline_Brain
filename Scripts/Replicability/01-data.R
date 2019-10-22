@@ -5,7 +5,7 @@ suppressPackageStartupMessages({
 
 # source("variable_genes.R")
 # source("identifier_conversion.R")
-source("datasets.R")
+source(here("Scripts", "Replicability", "datasets.R"))
 
 # Helper functions ----
 export_qc_cells <- function(dataset = load_data(), filename = "qc_cells.txt") {
@@ -327,8 +327,7 @@ load_Lab_labels <- function(data_path = "data") {
       Zeng = read.csv(file.path(input_dir, "10x_nuclei_MOp.csv")),
       Regev = read.csv(file.path(input_dir, "Regev.csv")),
       .id = "dataset"
-    ) %>%
-      select(-X)
+    )
   
   # reorder cells to match data
   

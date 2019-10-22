@@ -107,7 +107,7 @@ rep <- rep %>%
 ggplot(rep, aes(x = (replicable_clusters + non_replicable_clusters) / 2,
                 y = fraction_replicable_cells)) +
   geom_point(size = 4, alpha = .8, aes(col = Comparison)) +
-  my_theme() +
+  theme_classic() +
   labs(x = "Resolution",
        title = "Quantifying the trade-off between replicability and resolution",
        y = "Replicability")

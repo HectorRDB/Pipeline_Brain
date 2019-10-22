@@ -190,8 +190,8 @@ analyze_single_methods_all <- function(
 
 ## Lab ----
 analyze_lab_data <- function(data_path = here("data"),
-                              output_dir = here("data", "Replicability",
-                                                "mn_results", "Dune")) {
+                             output_dir = here("data", "Replicability",
+                                               "mn_results", "Dune")) {
   dataset <- load_lab_data()
   labels <- load_Lab_labels(data_path)
   compute_replicability(dataset, labels, file.path(output_dir, "Lab"))
