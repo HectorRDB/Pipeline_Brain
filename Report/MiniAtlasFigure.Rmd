@@ -81,7 +81,7 @@ ggplot(df, aes(x = nb_clusters / 4,
 # New (and current figure)
 
 ```{r}
-folders <- c("cells", "nuclei", "tenx", "smart", "Lab")
+folders <- c("cells", "nuclei", "tenx", "smart")
 rep <- lapply(folders, function(type) {
   if (type == "smart") {
     df <- read.table(here::here("data", "Replicability", "Dune_Smart", "Normal",
@@ -103,14 +103,17 @@ rep <- rep %>%
                                 type == "nuclei" ~ "Between Nuclei datasets",
                                 type == "smart" ~ "Between Smart-Seq datasets",
                                 type == "tenx" ~ "Between 10x V2 datasets",
-                                type == "Lab" ~ "Between Labs"))
+                                # type == "Lab" ~ "Between Labs"
+                                ))
 ggplot(rep, aes(x = (replicable_clusters + non_replicable_clusters) / 2,
                 y = fraction_replicable_cells)) +
   geom_point(size = 4, alpha = .8, aes(col = Comparison)) +
   theme_classic() +
   labs(x = "Resolution",
        title = "Quantifying the trade-off between replicability and resolution",
-       y = "Replicability")
+       y = "Replicability") +
+  scale_y_continuous(limits = c(0, 1)) +
+  scale_x_continuous(limits = c(10, 100))
 ggsave(here::here("Figures", "MiniAtlas", "overall.pdf"))
 
 ggplot(rep %>% filter(level == "Initial"),
