@@ -106,24 +106,29 @@ cat("Finished Consensus Merge\n")
 # Save the matrix with all the consensus steps ----
 print("...Initial")
 initialMat <- merger$initialMat
-initialMat <- as.matrix(initialMat) 
+initialMat <- as.matrix(initialMat)
+initialMat <- initialMat[as.character(Names), ]
 
 print("...Final consensus")
 currentMat <- merger$currentMat
-currentMat <- as.matrix(currentMat) 
+currentMat <- as.matrix(currentMat)
+currentMat <- currentMat[as.character(Names), ]
 
 print("...Intermediary consensus at 33.3%")
 stopMatrix_33 <- intermediateMat(merger = merger,
                                  p = 1/3)
 stopMatrix_33 <- as.matrix(stopMatrix_33)
+stopMatrix_33 <- stopMatrix_33[as.character(Names), ]
 
 print("...Intermediary consensus at 66.7%")
 stopMatrix_66 <- intermediateMat(merger = merger, p = 2/3)
 stopMatrix_66 <- as.matrix(stopMatrix_66)
+stopMatrix_66 <- stopMatrix_66[as.character(Names), ]
 
 print("...Intermediary consensus at 90%")
 stopMatrix_90 <- intermediateMat(merger = merger, p = .9)
 stopMatrix_90 <- as.matrix(stopMatrix_90)
+stopMatrix_90 <- stopMatrix_90[as.character(Names), ]
 
 print("...Full matrix")
 mat <- cbind(as.character(Names),

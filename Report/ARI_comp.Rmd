@@ -24,8 +24,7 @@ opts_chunk$set(
   fig.align = "center", echo = F
 )
 libs <- c("here", "dplyr", "ggplot2", "tidyr", "stringr", "readr", "cowplot",
-          "clusterExperiment", "mclust", "RColorBrewer", "purrr", "Dune",
-          "png")
+          "mclust", "RColorBrewer", "purrr", "Dune")
 suppressMessages(
   suppressWarnings(sapply(libs, require, character.only = TRUE))
 )
