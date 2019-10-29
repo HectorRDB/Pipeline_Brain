@@ -11,7 +11,7 @@ output:
     
 params:
   dataset: SMARTer_cells_MOp
-  title: "Analysis of the Baron dataset"
+  title: "Analysis of the SMARTer_cells_MOp dataset"
 ---
 ---
 title: `r params$title`
@@ -196,11 +196,13 @@ load_singles <- function(dataset, comp, ref) {
            level = word(clustering_method, 2, sep = "_"),
            level = as.numeric(level),
            clustering_method = word(clustering_method, 1, sep = "_"))
-  
 }
 ```
 
 ```{r}
+linetypes <- c("sc3" = "solid",
+               "Monocle" = "dashed",
+               "Seurat" = "dotted")
 plot_all <- function(dataset, comp, ref) {
   if (comp == "") {
     Dune <- readRDS(here("data", "Dune",
@@ -215,7 +217,8 @@ plot_all <- function(dataset, comp, ref) {
     plotARIs(clusMat = Dune$currentMat) + ggtitle("After Merging"),
     ncol = 2
   )
-  p3 <- ARItrend(Dune)
+  p3 <- ARItrend(Dune) +
+    scale_color_brewer(type = "qual", palette = "Accent")
   
   p4 <- plotComp(dataset, comp, ref)
   return(list(p1, p2, p3, p4))
@@ -245,8 +248,8 @@ plotComp <- function(dataset, comp, ref) {
                   group = interaction(clustering_method, Method))) +
     geom_path(size = 1.8) +
     theme_classic() +
-    # scale_linetype_manual(values = linetypes) +
-    scale_color_brewer(type = "qual") +
+    scale_linetype_manual(values = linetypes) +
+    scale_color_brewer(type = "qual", palette = "Dark2") +
     labs(x = "Resolution",
          y = "ARI with glod standard",
          linetype = "Clustering\nmethod",
