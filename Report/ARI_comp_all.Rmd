@@ -46,7 +46,7 @@ comp_dune_ref <- function(dataset, comp = "", ref) {
                         paste0(dataset, "_mergers.rds")))
   } else {
     df <- readRDS(here("data", "singleTree",
-                        paste0(dataset, comp, "_mergers.rds")))
+                        paste0(dataset, comp, "_merger.rds")))
   }
   
   ARI_ref_sc3 <- data.frame(
@@ -85,7 +85,7 @@ comp_tree_ref <- function(dataset, comp, ref, type) {
                         paste0(dataset, "_mergers.rds")))
   } else {
     merger <- readRDS(here("data", "singleTree",
-                           paste0(dataset, comp, "_mergers.rds")))
+                           paste0(dataset, comp, "_merger.rds")))
   }
   ns <- lapply(merger$currentMat, n_distinct)
   
@@ -213,7 +213,7 @@ comp_single_ref <- function(dataset, comp, ref) {
     dune <- read.csv(here("data", "singleTree",
                         paste0(dataset, comp, "_Dune.csv")))
     merger <- readRDS(here("data", "singleTree",
-                           paste0(dataset, comp, "_mergers.rds")))
+                           paste0(dataset, comp, "_merger.rds")))
   }
   
   ns <- lapply(merger$currentMat, n_distinct)
@@ -290,9 +290,34 @@ comp_dataset <- function(dataset){
     comp_all(dataset, comp = "_large2", ref = allen_clusters),
     comp_all(dataset, comp = "_large3", ref = allen_clusters)
   )  %>%
-    mutate(comp = case_when(comp == "" ~ "comp1",
-                            comp == "_large2" ~ "comp2",
-                            comp == "_large3" ~ "comp3"))
-
+    mutate(comp = case_when(comp == "" ~ "x1",
+                            comp == "_large2" ~ "x",
+                            comp == "_large3" ~ "x"))
+  return(df)
 }
+```
+
+```{r, fig.height=8}
+plot_all <- function() {
+  df <- bind_rows(
+    "SMARTer_cells_MOp" = comp_dataset(dataset = "SMARTer_cells_MOp"),
+    "SMARTer_nuclei_MOp" = comp_dataset(dataset = "SMARTer_nuclei_MOp"),
+    .id = "dataset"
+  ) %>%
+    mutate(scenario = paste(dataset, method, comp, sep = "_"))
+  p <- ggplot(df %>% select(scenario, Merge_method, AUARIC) %>%
+                group_by(scenario) %>%
+                filter(Merge_method != "Param") %>%
+                mutate(rk = dense_rank(desc(AUARIC)),
+                       rk = as.character(rk)),
+              aes(x = scenario, y = Merge_method, fill = rk)) +
+    geom_tile() +
+    scale_fill_viridis_d() +
+    theme_classic() +
+    theme(axis.text.x = element_text(angle = 90)) +
+    labs(x = "", y = "")
+  return(p)
+}
+
+plot_all() 
 ```
