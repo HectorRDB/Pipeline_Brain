@@ -291,13 +291,13 @@ comp_dataset <- function(dataset){
     comp_all(dataset, comp = "_large3", ref = allen_clusters)
   )  %>%
     mutate(comp = case_when(comp == "" ~ "x1",
-                            comp == "_large2" ~ "x",
-                            comp == "_large3" ~ "x"))
+                            comp == "_large2" ~ "x2",
+                            comp == "_large3" ~ "x3"))
   return(df)
 }
 ```
 
-```{r, fig.height=8}
+```{r, fig.height=6}
 plot_all <- function() {
   df <- bind_rows(
     "SMARTer_cells_MOp" = comp_dataset(dataset = "SMARTer_cells_MOp"),
@@ -314,7 +314,8 @@ plot_all <- function() {
     geom_tile() +
     scale_fill_viridis_d() +
     theme_classic() +
-    theme(axis.text.x = element_text(angle = 90)) +
+    theme(axis.text.x = element_text(angle = 90),
+          axis.line = element_blank()) +
     labs(x = "", y = "")
   return(p)
 }
