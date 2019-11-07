@@ -152,7 +152,7 @@ for (clustering in c("sc3", "Monocle", "Seurat")) {
 }
 
 # Doing the merges
-cutoffs <- seq(from = 0, to = 1, by = .05)
+cutoffs <- seq(from = 0, to = .5, by = .01)
 res <- list()
 for (clustering in c("sc3", "Monocle", "Seurat")) {
   print(clustering)
