@@ -3,3 +3,5 @@
 .Rproj.user
 Pipeline_Brain.Rproj
 TODO.*
+*.out
+*.Rout
