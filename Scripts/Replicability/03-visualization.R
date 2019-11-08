@@ -468,7 +468,7 @@ main_lab <- function(
 
 main <- function() {
   print("full data")
-  main_full_data()
+  # main_full_data()
   print("all Dunes")
   main_all_Dunes()
   print("single method")
@@ -476,7 +476,7 @@ main <- function() {
   print("single merges")
   main_single_merge()
   print("lab comp")
-  main_lab()
+  # main_lab()
 }
 
 if (!interactive()) {
