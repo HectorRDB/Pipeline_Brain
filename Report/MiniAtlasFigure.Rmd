@@ -105,24 +105,29 @@ rep <- rep %>%
                                 type == "tenx" ~ "Between 10x V2 datasets",
                                 # type == "Lab" ~ "Between Labs"
                                 ))
-ggplot(rep, aes(x = (replicable_clusters + non_replicable_clusters) / 2,
-                y = fraction_replicable_cells)) +
+ggplot(rep, 
+       aes(x = (replicable_clusters + non_replicable_clusters) / 2,
+                y = replicable_clusters / 
+             (replicable_clusters + non_replicable_clusters))) +
   geom_point(size = 4, alpha = .8, aes(col = Comparison)) +
   theme_classic() +
   labs(x = "Resolution",
        title = "Quantifying the trade-off between replicability and resolution",
-       y = "Replicability") +
+       y = "Fraction of replicable clusters") +
   scale_y_continuous(limits = c(0, 1)) +
   scale_x_continuous(limits = c(10, 100))
 ggsave(here::here("Figures", "MiniAtlas", "overall.pdf"))
 
 ggplot(rep %>% filter(level == "Initial"),
        aes(x = (replicable_clusters + non_replicable_clusters) / 2,
-                y = fraction_replicable_cells, col = Comparison,
+           y = replicable_clusters /
+             (replicable_clusters + non_replicable_clusters),
+           col = Comparison,
                 shape = clustering_method)) +
   geom_point(size = 4) +
   my_theme() +
-  labs(x = "Resolution", title = "Quantifying the trade-off between replicability and resolution",
-       y = "Replicability")
+  labs(x = "Resolution",
+       title = "Quantifying the trade-off between replicability and resolution",
+       y = "Fraction of replicable clusters")
 ggsave(here::here("Figures", "MiniAtlas", "initial.pdf"))
 ```
