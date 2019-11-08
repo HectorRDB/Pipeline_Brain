@@ -122,7 +122,7 @@ stopMatrix <- lapply(levels, function(p){
     as.matrix() %>%
     return()
 }) %>%
-  do.call(cbind)
+  do.call('cbind', args = .)
 
 colnames(stopMatrix) <- lapply(levels, function(p){
   i <- as.character(round(100 * p))
