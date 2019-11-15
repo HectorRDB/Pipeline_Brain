@@ -109,53 +109,29 @@ cat("Finished Consensus Merge\n")
 saveRDS(object = merger, file = paste0(output, "_mergers.rds"))
 
 # Save the matrix with all the consensus steps ----
-print("...Initial consensus")
-initialMat <- as.matrix(merger$initialMat) 
-cellsConsensus <- Consensus(clusMat = initialMat, large = TRUE)
-consensusInit <- cellsConsensus
+Names <- as.character(Names)
+chars <- c("sc3", "Monocle", "Seurat")
 
-print("...Final consensus")
-currentMat <- merger$currentMat
-currentMat <- as.matrix(currentMat) 
+levels <- seq(from = 0, to = 1, by = .05)
+stopMatrix <- lapply(levels, function(p){
+  print(paste0("...Intermediary consensus at ", round(100 * p), "%"))
+  mat <- intermediateMat(merger = merger, p = p) %>%
+    as.matrix()
+  mat <- mat[Names, ]
+  return(mat)
+}) %>%
+  do.call('cbind', args = .)
 
-cellsConsensus <- Consensus(clusMat = currentMat, large = TRUE)
-consensusFinal <- cellsConsensus
-
-print("...Intermediary consensus at 33.3%")
-stopMatrix_33 <- intermediateMat(merger = merger,
-                                 p = 1/3)
-stopMatrix_33 <- as.matrix(stopMatrix_33)
-
-cellsConsensus <- Consensus(clusMat = stopMatrix_33, large = TRUE)
-consensusInt_33 <- cellsConsensus
-
-print("...Intermediary consensus at 66.7%")
-stopMatrix_66 <- intermediateMat(merger = merger, p = 2/3)
-stopMatrix_66 <- as.matrix(stopMatrix_66)
-
-cellsConsensus <- Consensus(clusMat = stopMatrix_66, large = TRUE)
-consensusInt_66 <- cellsConsensus
-
-print("...Intermediary consensus at 90%")
-stopMatrix_90 <- intermediateMat(merger = merger, p = .9)
-stopMatrix_90 <- as.matrix(stopMatrix_90)
-
-cellsConsensus <- Consensus(clusMat = stopMatrix_90, large = TRUE)
-consensusInt_90 <- cellsConsensus
-
+colnames(stopMatrix) <- lapply(levels, function(p){
+  i <- as.character(round(100 * p))
+  if (nchar(i) == 1) {
+    i <- paste0("0", i)
+  }
+  return(paste(chars, i, sep = "-"))
+}) %>% unlist()
 print("...Full matrix")
-mat <- cbind(as.character(Names),
-             initialMat, consensusInit,
-             stopMatrix_33, consensusInt_33,
-             stopMatrix_66, consensusInt_66,
-             stopMatrix_90, consensusInt_90,
-             currentMat, consensusFinal)
-chars <- c("sc3", "Monocle", "Seurat", "Consensus")
+mat <- cbind(as.character(Names), stopMatrix)
 
-colnames(mat) <- c("cells",
-                   paste(chars, "Initial", sep = "-"), paste(chars, "33", sep = "-"),
-                   paste(chars, "66", sep = "-"), paste(chars, "90", sep = "-"),
-                   paste(chars, "Final", sep = "-")
-)
+colnames(mat)[1] <- "cells"
 
 write_csv(x = as.data.frame(mat), path = paste0(output, ".csv"))

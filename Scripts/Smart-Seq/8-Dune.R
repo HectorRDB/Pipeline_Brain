@@ -81,6 +81,7 @@ cat("Finished Consensus Merge\n")
 saveRDS(object = merger, file = paste0(output, "_mergers.rds"))
 
 # Save the matrix with all the consensus steps ----
+Names <- as.character(Names)
 chars <- c("sc3", "Monocle", "Seurat")
 
 levels <- seq(from = 0, to = 1, by = .05)
@@ -104,5 +105,6 @@ print("...Full matrix")
 mat <- cbind(as.character(Names), stopMatrix)
 
 colnames(mat)[1] <- "cells"
+
 
 write_csv(x = as.data.frame(mat), path = paste0(output, ".csv"))
