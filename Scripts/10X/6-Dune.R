@@ -100,7 +100,9 @@ ggsave(filename = paste0(opt$p, "_Monocle_ARI.png"),
 Monocle <- as.data.frame(Monocle)[, monocle_p] %>% as.numeric()
 
 # Get the final clustering labels
+Names <- as.character(Names)
 clusMat <- data.frame("sc3" = sc3, "Monocle" = Monocle, "Seurat" = seurat)
+rownames(clusMat) <- Names
 
 # Do the consensus clustering ----
 print(paste0("Number of cores: ", opt$n))
@@ -109,7 +111,6 @@ cat("Finished Consensus Merge\n")
 saveRDS(object = merger, file = paste0(output, "_mergers.rds"))
 
 # Save the matrix with all the consensus steps ----
-Names <- as.character(Names)
 chars <- c("sc3", "Monocle", "Seurat")
 
 levels <- seq(from = 0, to = 1, by = .05)
