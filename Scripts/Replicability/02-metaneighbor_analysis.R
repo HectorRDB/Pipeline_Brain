@@ -208,7 +208,7 @@ main <- function() {
   print("single All Dunes")
   analyze_all_Dunes()
   print("single full data")
-  # analyze_full_data()
+  analyze_full_data()
   print("Analyze lab comp")
   # analyze_lab_data()
 }
