@@ -40,7 +40,7 @@ load_labels <- function(cell_names, data_path = here("data")) {
     zeng_10x_cells = read.csv(file.path(input_dir, "10x_cells_MOp.csv")),
     zeng_10x_nuclei = read.csv(file.path(input_dir, "10x_nuclei_MOp.csv")),
     .id = "dataset"
-  ) %>% select(-X)
+  )
 
   # reorder cells to match data
   row_match <- match(cell_names, label_matrix$cells)

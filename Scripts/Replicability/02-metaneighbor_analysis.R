@@ -199,6 +199,8 @@ analyze_lab_data <- function(data_path = here("data"),
 }
 ## To run ----
 main <- function() {
+  print("full data")
+  analyze_full_data()
   print("single Method smart")
   analyze_single_methods_smart()
   print("single Method all")
@@ -207,8 +209,6 @@ main <- function() {
   analyze_all_single_merge()
   print("single All Dunes")
   analyze_all_Dunes()
-  print("single full data")
-  analyze_full_data()
   print("Analyze lab comp")
   # analyze_lab_data()
 }
