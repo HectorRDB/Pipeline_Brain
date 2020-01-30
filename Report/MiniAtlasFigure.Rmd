@@ -26,7 +26,7 @@ rm(libs)
 
 # Old Figure
 
-```{r}
+```{r, eval = FALSE}
 isPareto <- function(x, df) {
   fraction <-  as.numeric(x[7])
   nb  <- as.numeric(x[10])
@@ -85,15 +85,19 @@ folders <- c("cells", "nuclei", "tenx", "smart")
 rep <- lapply(folders, function(type) {
   if (type == "smart") {
     df <- read.table(here::here("data", "Replicability", "Dune_Smart", "Normal",
-                              "consensus_cluster_replicability.txt"))  
+                              "consensus_cluster_replicability.txt")) %>%
+      filter(level %in% c(0, 30, 70, 90, 100))
   } else {
     df <- read.table(here::here("data", "Replicability", "Dune", type,
                               "consensus_cluster_replicability.txt"))  
   }
   df <- df %>% 
     # filter(level == "Initial") %>%
+    filter(!is.na(level)) %>%
     mutate(type = type,
-           clustering_method = str_remove(clustering_method, "\\..+"))
+           clustering_method = str_remove(clustering_method, "\\..+")) %>%
+    select(-level) %>%
+    filter(clustering_method != "Consens")
   return(df)
 })
 
@@ -116,7 +120,7 @@ ggplot(rep,
        y = "Fraction of replicable clusters") +
   scale_y_continuous(limits = c(0, 1)) +
   scale_x_continuous(limits = c(10, 100))
-ggsave(here::here("Figures", "MiniAtlas", "overall.pdf"))
+# ggsave(here::here("Figures", "MiniAtlas", "overall.pdf"))
 
 ggplot(rep %>% filter(level == "Initial"),
        aes(x = (replicable_clusters + non_replicable_clusters) / 2,
@@ -129,5 +133,5 @@ ggplot(rep %>% filter(level == "Initial"),
   labs(x = "Resolution",
        title = "Quantifying the trade-off between replicability and resolution",
        y = "Fraction of replicable clusters")
-ggsave(here::here("Figures", "MiniAtlas", "initial.pdf"))
+# ggsave(here::here("Figures", "MiniAtlas", "initial.pdf"))
 ```
