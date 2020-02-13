@@ -23,7 +23,9 @@ module load intel/18.4
 module load hdf5
 module load gcc
 
-Rscript --no-save --verbose  1-load_filter.R -l $loc -o $out -c 30 > 1c.out 2>&1
+while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
+    Rscript --no-save --verbose  1-load_filter.R -l $loc -o $out \
+    -c 30 > 1c.out 2>&1
 
 
 logStorage=/pylon5/ib5phnp/hectorrb/logs
