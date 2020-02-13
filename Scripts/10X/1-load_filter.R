@@ -44,10 +44,12 @@ if (str_detect(loc, "MOp")) {
   counts <- Read10X_h5(paste0(loc, "umi_counts.h5"))
   
   colnames(counts) <- str_replace_all(colnames(counts), "\\.", "-")
+  print("Getting the metadata")
   meta <- read.csv(paste0(loc, "sample_metadata.csv"),
                    header = T, row.names = 1)
   allenClusters <- read.csv(paste0(loc, "cluster.membership.csv"),
-                            header = T, col.names = c("sample", "clusters"))
+                            header = T, col.names = c("sample", "clusters"),
+                            stringsAsFactors = FALSE)
   meta <- meta[allenClusters$sample, ]
   meta$allenClusters <- allenClusters$clusters
 } else {
@@ -56,7 +58,8 @@ if (str_detect(loc, "MOp")) {
   meta <- data.frame(cells = colnames(counts))
 }
 
-cat("Preparing the data", "\n")
+print("Preparing the data")
+pincolnames
 counts <- counts[, rownames(meta)]
 counts[is.na(counts)] <- 0
 counts <- as.matrix(counts)
