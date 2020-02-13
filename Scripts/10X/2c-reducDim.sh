@@ -4,7 +4,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=20
 #SBATCH -p LM
-#SBATCH --mem=1000GB
+#SBATCH --mem=500GB
 #SBATCH -t 4-00:00:00
 #SBATCH --nodes=1
 
@@ -19,7 +19,7 @@ MEMORYFILE=${basename}.txt
 NAME=Hector
 echo $NAME > $MEMORYFILE
 # Replace with your own variables. This is cpus-per-tasks partition mem
-echo 20 LM 1000GB >> $MEMORYFILE
+echo 20 LM 500GB >> $MEMORYFILE
 TIMELAPSES=30
 echo $TIMELAPSES >> $MEMORYFILE
 
