@@ -30,7 +30,7 @@ cluster="/pylon5/ib5phhp/hectorrb/10x_v3_nuclei_MOp/cluster.annotation.csv"
 MEMORYFILE="2_zinb_memoryLogger.txt"
 
 while true; do free -h >> $MEMORYFILE; sleep 30; done & Rscript --no-save --verbose\
-  2-reducDim.R -l $loc -o $out -p $plot -n 20 -d 5 -c $cluster > 2a.out 2>&1
+  2-reducDim.R -l $loc -o $out -p $plot -n 20 -d 5 -c $cluster > 2c.out 2>&1
 
 logStorage=/pylon5/ib5phhp/shared/improved-happiness/xsedelogs
 cp $MEMORYFILE ${logStorage}/$MEMORYFILE

@@ -13,4 +13,4 @@ out="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_v3_cells_MOp_filt.rds"
 module load intel/18.4
 module load hdf5
 
-Rscript --no-save --verbose  1-load_filter.R -l $loc -o $out -c 30 > 1a.out 2>&1
+Rscript --no-save --verbose  1-load_filter.R -l $loc -o $out -c 30 > 1d.out 2>&1
