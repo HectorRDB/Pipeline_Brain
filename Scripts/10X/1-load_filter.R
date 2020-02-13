@@ -33,6 +33,7 @@ if (!is.na(opt$o)) {
 
 library(dplyr)
 library(stringr)
+library(stringr)
 library(Seurat)
 library(SingleCellExperiment)
 
@@ -52,6 +53,8 @@ if (str_detect(loc, "MOp")) {
                             stringsAsFactors = FALSE)
   meta <- meta[allenClusters$sample, ]
   meta$allenClusters <- allenClusters$clusters
+  meta <- meta %>%
+    mutate(sample = paste0(word(exp_component_name, 1, sep = "-"), "-5"))
 } else {
   print("This is a dataset from someone else, assuming a csv input file")
   counts <- read.csv(loc, row.names = 1)
@@ -59,7 +62,8 @@ if (str_detect(loc, "MOp")) {
 }
 
 print("Preparing the data")
-print(colnames(counts))
+print(colnames(counts))[1:10]
+print(mean(meta$sample %in% colnames(counts)))
 counts <- counts[, rownames(meta)]
 counts[is.na(counts)] <- 0
 counts <- as.matrix(counts)
