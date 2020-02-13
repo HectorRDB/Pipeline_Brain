@@ -54,7 +54,7 @@ if (str_detect(loc, "MOp")) {
   meta <- meta[allenClusters$sample, ]
   meta$allenClusters <- allenClusters$clusters
   meta <- meta %>%
-    mutate(sample = paste0(word(exp_component_name, 1, sep = "-"), "-5"))
+    mutate(sample = str_extract(exp_component_name, "^[A-Z]*-."))
 } else {
   print("This is a dataset from someone else, assuming a csv input file")
   counts <- read.csv(loc, row.names = 1)
@@ -62,10 +62,7 @@ if (str_detect(loc, "MOp")) {
 }
 
 print("Preparing the data")
-rownames(counts) <- word(rownames(counts), 1, sep = "-")
-print(colnames(counts))[1:10]
-print(mean(meta$sample %in% colnames(counts)))
-counts <- counts[, rownames(meta)]
+counts <- counts[, meta$sample]
 counts[is.na(counts)] <- 0
 counts <- as.matrix(counts)
 print(dim(counts))
