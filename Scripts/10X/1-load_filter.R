@@ -68,7 +68,7 @@ print(paste0("Initially, we have ", ncol(counts), " samples and ", nrow(counts),
 counts <- counts[, meta$sample]
 print(paste0("Then, we keep ", ncol(counts), " good quality cells"))
 cutoff <- as.integer((opt$c))
-filt <- rowSums(counts >= opt$c) >= opt$c
+filt <- rowSums(counts >= cutoff) >= cutoff
 print(sum(filt))
 print(sum(counts[filt, ]) / sum(counts))
 counts <- counts[filt, ]
