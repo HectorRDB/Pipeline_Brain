@@ -63,17 +63,17 @@ if (str_detect(loc, "MOp")) {
 }
 
 print("Preparing the data")
-print("Initially, we have ", ncol(counts), " samples and ", nrow(counts),
-      "genes.")
+print(paste0("Initially, we have ", ncol(counts), " samples and ", nrow(counts),
+             "genes."))
 counts <- counts[, meta$sample]
-print("Then, we keep ", ncol(counts), " good quality cells")
+print(paste0("Then, we keep ", ncol(counts), " good quality cells"))
 print(quantile(counts, p = (0:10)/10))
 filt <- rowSums(counts >= opt$c) >= opt$c
 print(sum(filt))
 print(sum(counts[filt, ]) / sum(counts))
 counts <- counts[filt, ]
-print("At the end, we have ", ncol(counts), " samples and ", nrow(counts),
-      "genes.")
+print(paste0("At the end, we have ", ncol(counts), " samples and ",
+             nrow(counts), "genes."))
 
 cat("Saving output to ", output)
 sce <- SingleCellExperiment(assays = list(counts = as.matrix(counts),
