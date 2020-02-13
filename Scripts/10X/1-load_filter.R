@@ -59,7 +59,7 @@ if (str_detect(loc, "MOp")) {
 }
 
 print("Preparing the data")
-pincolnames
+print(colnames(counts))
 counts <- counts[, rownames(meta)]
 counts[is.na(counts)] <- 0
 counts <- as.matrix(counts)
