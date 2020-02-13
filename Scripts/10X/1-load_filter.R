@@ -62,6 +62,7 @@ if (str_detect(loc, "MOp")) {
 }
 
 print("Preparing the data")
+rownames(counts) <- word(rownames(counts), 1, sep = "-")
 print(colnames(counts))[1:10]
 print(mean(meta$sample %in% colnames(counts)))
 counts <- counts[, rownames(meta)]
