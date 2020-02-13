@@ -33,9 +33,10 @@ if (!is.na(opt$o)) {
 
 library(dplyr)
 library(stringr)
-library(stringr)
 library(Seurat)
 library(SingleCellExperiment)
+library(Matrix)
+
 
 # Load data per se ----
 
@@ -63,10 +64,8 @@ if (str_detect(loc, "MOp")) {
 
 print("Preparing the data")
 counts <- counts[, meta$sample]
-counts[is.na(counts)] <- 0
 counts <- as.matrix(counts)
 print(dim(counts))
-print(counts[1:10, 1:10])
 print(quantile(counts, p = (0:10)/10))
 filt <- rowSums(counts >= opt$c) >= opt$c
 print(sum(filt))
