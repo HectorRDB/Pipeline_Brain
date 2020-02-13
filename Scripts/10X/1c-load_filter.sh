@@ -7,7 +7,7 @@
 #SBATCH -t 24:00:00
 #SBATCH --nodes=1
 
-loc="/pylon5/ib5phnp/hectorrb/10x_v3_nuclei_MOp"
+loc="/pylon5/ib5phnp/hectorrb/10x_v3_nuclei_MOp/"
 out="/pylon5/ib5phnp/hectorrb/ProcessedData/10x_v3_nuclei_MOp_filt.rds"
 
 timestamp=$(date +"%Y%m%d-%H%M%S")
