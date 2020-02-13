@@ -28,5 +28,5 @@ while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
   Rscript --no-save --verbose  1-load_filter.R -l $loc -o $out -c 25 > 1-Regev.out 2>&1
 
 
-logStorage=/pylon5/ib5phhp/shared/improved-happiness/xsede/xsedelogs
+logStorage=/pylon5/ib5phnp/hectorrb/logs
 cp $MEMORYFILE ${logStorage}/$MEMORYFILE
