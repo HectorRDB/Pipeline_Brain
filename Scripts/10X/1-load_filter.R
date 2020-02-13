@@ -54,7 +54,7 @@ if (str_detect(loc, "MOp")) {
   meta <- meta[allenClusters$sample, ]
   meta$allenClusters <- allenClusters$clusters
   meta <- meta %>%
-    mutate(sample = str_extract(exp_component_name, "^[A-Z]*-."))
+    mutate(sample = str_extract(exp_component_name, "^[A-Z]*-[0-9]*"))
 } else {
   print("This is a dataset from someone else, assuming a csv input file")
   counts <- read.csv(loc, row.names = 1)
