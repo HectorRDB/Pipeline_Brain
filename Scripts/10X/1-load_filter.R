@@ -48,6 +48,7 @@ if (str_detect(loc, "MOp")) {
                    header = T, row.names = 1)
   allenClusters <- read.csv(paste0(loc, "cluster.membership.csv"),
                             header = T, col.names = c("sample", "clusters"))
+  meta <- meta[allenClusters$sample, ]
   meta$allenClusters <- allenClusters$clusters
 } else {
   print("This is a dataset from someone else, assuming a csv input file")
@@ -56,6 +57,7 @@ if (str_detect(loc, "MOp")) {
 }
 
 cat("Preparing the data", "\n")
+counts <- counts[, rownames(meta)]
 counts[is.na(counts)] <- 0
 counts <- as.matrix(counts)
 print(dim(counts))
