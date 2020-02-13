@@ -23,14 +23,14 @@ echo 20 LM 1500GB >> $MEMORYFILE
 TIMELAPSES=30
 echo $TIMELAPSES >> $MEMORYFILE
 
-loc="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_v3_nuclei_MOp_filt.rds"
-out="/pylon5/ib5phhp/hectorrb/ProcessedData/10x_v3_nuclei_MOp_norm.rds"
+loc="/pylon5/ib5phnp/hectorrb/ProcessedData/10x_v3_nuclei_MOp_filt.rds"
+out="/pylon5/ib5phnp/hectorrb/ProcessedData/10x_v3_nuclei_MOp_norm.rds"
 plot="/home/hectorrb/Pipeline_Brain/Figures/EDA/10x_v3_nuclei_Mop_tsne"
-cluster="/pylon5/ib5phhp/hectorrb/10x_v3_nuclei_MOp/cluster.annotation.csv"
+cluster="/pylon5/ib5phnp/hectorrb/10x_v3_nuclei_MOp/cluster.annotation.csv"
 MEMORYFILE="2_zinb_memoryLogger.txt"
 
 while true; do free -h >> $MEMORYFILE; sleep 30; done & Rscript --no-save --verbose\
   2-reducDim.R -l $loc -o $out -p $plot -n 20 -d 5 -c $cluster > 2c.out 2>&1
 
-logStorage=/pylon5/ib5phhp/shared/improved-happiness/xsedelogs
+logStorage=/pylon5/ib5phnp/hectorrb/logs
 cp $MEMORYFILE ${logStorage}/$MEMORYFILE
