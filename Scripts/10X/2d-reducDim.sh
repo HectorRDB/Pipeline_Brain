@@ -26,7 +26,7 @@ echo $TIMELAPSES >> $MEMORYFILE
 loc="/pylon5/ib5phnp/hectorrb/ProcessedData/10x_v3_cells_MOp_filt.rds"
 out="/pylon5/ib5phnp/hectorrb/ProcessedData/10x_v3_cells_MOp_norm.rds"
 plot="/home/hectorrb/Pipeline_Brain/Figures/EDA/10x_v3_cells_Mop_tsne"
-cluster="/pylon5/ib5phhp/hectorrb/10x_v3_cells_MOp/cluster.annotation.csv"
+cluster="/pylon5/ib5phnp/hectorrb/10x_v3_cells_MOp/cluster.annotation.csv"
 
 while true; do free -h >> $MEMORYFILE; sleep 30; done & Rscript --no-save --verbose\
   2-reducDim.R -l $loc -o $out -p $plot -n 8 -d 5 -c $cluster > 2d.out 2>&1
