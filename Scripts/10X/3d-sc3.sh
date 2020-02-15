@@ -27,7 +27,7 @@ loc="/pylon5/ib5phnp/hectorrb/ProcessedData/10x_v3_cells_MOp_filt.rds"
 out="/home/hectorrb/Pipeline_Brain/data/singleMethod/10x_v3_cells_MOp_sc3.csv"
 
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & Rscript \
-  --no-save --verbose  3-sc3.R -n 1 -l $loc -o $out > ${basename}.out 2>&1
+  --no-save --verbose  3-sc3.R -n 1 -l $loc -o $out > 3d.out 2>&1
 
 logStorage=/pylon5/ib5phnp/hectorrb/logs
 cp $MEMORYFILE ${logStorage}/$MEMORYFILE

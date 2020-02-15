@@ -6,7 +6,7 @@
 #SBATCH -p LM
 #SBATCH --mem=800GB
 #SBATCH -t 7-00:00:00
-#SBATCH --nodes=1
+#SBATCH --nodes=10
 
 module load gcc/8.2.0
 
