@@ -4,9 +4,9 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
 #SBATCH -p LM
-#SBATCH --mem=500GB
+#SBATCH --mem=800GB
 #SBATCH -t 7-00:00:00
-#SBATCH --nodes=1
+#SBATCH --nodes=10
 
 module load gcc/8.2.0
 
@@ -27,7 +27,7 @@ loc="/pylon5/ib5phnp/hectorrb/ProcessedData/10x_v3_nuclei_MOp_filt.rds"
 out="/home/hectorrb/Pipeline_Brain/data/singleMethod/10x_v3_nuclei_MOp_sc3.csv"
 
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & Rscript \
-  --no-save --verbose  3-sc3.R -n 1 -l $loc -o $out > ${basename}.out 2>&1
+  --no-save --verbose  3-sc3.R -n 10 -l $loc -o $out > 3c 2>&1
 
 logStorage=/pylon5/ib5phnp/hectorrb/logs
 cp $MEMORYFILE ${logStorage}/$MEMORYFILE
