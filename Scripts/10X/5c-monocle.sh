@@ -13,7 +13,7 @@ loc="/scratch/users/singlecell/MiniAtlas/data/rds/10x_v3_nuclei_MOp_norm.rds"
 out=${Pipeline}/singleMethod/10x_v3_nuclei_MOp_Monocle.csv
 Rscript --verbose ${Pipeline}/Smart-Seq/6-monocle.R -l $loc -o $out > 5c.out 2>&1
 
-loc="/scratch/users/singlecell/MiniAtlas/data/rds/10x_v3_cells_MOp_zinb.rds"
+loc="/scratch/users/singlecell/MiniAtlas/data/rds/10x_v3_cells_MOp_norm.rds"
 out=${Pipeline}/singleMethod/10x_v3_cells_MOp_Monocle.csv
 Rscript --verbose ${Pipeline}/Smart-Seq/6-monocle.R -l $loc -o $out > 5d.out 2>&1
 
