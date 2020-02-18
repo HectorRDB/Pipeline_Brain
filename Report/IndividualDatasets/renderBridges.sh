@@ -3,22 +3,21 @@
 #SBATCH --mail-type=ALL
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
-#SBATCH -p LM
-#SBATCH --mem=500GB
-#SBATCH -t 1-00:00:00
+#SBATCH -p RM
+#SBATCH -t 2-00:00:00
 #SBATCH --nodes=1
 
 # Create the MEMORYFILE file
 timestamp=$(date +"%Y%m%d-%H%M%S")
 # Do not use underscore in your script name or your parameters
-basename=render-files_SMART-Seq_${timestamp}
+basename=render-files_10x-v3_${timestamp}
 MEMORYFILE=${basename}.txt
 
 # Add the first few lines for analytic purposes.
 NAME=Hector
 echo $NAME > $MEMORYFILE
 # Replace with your own variables. This is cpus-per-tasks partition mem
-echo 1 LM 500GB >> $MEMORYFILE
+echo 1 RM >> $MEMORYFILE
 TIMELAPSES=30
 echo $TIMELAPSES >> $MEMORYFILE
 
