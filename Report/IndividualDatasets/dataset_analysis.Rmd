@@ -9,7 +9,7 @@ output:
     code_download: TRUE
     
 params:
-  dataset: "10x_cells_MOp"
+  dataset: "10x_v3_cells_MOp"
   title: "Analysis of the SMARTer_cells_MOp dataset"
 ---
 ---
@@ -31,6 +31,7 @@ suppressMessages(
 rm(libs)
 type <- function(dataset) {
   if (str_detect(dataset, "SMART")) return("Smart-Seq")
+  if (str_detect(dataset, "10x_v3")) return("10X_V3")
   if (str_detect(dataset, "10x")) return("10X")
   if (str_detect(dataset, "Regev")) return("Regev")
 }
