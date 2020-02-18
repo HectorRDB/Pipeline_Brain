@@ -11,7 +11,7 @@ module load intel/18.4
 module load hdf5
 module load gcc
 timestamp=$(date +"%Y%m%d-%H%M%S")
-basename=10x-Dune_-nuclei_${timestamp}
+basename=Dune_10x-v3-nuclei_${timestamp}
 MEMORYFILE=${basename}.txt
 
 echo $NAME > $MEMORYFILE
@@ -20,12 +20,12 @@ TIMELAPSES=30
 echo $TIMELAPSES >> $MEMORYFILE
 
 echo "Nuclei dataset"
-loc="/home/hectorrb/Pipeline_Brain/data/singleMethod/10x_nuclei_MOp"
-out="/home/hectorrb/Pipeline_Brain/data/Dune/10x_nuclei_MOp"
-plot="/home/hectorrb/Pipeline_Brain/Figures/10X/10x_nuclei_MOp"
+loc="/home/hectorrb/Pipeline_Brain/data/singleMethod/10x_v3_nuclei_MOp"
+out="/home/hectorrb/Pipeline_Brain/data/Dune/10x_v3_nuclei_MOp"
+plot="/home/hectorrb/Pipeline_Brain/Figures/10X_V3/10x_v3_nuclei_MOp"
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & \
       Rscript --verbose  6-Dune.R -n 20 -l $loc -o $out -S "1.2.50" \
-      -C "100" -m "k_45" -p $plot > 6b.out 2>&1
+      -C "100" -m "k_45" -p $plot > 6c.out 2>&1
 
 logStorage=/pylon5/ib5phhp/shared/improved-happiness/xsede/xsedelogs
 cp $MEMORYFILE ${logStorage}/$MEMORYFILE
