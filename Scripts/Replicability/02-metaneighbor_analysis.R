@@ -62,7 +62,8 @@ export_components <- function(component_obj, output_dir) {
 }
 
 analyze_smart_tenx <- function(dataset, label_matrix, output_dir) {
-  compute_replicability(dataset, label_matrix,
+  keep <- !dataset$study_id %in% c("zeng_smart_cells", "zeng_smart_nuclei")
+  compute_replicability(dataset[, keep], label_matrix[keep, ],
                         file.path(output_dir, "smart_tenx"))
 }
 
@@ -72,20 +73,26 @@ analyze_smart <- function(dataset, label_matrix, output_dir) {
                         file.path(output_dir, "smart"))
 }
 
-analyze_tenx <- function(dataset, label_matrix, output_dir) {
+analyze_tenx_v2 <- function(dataset, label_matrix, output_dir) {
   keep <- dataset$study_id %in% c("zeng_10x_cells", "zeng_10x_nuclei")
   compute_replicability(dataset[, keep], label_matrix[keep, ],
                         file.path(output_dir, "tenx"))
 }
 
+analyze_tenx_v3 <- function(dataset, label_matrix, output_dir) {
+  keep <- dataset$study_id %in% c("zeng_10x_v3_cells", "zeng_10x_v3_nuclei")
+  compute_replicability(dataset[, keep], label_matrix[keep, ],
+                        file.path(output_dir, "tenx_v3"))
+}
+
 analyze_cells <- function(dataset, label_matrix, output_dir) {
-  keep <- dataset$study_id %in% c("zeng_10x_cells", "zeng_smart_cells")
+  keep <- dataset$study_id %in% c("zeng_10x_v3_cells", "zeng_smart_cells")
   compute_replicability(dataset[, keep], label_matrix[keep, ],
                         file.path(output_dir, "cells"))
 }
 
 analyze_nuclei <- function(dataset, label_matrix, output_dir) {
-  keep <- dataset$study_id %in% c("zeng_10x_nuclei", "zeng_smart_nuclei")
+  keep <- dataset$study_id %in% c("zeng_10x_v3_nuclei", "zeng_smart_nuclei")
   compute_replicability(dataset[, keep], label_matrix[keep, ],
                         file.path(output_dir, "nuclei"))
 }
@@ -101,7 +108,8 @@ analyze_full_data <- function(data_path = here("data"),
   labels <- load_labels(colnames(dataset), data_path)
 
   analyze_smart_tenx(dataset, labels, output_dir)
-  analyze_tenx(dataset, labels, output_dir)
+  analyze_tenx_v2(dataset, labels, output_dir)
+  analyze_tenx_v3(dataset, labels, output_dir)
   analyze_cells(dataset, labels, output_dir)
   analyze_nuclei(dataset, labels, output_dir)
 }
@@ -177,13 +185,15 @@ analyze_single_methods_all <- function(
   # Seurat
   labels <- load_seurat_all_labels(colnames(dataset), data_path)
   analyze_smart_tenx(dataset, labels, output_dir)
-  analyze_tenx(dataset, labels, output_dir)
+  analyze_tenx_v2(dataset, labels, output_dir)
+  analyze_tenx_v3(dataset, labels, output_dir)
   analyze_cells(dataset, labels, output_dir)
   analyze_nuclei(dataset, labels, output_dir)
   # Monocle
   labels <- load_monocle_all_labels(colnames(dataset), data_path)
   analyze_smart_tenx(dataset, labels, output_dir)
-  analyze_tenx(dataset, labels, output_dir)
+  analyze_tenx_v2(dataset, labels, output_dir)
+  analyze_tenx_v3(dataset, labels, output_dir)
   analyze_cells(dataset, labels, output_dir)
   analyze_nuclei(dataset, labels, output_dir)
 }

@@ -317,6 +317,10 @@ main_full_data <- function(
     file.path(output_dir, "tenx"), 2
   )
   create_summary_figures(
+    label_matrix, file.path(result_path, "tenx_v3"),
+    file.path(output_dir, "tenx_v3"), 2
+  )
+  create_summary_figures(
     label_matrix, file.path(result_path, "cells"),
     file.path(output_dir, "cells"), 2
   )
@@ -434,7 +438,7 @@ main_single_method_all <- function(
   create_summary_figures(label_matrix, file.path(result_path, "smart"),
                          file.path(output_dir, "smart"), 2)
   
-  # Smart-Seq and 10x (2 methods)
+  # Smart-Seq and 10x_v2 and 10x_v3 (2 methods)
   label_matrix <- inner_join(
     load_seurat_all_labels(load_qc_cells()),
     load_monocle_all_labels(load_qc_cells())
@@ -446,6 +450,10 @@ main_single_method_all <- function(
   create_summary_figures(
     label_matrix, file.path(result_path, "tenx"),
     file.path(output_dir, "tenx"), 2
+  )
+  create_summary_figures(
+    label_matrix, file.path(result_path, "tenx_v3"),
+    file.path(output_dir, "tenx_v3"), 2
   )
   create_summary_figures(
     label_matrix, file.path(result_path, "cells"),

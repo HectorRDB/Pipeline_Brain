@@ -39,6 +39,8 @@ load_labels <- function(cell_names, data_path = here("data")) {
     zeng_smart_nuclei = read.csv(file.path(input_dir, "SMARTer_nuclei_MOp.csv")),
     zeng_10x_cells = read.csv(file.path(input_dir, "10x_cells_MOp.csv")),
     zeng_10x_nuclei = read.csv(file.path(input_dir, "10x_nuclei_MOp.csv")),
+    zeng_10x_v3_cells = read.csv(file.path(input_dir, "10x_v3_cells_MOp.csv")),
+    zeng_10x_v3_nuclei = read.csv(file.path(input_dir, "10x_v3_nuclei_MOp.csv")),
     .id = "dataset"
   )
 
@@ -243,13 +245,17 @@ load_seurat_all_labels <- function(cell_names, data_path = here("data")) {
   input_dir <- file.path(data_path, "singleMethod")
   result <- bind_rows(
     zeng_smart_cells = read_single_method(
-      file.path(input_dir, "SMARTer_cells_MOp_Seurat.csv")),
+      file.path(input_dir, "SMARTer_cells_MOp_Monocle.csv")),
     zeng_smart_nuclei = read_single_method(
-      file.path(input_dir, "SMARTer_nuclei_MOp_Seurat.csv")),
+      file.path(input_dir, "SMARTer_nuclei_MOp_Monocle.csv")),
     zeng_10x_cells = read_single_method(
-      file.path(input_dir, "10x_cells_MOp_Seurat.csv")),
+      file.path(input_dir, "10x_cells_MOp_Monocle.csv")),
     zeng_10x_nuclei = read_single_method(
-      file.path(input_dir, "10x_nuclei_MOp_Seurat.csv")),
+      file.path(input_dir, "10x_nuclei_MOp_Monocle.csv")),
+    zeng_10x_v3_cells = read_single_method(
+      file.path(input_dir, "10x_v3_cells_MOp_Monocle.csv")),
+    zeng_10x_v3_nuclei = read_single_method(
+      file.path(input_dir, "10x_v3_nuclei_MOp_Monocle.csv")),
     .id = "dataset"
   )
   
@@ -259,11 +265,16 @@ load_seurat_all_labels <- function(cell_names, data_path = here("data")) {
   n_clusters_nuclei_smart <- apply(result[result$dataset == "zeng_smart_nuclei", ],
                                    2, function(x) length(table(x)))
   n_clusters_cells_10x <- apply(result[result$dataset == "zeng_10x_cells", ],
-                                  2, function(x) length(table(x)))
+                                2, function(x) length(table(x)))
   n_clusters_nuclei_10x <- apply(result[result$dataset == "zeng_10x_nuclei", ],
-                                  2, function(x) length(table(x)))
+                                 2, function(x) length(table(x)))
+  n_clusters_cells_10x_v3 <- apply(result[result$dataset == "zeng_10x_v3_cells", ],
+                                   2, function(x) length(table(x)))
+  n_clusters_nuclei_10x_v3 <- apply(result[result$dataset == "zeng_10x_v3_nuclei", ],
+                                    2, function(x) length(table(x)))
   keep <- n_clusters_cells_smart > 1 & n_clusters_nuclei_smart > 1 &
-    n_clusters_cells_10x > 1 & n_clusters_nuclei_10x > 1
+    n_clusters_cells_10x > 1 & n_clusters_nuclei_10x > 1 &
+    n_clusters_cells_10x_v3 > 1 & n_clusters_nuclei_10x_v3 > 1
   keep[1] <- TRUE
   result <- result[, keep]
   
@@ -292,6 +303,10 @@ load_monocle_all_labels <- function(cell_names, data_path = here("data")) {
       file.path(input_dir, "10x_cells_MOp_Monocle.csv")),
     zeng_10x_nuclei = read_single_method(
       file.path(input_dir, "10x_nuclei_MOp_Monocle.csv")),
+    zeng_10x_v3_cells = read_single_method(
+      file.path(input_dir, "10x_v3_cells_MOp_Monocle.csv")),
+    zeng_10x_v3_nuclei = read_single_method(
+      file.path(input_dir, "10x_v3_nuclei_MOp_Monocle.csv")),
     .id = "dataset"
   )
   
@@ -304,8 +319,13 @@ load_monocle_all_labels <- function(cell_names, data_path = here("data")) {
                                 2, function(x) length(table(x)))
   n_clusters_nuclei_10x <- apply(result[result$dataset == "zeng_10x_nuclei", ],
                                  2, function(x) length(table(x)))
+  n_clusters_cells_10x_v3 <- apply(result[result$dataset == "zeng_10x_v3_cells", ],
+                                2, function(x) length(table(x)))
+  n_clusters_nuclei_10x_v3 <- apply(result[result$dataset == "zeng_10x_v3_nuclei", ],
+                                 2, function(x) length(table(x)))
   keep <- n_clusters_cells_smart > 1 & n_clusters_nuclei_smart > 1 &
-    n_clusters_cells_10x > 1 & n_clusters_nuclei_10x > 1
+    n_clusters_cells_10x > 1 & n_clusters_nuclei_10x > 1 &
+    n_clusters_cells_10x_v3 > 1 & n_clusters_nuclei_10x_v3 > 1
   keep[1] <- TRUE
   result <- result[, keep]
   

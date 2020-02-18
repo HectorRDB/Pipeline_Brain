@@ -16,8 +16,8 @@ create_data = function() {
     dataset = list(
         smart_cells = readRDS("~/data/biccn/parsed_data/zeng_smart_cells.rds"),
         smart_nuclei = readRDS("~/data/biccn/parsed_data/zeng_smart_nuclei.rds"),
-        tenx_cells = readRDS("~/data/biccn/parsed_data/zeng_10x_cells.rds"),
-        tenx_nuclei = readRDS("~/data/biccn/parsed_data/zeng_10x_nuclei.rds")
+        tenx_v2_cells = readRDS("~/data/biccn/parsed_data/zeng_10x_cells.rds"),
+        tenx_v2_nuclei = readRDS("~/data/biccn/parsed_data/zeng_10x_nuclei.rds")
     )
 
     rownames(dataset$tenx_cells) =  convert_to_mgi_symbols_from_10x(rownames(dataset$tenx_cells))
