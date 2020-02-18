@@ -24,8 +24,8 @@ echo $TIMELAPSES >> $MEMORYFILE
 
 module load gcc
 module load pandoc
-# datasets="SMARTer_cells_MOp SMARTer_nuclei_MOp"
-datasets="SMARTer_cells_MOp SMARTer_nuclei_MOp 10x_cells_MOp 10x_nuclei_MOp"
+#datasets="SMARTer_cells_MOp SMARTer_nuclei_MOp 10x_cells_MOp 10x_nuclei_MOp 10x_v3_cells_MOp 10x_v3_nuclei_MOp"
+datasets="10x_v3_cells_MOp 10x_v3_nuclei_MOp"
 
 for dataset in $datasets
 do
