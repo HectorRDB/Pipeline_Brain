@@ -106,7 +106,7 @@ rownames(clusMat) <- Names
 
 # Do the consensus clustering ----
 print(paste0("Number of cores: ", opt$n))
-merger <- Dune(clusMat = clusMat, nCores = opt$n)
+merger <- Dune(clusMat = clusMat, nCores = opt$n, verbose = TRUE)
 cat("Finished Consensus Merge\n")
 saveRDS(object = merger, file = paste0(output, "_mergers.rds"))
 

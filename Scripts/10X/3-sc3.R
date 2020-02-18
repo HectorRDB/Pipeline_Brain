@@ -42,7 +42,7 @@ library(SingleCellExperiment)
 sce <- readRDS(file = loc)
 rowData(sce)$feature_symbol <- rownames(sce)
 # ks <- c(80, 100, 120)
-ks <- 80
+ks <- 100
 names(ks) <- ks
 cat("Running the sc3 on a reduced set of ", round(.1 * ncol(sce)), "cells\n")
 

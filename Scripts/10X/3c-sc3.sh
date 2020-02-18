@@ -6,7 +6,7 @@
 #SBATCH -p LM
 #SBATCH --mem=800GB
 #SBATCH -t 7-00:00:00
-#SBATCH --nodes=10
+#SBATCH --nodes=1
 
 module load gcc/8.2.0
 
@@ -24,7 +24,7 @@ TIMELAPSES=30
 echo $TIMELAPSES >> $MEMORYFILE
 
 loc="/pylon5/ib5phnp/hectorrb/ProcessedData/10x_v3_nuclei_MOp_filt.rds"
-out="/home/hectorrb/Pipeline_Brain/data/singleMethod/10x_v3_nuclei_MOp_sc3.csv"
+out="/home/hectorrb/Pipeline_Brain/data/singleMethod/10x_v3_nuclei_MOp_SC3.csv"
 
 while true; do free -h >> $MEMORYFILE; sleep $TIMELAPSES; done & Rscript \
   --no-save --verbose  3-sc3.R -n 1 -l $loc -o $out > 3c.out 2>&1
