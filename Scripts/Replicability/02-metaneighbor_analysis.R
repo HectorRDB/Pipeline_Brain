@@ -95,9 +95,6 @@ analyze_nuclei <- function(dataset, label_matrix, output_dir) {
   compute_replicability(dataset[, keep], label_matrix[keep, ],
                         file.path(output_dir, "nuclei"))
 }
-
-
-
 # Main functions ----
 ## Dune ----
 analyze_full_data <- function(data_path = here("data"),
