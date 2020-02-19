@@ -12,7 +12,8 @@ suppressPackageStartupMessages({
 source(here("Scripts", "Replicability", "datasets.R"))
 
 # Helper functions ----
-export_qc_cells <- function(dataset = load_data(), filename = "qc_cells.txt") {
+export_qc_cells <- function(dataset = load_data(),
+                            filename = here("data", "qc_cells.txt")) {
   write(colnames(dataset[, dataset$class_label != "Noise"]), filename)
 }
 
