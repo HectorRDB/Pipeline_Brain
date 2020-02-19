@@ -61,7 +61,7 @@ export_components <- function(component_obj, output_dir) {
 }
 
 analyze_smart_tenx <- function(dataset, label_matrix, output_dir) {
-  keep <- !keep <- dataset$study_id %in% c("zeng_10x_cells", "zeng_10x_nuclei")
+  keep <- !dataset$study_id %in% c("zeng_10x_cells", "zeng_10x_nuclei")
   compute_replicability(dataset[, keep], label_matrix[keep, ],
                         file.path(output_dir, "smart_tenx"))
 }
