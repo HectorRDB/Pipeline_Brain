@@ -1,6 +1,10 @@
 suppressPackageStartupMessages({
   library(SingleCellExperiment)
-  library(tidyverse)
+  library(dplyr)
+  library(tidyr)
+  library(stringr)
+  library(readr)
+  library(ggplot2)
 })
 
 # source("variable_genes.R")

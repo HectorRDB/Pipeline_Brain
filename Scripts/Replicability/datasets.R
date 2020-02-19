@@ -1,4 +1,3 @@
-
 library(SingleCellExperiment)
 
 remove_zero_genes = function(dataset) {
@@ -61,9 +60,9 @@ read_sparse_csv = function(filename) {
         row_names = c(row_names, data[1])
         counts = as.numeric(data[-1])
         nnz = which(counts > 0)
-        row_indices[[length(row_indices)+1]] = rep(row_number, length(nnz))
-        col_indices[[length(col_indices)+1]] = nnz
-        values[[length(values)+1]] = counts[nnz]
+        row_indices[[length(row_indices) + 1]] <- rep(row_number, length(nnz))
+        col_indices[[length(col_indices) + 1]] <- nnz
+        values[[length(values) + 1]] <- counts[nnz]
         row_number = row_number + 1
         line = readLines(f, 1)
     }
@@ -83,7 +82,7 @@ read_header = function(fileptr, sep = ",") {
 }
                        
 split_line = function(line, sep = ",") {
-    return(strsplit(line, split = sep, fixed=TRUE)[[1]])
+    return(strsplit(line, split = sep, fixed = TRUE)[[1]])
 }
                        
 reduce_to_prefix = function(labels, valid_prefixes) {
