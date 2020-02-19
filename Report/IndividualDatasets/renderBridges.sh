@@ -10,7 +10,7 @@
 # Create the MEMORYFILE file
 timestamp=$(date +"%Y%m%d-%H%M%S")
 # Do not use underscore in your script name or your parameters
-basename=render-files_10x-v3_${timestamp}
+basename=render-files_all_${timestamp}
 MEMORYFILE=${basename}.txt
 
 # Add the first few lines for analytic purposes.
@@ -23,8 +23,7 @@ echo $TIMELAPSES >> $MEMORYFILE
 
 module load gcc
 module load pandoc
-#datasets="SMARTer_cells_MOp SMARTer_nuclei_MOp 10x_cells_MOp 10x_nuclei_MOp 10x_v3_cells_MOp 10x_v3_nuclei_MOp"
-datasets="10x_v3_cells_MOp 10x_v3_nuclei_MOp"
+datasets="SMARTer_cells_MOp SMARTer_nuclei_MOp 10x_cells_MOp 10x_nuclei_MOp 10x_v3_cells_MOp 10x_v3_nuclei_MOp"
 
 for dataset in $datasets
 do
