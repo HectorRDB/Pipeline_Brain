@@ -10,7 +10,7 @@ output:
     
 params:
   dataset: "10x_v3_cells_MOp"
-  title: "Analysis of the SMARTer_cells_MOp dataset"
+  title: "Analysis of the 10x_v3_cells_MOp dataset"
 ---
 ---
 title: `r params$title`
