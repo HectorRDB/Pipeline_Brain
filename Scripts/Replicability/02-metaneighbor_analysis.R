@@ -1,7 +1,6 @@
 # Packages and helper scripts ----
 suppressPackageStartupMessages({
   library(SingleCellExperiment)
-  library(tidyverse)
   library(here)
 })
 
