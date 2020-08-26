@@ -72,10 +72,11 @@ clusMat <- data.frame("sc3" = sc3, "Monocle" = Monocle, "Seurat" = seurat)
 rownames(clusMat) <- Names  
 
 # Do the consensus clustering ----
+BPPARAM <- BiocParallel::MulticoreParam(opt$n)
 print(paste0("Number of cores: ", opt$n))
 print(system.time(
-  merger <- Dune(clusMat = clusMat, nCores = opt$n, unclustered = -1,
-                 verbose = TRUE, metric = "NMI")
+  merger <- Dune(clusMat = clusMat, BPPARAM = BPPARAM, unclustered = -1,
+                 verbose = TRUE, parallel = TRUE, metric = "NMI")
 ))
 cat("Finished Consensus Merge\n")
 saveRDS(object = merger, file = paste0(output, "_mergersNMI.rds"))

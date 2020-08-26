@@ -41,6 +41,7 @@ library(parallel)
 library(matrixStats)
 library(tidyverse)
 library(Dune)
+library(BiocParallel)
 
 # Load Data ----
 # Load sc3 clustering results
@@ -72,10 +73,11 @@ clusMat <- data.frame("sc3" = sc3, "Monocle" = Monocle, "Seurat" = seurat)
 rownames(clusMat) <- Names  
 
 # Do the consensus clustering ----
+BPPARAM <- BiocParallel::MulticoreParam(opt$n)
 print(paste0("Number of cores: ", opt$n))
 print(system.time(
-  merger <- Dune(clusMat = clusMat, nCores = opt$n, unclustered = -1,
-                 verbose = TRUE)
+  merger <- Dune(clusMat = clusMat, BPPARAM = BPPARAM, unclustered = -1,
+                 verbose = TRUE, parallel = TRUE)
 ))
 cat("Finished Consensus Merge\n")
 saveRDS(object = merger, file = paste0(output, "_mergers.rds"))
