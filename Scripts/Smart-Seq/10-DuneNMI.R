@@ -79,7 +79,7 @@ print(system.time(
                  verbose = TRUE, parallel = TRUE, metric = "NMI")
 ))
 cat("Finished Consensus Merge\n")
-saveRDS(object = merger, file = paste0(output, "_mergersNMI.rds"))
+saveRDS(object = merger, file = paste0(output, "_mergers.rds"))
 
 # Save the matrix with all the consensus steps ----
 Names <- as.character(Names)

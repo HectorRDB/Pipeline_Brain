@@ -164,7 +164,7 @@ print("...Full matrix")
 mat <- cbind(as.character(Names), stopMatrix)
 colnames(mat)[1] <- "cells"
 
-write_csv(x = as.data.frame(mat), path = paste0(output, "_DuneNMI.csv"))
+write_csv(x = as.data.frame(mat), path = paste0(output, "_NMI_Dune.csv"))
 # Do hierarchical merging ----
 Rsec <- readRDS(opt$r)
 
