@@ -209,14 +209,14 @@ res <- list()
 for (clustering in c("sc3", "Monocle", "Seurat")) {
   print(clustering)
   n <- n_distinct(get(clustering))
-  cutoffs <- 10:n
+  cutoffs <- 10:12
   Rsec2 <- makeDendrogram(Rsec, whichCluster = clustering)
   Tree <- as.hclust(convertToDendrogram(Rsec2))
   names(cutoffs) <- paste(clustering, n - cutoffs, sep = "_")
-  res[[clustering]] <- map_df(cutoffs,
-                              function(cutoff){
-                                print(paste0("...", cutoff))
-                                return(cutree(Tree, k = cutoff))
+  res[[clustering]] <- map_dfc(cutoffs,
+                               function(cutoff){
+                                 print(paste0("...", cutoff))
+                                 return(cutree(Tree, k = cutoff))
                               })
 }
 
