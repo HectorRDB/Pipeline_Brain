@@ -86,11 +86,15 @@ Names <- as.character(Names)
 chars <- c("sc3", "Monocle", "Seurat")
 
 levels <- seq(from = 0, to = 1, by = .05)
+
 stopMatrix <- lapply(levels, function(p){
   print(paste0("...Intermediary consensus at ", round(100 * p), "%"))
-  mat <- intermediateMat(merger = merger, p = p) %>%
-    as.matrix()
+  mat <- intermediateMat(merger = merger, p = p)
+  suppressWarnings(rownames(mat) <- mat$cells)
   mat <- mat[Names, ]
+  mat <- mat %>%
+    select(-cells) %>%
+    as.matrix()
   return(mat)
 }) %>%
   do.call('cbind', args = .)
@@ -108,4 +112,4 @@ mat <- cbind(as.character(Names), stopMatrix)
 colnames(mat)[1] <- "cells"
 
 
-write_csv(x = as.data.frame(mat), path = paste0(output, "_NMI.csv"))
+write_csv(x = as.data.frame(mat), path = paste0(output, ".csv"))
