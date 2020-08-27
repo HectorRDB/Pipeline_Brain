@@ -94,29 +94,29 @@ Monocle <- as.data.frame(Monocle)[, monocle_p] %>% as.numeric()
 clusMat <- data.frame("sc3" = sc3, "Monocle" = Monocle, "Seurat" = Seurat)
 rownames(clusMat) <- Names  
 
-# Do the consensus clustering ----
-print(paste0("Number of cores: ", opt$n))
+# Do the consensus clustering with ARI ----
+BPPARAM <- BiocParallel::MulticoreParam(opt$n)
 print(system.time(
-  merger <- Dune(clusMat = clusMat, nCores = opt$n)
+  merger <- Dune(clusMat = clusMat, BPPARAM = BPPARAM, parallel = TRUE)
 ))
 saveRDS(merger,  paste0(output, "_merger.rds"))
-
 cat("Finished Consensus Merge\n")
 
 # Save the matrix with all the consensus steps ----
 Names <- as.character(Names)
 chars <- c("sc3", "Monocle", "Seurat")
-
 levels <- seq(from = 0, to = 1, by = .05)
 stopMatrix <- lapply(levels, function(p){
   print(paste0("...Intermediary consensus at ", round(100 * p), "%"))
-  mat <- intermediateMat(merger = merger, p = p) %>%
-    as.matrix()
+  mat <- intermediateMat(merger = merger, p = p)
+  suppressWarnings(rownames(mat) <- mat$cells)
   mat <- mat[Names, ]
+  mat <- mat %>%
+    select(-cells) %>%
+    as.matrix()
   return(mat)
 }) %>%
   do.call('cbind', args = .)
-
 colnames(stopMatrix) <- lapply(levels, function(p){
   i <- as.character(round(100 * p))
   if (nchar(i) == 1) {
@@ -126,10 +126,45 @@ colnames(stopMatrix) <- lapply(levels, function(p){
 }) %>% unlist()
 print("...Full matrix")
 mat <- cbind(as.character(Names), stopMatrix)
-
 colnames(mat)[1] <- "cells"
 
 write_csv(x = as.data.frame(mat), path = paste0(output, "_Dune.csv"))
+# Do the consensus clustering with NMI ----
+BPPARAM <- BiocParallel::MulticoreParam(opt$n)
+print(system.time(
+  merger <- Dune(clusMat = clusMat, BPPARAM = BPPARAM, parallel = TRUE,
+                 metric = "NMI")
+))
+saveRDS(merger,  paste0(output, "_NMI_merger.rds"))
+cat("Finished Consensus Merge\n")
+
+# Save the matrix with all the consensus steps ----
+Names <- as.character(Names)
+chars <- c("sc3", "Monocle", "Seurat")
+levels <- seq(from = 0, to = 1, by = .05)
+stopMatrix <- lapply(levels, function(p){
+  print(paste0("...Intermediary consensus at ", round(100 * p), "%"))
+  mat <- intermediateMat(merger = merger, p = p)
+  suppressWarnings(rownames(mat) <- mat$cells)
+  mat <- mat[Names, ]
+  mat <- mat %>%
+    select(-cells) %>%
+    as.matrix()
+  return(mat)
+}) %>%
+  do.call('cbind', args = .)
+colnames(stopMatrix) <- lapply(levels, function(p){
+  i <- as.character(round(100 * p))
+  if (nchar(i) == 1) {
+    i <- paste0("0", i)
+  }
+  return(paste(chars, i, sep = "-"))
+}) %>% unlist()
+print("...Full matrix")
+mat <- cbind(as.character(Names), stopMatrix)
+colnames(mat)[1] <- "cells"
+
+write_csv(x = as.data.frame(mat), path = paste0(output, "_DuneNMI.csv"))
 # Do hierarchical merging ----
 Rsec <- readRDS(opt$r)
 
