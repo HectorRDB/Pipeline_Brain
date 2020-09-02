@@ -221,8 +221,8 @@ main <- function() {
   analyze_all_single_merge()
   print("single All Dunes")
   analyze_all_Dunes()
-  print("Analyze lab comp")
-  analyze_lab_data()
+  # print("Analyze lab comp")
+  # analyze_lab_data()
 }
 
 if (!interactive()) {
