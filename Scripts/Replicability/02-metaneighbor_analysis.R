@@ -117,12 +117,18 @@ analyze_all_Dunes <- function(data_path = here("data"),
   # Dune normal
   labels <- load_Dune_labels(colnames(dataset), data_path)
   analyze_smart(dataset, labels, paste0(output_dir, "/Normal"))
+  labels <- load_Dune_labels(colnames(dataset), data_path, metric = "_NMI")
+  analyze_smart(dataset, labels, paste0(output_dir, "/Normal_NMI"))
   # Dune large2
   labels <- load_Dune_labels(colnames(dataset), data_path, size = "large2")
   analyze_smart(dataset, labels, paste0(output_dir, "/large2"))
+  labels <- load_Dune_labels(colnames(dataset), data_path, size = "large2", metric = "_NMI")
+  analyze_smart(dataset, labels, paste0(output_dir, "/large2_NMI"))
   # Dune large3
   labels <- load_Dune_labels(colnames(dataset), data_path, size = "large3")
   analyze_smart(dataset, labels, paste0(output_dir, "/large3"))
+  labels <- load_Dune_labels(colnames(dataset), data_path, size = "large3", metric = "_NMI")
+  analyze_smart(dataset, labels, paste0(output_dir, "/large3_NMI"))
 }
 
 ## Hierarchical ----

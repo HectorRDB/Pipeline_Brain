@@ -57,21 +57,23 @@ load_labels <- function(cell_names, data_path = here("data")) {
 }
 
 load_Dune_labels <- function(cell_names, data_path = here("data"),
-                             size = "normal") {
+                             size = "normal", metric = "") {
   if (size == "normal") {
     input_dir <- file.path(data_path, "Dune")
     label_matrix <- bind_rows(
-      zeng_smart_cells = read.csv(file.path(input_dir, "SMARTer_cells_MOp.csv")),
-      zeng_smart_nuclei = read.csv(file.path(input_dir, "SMARTer_nuclei_MOp.csv")),
+      zeng_smart_cells = 
+        read.csv(file.path(input_dir, paste0("SMARTer_cells_MOp", metric, ".csv"))),
+      zeng_smart_nuclei = 
+        read.csv(file.path(input_dir, paste0("SMARTer_nuclei_MOp", metric, ".csv"))),
       .id = "dataset"
     )
   } else {
     input_dir <- file.path(data_path, "singleTree")
     label_matrix <- bind_rows(
       zeng_smart_cells = read.csv(
-        file.path(input_dir, paste0("SMARTer_cells_MOp_", size, "_Dune.csv"))),
+        file.path(input_dir, paste0("SMARTer_cells_MOp_", size, metric, "_Dune.csv"))),
       zeng_smart_nuclei = read.csv(
-        file.path(input_dir, paste0("SMARTer_nuclei_MOp_", size, "_Dune.csv"))),
+        file.path(input_dir, paste0("SMARTer_nuclei_MOp_", size, metric, "_Dune.csv"))),
       .id = "dataset"
     )
   }

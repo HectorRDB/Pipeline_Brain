@@ -359,6 +359,30 @@ main_all_Dunes <- function(
                          file.path(result_path, "large3", "smart"),
                          file.path(output_dir, "Large3"), 2
   )
+  # Dune normal_NMI
+  label_matrix <- load_Dune_labels(load_qc_cells(here("data", "qc_cells_smart.txt")),
+                                   metric = "_NMI")
+  label_matrix <- label_matrix[dataset$class_label != "Noise", ]
+  create_summary_figures(label_matrix,
+                         file.path(result_path, "Normal_NMI", "smart"),
+                         file.path(output_dir, "Normal_NMI"), 2
+  )
+  # Dune large 2_NMI
+  label_matrix <- load_Dune_labels(load_qc_cells(here("data", "qc_cells_smart.txt")),
+                                   size = "large2", metric = "_NMI")
+  label_matrix <- label_matrix[dataset$class_label != "Noise", ]
+  create_summary_figures(label_matrix,
+                         file.path(result_path, "large2_NMI", "smart"),
+                         file.path(output_dir, "Large2_NMI"), 2
+  )
+  # Dune large 3_NMI
+  label_matrix <- load_Dune_labels(load_qc_cells(here("data", "qc_cells_smart.txt")),
+                                   size = "large3", metric = "_NMI")
+  label_matrix <- label_matrix[dataset$class_label != "Noise", ]
+  create_summary_figures(label_matrix,
+                         file.path(result_path, "large3_NMI", "smart"),
+                         file.path(output_dir, "Large3_NMI"), 2
+  )
 }
 
 main_single_merge <- function(
