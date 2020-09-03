@@ -504,8 +504,8 @@ main <- function() {
   main_all_Dunes()
   # print("single method")
   # main_single_method_all()
-  # print("single merges")
-  # main_single_merge()
+  print("single merges")
+  main_single_merge()
   # print("lab comp")
   # main_lab()
 }
